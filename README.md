@@ -28,6 +28,7 @@ on Windows), or ask an organizer for a shared machine.
   that stand out, so the ones that blend in survive.
 - Try the **Scenarios** tab, or speed time up with 3x, 10x or 30x.
 - Press **Show the science** for DNA, trait histograms and charts.
+- Switch between light and dark with the round button next to it. It cycles auto (follows your system), light and dark, and remembers your choice.
 
 ### 2. A little code: copy and paste
 Every slider has a `</>` button that shows the Python behind it. Open `workshop.py`, uncomment an
