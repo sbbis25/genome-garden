@@ -22,3 +22,11 @@ class Hooks:
         self.disabled = set()      # hooks that raised; they fall back to defaults until the next reload
         self.errors = {}           # key -> {"where", "msg", "line", "src"}
         self.load_error = None
+
+    def get(self, name):
+        if name in self.disabled:
+            return None
+        return self.fns.get(name)
+
+    def active(self, name):
+        return name in self.fns and name not in self.disabled
