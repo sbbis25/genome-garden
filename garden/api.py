@@ -134,3 +134,9 @@ def lerp(a, b, t):
 def clamp(x, lo, hi):
     """keep x between lo and hi."""
     return max(lo, min(hi, x))
+
+
+def noise(x, y=0.0, t=0.0):
+    """smooth wobbly value between 0 and 1 that changes gently with x, y and t."""
+    v = math.sin(x * 1.7 + t) + math.sin(y * 2.3 - t * 0.7) + math.sin((x + y) * 0.9 + t * 0.4)
+    return 0.5 + v / 6.0
