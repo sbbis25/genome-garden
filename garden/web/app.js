@@ -47,8 +47,8 @@
   function body(h) { return rgbStr(mixRGB(rampRGB(h), INK, 0.1)); }
   var RAMP_BG = 'linear-gradient(to right,' + [0, 0.15, 0.33, 0.5, 0.66, 0.85, 1].map(ramp).join(',') + ')';
 
-  var TRAIT_COLORS = { speed: '#55b6ff', size: '#c58bff', sense: '#ffd166', hue: '#ff8a65', efficiency: '#7be3a8' };
-  var EXTRA_COLORS = ['#f78fb3', '#63cdda', '#f5cd79', '#a29bfe', '#b8e994', '#fab1a0'];
+  var TRAIT_COLORS = { speed: '#3f6fb5', size: '#7b5ea7', sense: '#b9801f', hue: '#c0643a', efficiency: '#4c8c64' };
+  var EXTRA_COLORS = ['#b5547f', '#2f8aa0', '#9a7a1f', '#6b5fb5', '#6e9a3c', '#b86b4f'];
   function traitColor(name, i) { return TRAIT_COLORS[name] || EXTRA_COLORS[i % EXTRA_COLORS.length]; }
 
   // ── state ──────────────────────────────────────────────────────────────────────
@@ -514,8 +514,8 @@
       if (mx === mn) { mx = mn + 1; }
       lo = lo == null ? Math.min(0, mn) : lo; hi = hi == null ? mx : hi;
     }
-    ctx.font = '11px ui-monospace, Menlo, Consolas, monospace';
-    ctx.fillStyle = '#9fb2c1'; ctx.strokeStyle = '#1f2d39'; ctx.lineWidth = 1;
+    ctx.font = '11px "Chivo Mono", ui-monospace, Menlo, Consolas, monospace';
+    ctx.fillStyle = '#666575'; ctx.strokeStyle = '#e1e0ea'; ctx.lineWidth = 1;
     for (var i = 0; i <= 2; i++) {
       var y = padT + (h - padT - padB) * i / 2;
       ctx.beginPath(); ctx.moveTo(padL, y + 0.5); ctx.lineTo(w, y + 0.5); ctx.stroke();
@@ -540,7 +540,7 @@
     lineChart($('#ch-traits'), names.map(function (nm, i) { return { data: hst.traits[nm], color: traitColor(nm, i) }; }), { min: 0, max: 1 });
     var mx = 10;
     hst.pop.concat(hst.food).forEach(function (v) { if (v > mx) mx = v; });
-    lineChart($('#ch-pop'), [{ data: hst.food, color: '#ffb454' }, { data: hst.pop, color: '#46e0c0' }], { min: 0, max: mx });
+    lineChart($('#ch-pop'), [{ data: hst.food, color: '#b9801f' }, { data: hst.pop, color: '#4b4396' }], { min: 0, max: mx });
     $$('#custom-charts canvas').forEach(function (cv, i) {
       var c = hst.custom[i]; if (!c) return;
       lineChart(cv, c.series.map(function (d, k) { return { data: d, color: EXTRA_COLORS[(k + i) % EXTRA_COLORS.length] }; }), {});
@@ -594,7 +594,7 @@
       });
       ctx.globalAlpha = 1;
       var mxp = (d.mean - d.lo) / ((d.hi - d.lo) || 1) * g.w;
-      ctx.fillStyle = '#ffffff'; ctx.fillRect(Math.max(0, Math.min(g.w - 2, mxp - 1)), 0, 2, g.h);
+      ctx.fillStyle = '#1b1a24'; ctx.fillRect(Math.max(0, Math.min(g.w - 2, mxp - 1)), 0, 2, g.h);
       var m = $('[data-mean="' + name + '"]'); if (m) m.textContent = fmtNum(d.mean);
     });
   }
