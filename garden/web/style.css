@@ -129,8 +129,11 @@ select.btn { appearance: none; padding-right: 30px; background-image: linear-gra
 .group-head { width: 100%; text-align: left; background: none; border: 0; padding: 14px 0; display: flex; align-items: center; gap: 10px; font-weight: 640; font-stretch: 106%; color: var(--ink); }
 .group-head .chev { width: 7px; height: 7px; border-right: 1.5px solid var(--ink-3); border-bottom: 1.5px solid var(--ink-3); transform: rotate(-45deg); transition: transform var(--t2) var(--ease); }
 .group.open .group-head .chev { transform: rotate(45deg); }
-.group-body { display: none; padding: 0 0 12px; }
-.group.open .group-body { display: block; }
+.group-body { display: grid; grid-template-rows: 0fr; transition: grid-template-rows var(--t3) var(--ease); }
+.group.open .group-body { grid-template-rows: 1fr; }
+.group-inner { min-height: 0; overflow: hidden; visibility: hidden; opacity: 0; transition: opacity var(--t2) var(--ease), visibility 0s linear var(--t3); }
+.group.open .group-inner { visibility: visible; opacity: 1; transition-delay: 60ms, 0s; }
+.group-pad { padding: 2px 4px 14px 2px; }
 
 .ctl { margin-bottom: 18px; }
 .ctl-head { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; }

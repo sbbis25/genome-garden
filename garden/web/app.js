@@ -345,8 +345,9 @@
           $('.group-head', x).setAttribute('aria-expanded', String(x.dataset.id === S.openGroup));
         });
       };
-      var body = el('div', 'group-body');
-      g.controls.forEach(function (c) { body.appendChild(buildControl(c)); });
+      var body = el('div', 'group-body'), inner = el('div', 'group-inner'), pad = el('div', 'group-pad');
+      body.appendChild(inner); inner.appendChild(pad);
+      g.controls.forEach(function (c) { pad.appendChild(buildControl(c)); });
       if (g.actions.length) {
         var a = el('div', 'actions');
         g.actions.forEach(function (act) {
@@ -357,7 +358,7 @@
           };
           a.appendChild(b);
         });
-        body.appendChild(a);
+        pad.appendChild(a);
       }
       grp.appendChild(head); grp.appendChild(body); panel.appendChild(grp);
     });
