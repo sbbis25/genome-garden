@@ -40,3 +40,19 @@ class Hooks:
         self.errors[where] = {"where": where, "msg": msg, "line": line, "src": src.strip()}
         if where in self.fns:
             self.disabled.add(where)
+
+
+class WorkshopLoader:
+    def __init__(self, path):
+        self.path = os.path.abspath(path)
+        self.mtime = None
+        self.current = Hooks()
+
+    def _stamp(self):
+        try:
+            return os.stat(self.path).st_mtime_ns
+        except OSError:
+            return None
+
+    def changed(self):
+        return self._stamp() != self.mtime
