@@ -196,4 +196,24 @@
     if (f.stats && S.view === 'full' && now - S.statsAt > 250) { S.statsAt = now; drawHistograms(); }
   }
 
+  function updateBanners(f) {
+    var errs = (f.errors || []).slice();
+    if (f.load_error) errs.unshift(f.load_error);
+    var key = JSON.stringify(errs) + '|' + f.restart;
+    if (key === S.errKey) return;
+    S.errKey = key;
+    var b = $('#banner-error');
+    if (errs.length) {
+      var e = errs[0];
+      var where = e.line ? 'workshop.py line ' + e.line : (e.where || 'workshop.py');
+      var more = errs.length > 1 ? ' (+' + (errs.length - 1) + ' more)' : '';
+      var tail = f.load_error ? ' Your last working version keeps running.' : ' That hook fell back to its default behaviour.';
+      $('#banner-error-text').innerHTML = '<b>' + esc(where) + ':</b> ' + esc(e.msg) + more + '.' + tail;
+      b.classList.add('show');
+    } else { b.classList.remove('show'); }
+    $('#code-dot').classList.toggle('on', errs.length > 0);
+    $('#banner-restart').classList.toggle('show', !!f.restart);
+    if (S.tab === 'code') renderCode();
+  }
+
 })();
