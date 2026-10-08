@@ -723,4 +723,33 @@
     if (S.dragging) { S.dragging = false; if (S.pendingSchema) { S.pendingSchema = false; buildAll(); } }
   });
 
+  // ── top bar wiring ─────────────────────────────────────────────────────────────
+  $$('#tools button').forEach(function (b) {
+    b.onclick = function () {
+      S.tool = b.dataset.tool;
+      $$('#tools button').forEach(function (x) { x.setAttribute('aria-pressed', String(x === b)); });
+    };
+  });
+  $$('#speed-seg button').forEach(function (b) {
+    b.onclick = function () { post({ type: 'speed', mult: parseFloat(b.dataset.mult) }); };
+  });
+  $('#btn-restart').onclick = function () { post({ type: 'reset' }); resetClientWorld(); };
+  $('#banner-restart-go').onclick = function () { post({ type: 'reset' }); resetClientWorld(); };
+  $('#btn-reset-settings').onclick = function () { post({ type: 'reset_settings' }); };
+  $('#preset-select').onchange = function (ev) {
+    if (ev.target.value) runPreset(ev.target.value);
+    ev.target.value = '';
+  };
+  $('#banner-error-open').onclick = function () { switchTab('code'); };
+  $$('.tabs button').forEach(function (b) { b.onclick = function () { switchTab(b.dataset.tab); }; });
+
+  function applyView() {
+    $('#app').dataset.view = S.view;
+    $('#btn-view').textContent = S.view === 'full' ? 'Simple view' : 'Show the science';
+    $('#btn-view').classList.toggle('primary', S.view !== 'full');
+    pref('view', 'simple', S.view);
+    setTimeout(function () { fitCanvas(); S.chartsDirty = true; S.statsAt = 0; }, 30);
+  }
+  $('#btn-view').onclick = function () { S.view = S.view === 'full' ? 'simple' : 'full'; applyView(); };
+
 })();
