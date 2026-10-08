@@ -40,3 +40,10 @@ from garden.api import *
 # def choose_mate(me, candidates):
 #     return most_similar(me, candidates)       # like marries like
 #     # return most_different(me, candidates)   # opposites attract
+
+
+# mutate() makes a baby's dna. keep the same length and use only the four capital
+# letters a, c, g and t.
+#
+# def mutate(dna, rate):
+#     return point_mutate(dna, rate * 2)        # twice as mutation-happy
