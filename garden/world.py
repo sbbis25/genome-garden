@@ -169,3 +169,32 @@ class World:
         self.compute_stats()
         self.compute_diversity()
         self.record_history()
+
+    # ── creatures and food ───────────────────────────────────────────────────
+    def make_creature(self, dna, x, y, parent, gen, energy):
+        c = Creature()
+        c.id = self.next_id
+        self.next_id += 1
+        c.x, c.y, c.h = x, y, random.uniform(0, 6.28)
+        c.energy, c.age, c.dna = energy, 0, dna
+        t = G.decode(dna, self.layout)
+        c.t = t
+        c.speed, c.size, c.sense = t["speed"], t["size"], t["sense"]
+        c.hue, c.efficiency = t["hue"], t["efficiency"]
+        c.parent, c.gen, c.cool = parent, gen, 100
+        c.target, c.flee, c.hold, c.alive, c.kids = None, 0, 0, True, 0
+        c.cost = (0.04 + 0.03 * c.speed ** 2 + 0.03 * c.size + 0.004 * c.sense) / c.efficiency
+        c.maxage = int(random.uniform(420, 720))
+        c.score, c.thresh = 1.0, 85.0
+        self.creatures.append(c)
+        self.by_id[c.id] = c
+        self.refresh_score(c)
+        return c
+
+    def kill(self, c, cause):
+        if not c.alive:
+            return
+        c.alive = False
+        self.by_id.pop(c.id, None)
+        self.deaths.append((self.tick, cause, c.speed, c.size, c.sense, c.efficiency,
+                            abs(c.hue - self.ground_hue(c.x, c.y))))
