@@ -20,3 +20,8 @@ MATING_LABELS = {
     "similar": "Most similar DNA",
     "different": "Most different DNA",
 }
+
+
+def _slider(group, id, label, lo, hi, step, default, help, hook=None, code="", fmt="num", ramp=False):
+    return dict(kind="slider", group=group, id=id, label=label, lo=lo, hi=hi, step=step,
+                default=default, help=help, hook=hook, code=code, fmt=fmt, ramp=ramp)
