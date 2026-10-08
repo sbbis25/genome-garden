@@ -459,4 +459,33 @@
     if (name === 'code') renderCode();
   }
 
+  // ── creature card ──────────────────────────────────────────────────────────────
+  function updateCard(now) {
+    var d = S.watch;
+    var key = d ? [d.id, d.gone, d.age, d.energy, d.kids, S.pinned === d.id].join(',') : 'none' + S.pinned;
+    if (key === S.cardKey) return;
+    S.cardKey = key;
+    var box = $('#creature');
+    if (!d) { box.innerHTML = '<h3>Creature</h3><div class="empty">Hover over a creature to read its DNA. Click one to pin it.</div>'; return; }
+    if (d.gone) {
+      box.innerHTML = '<h3>Creature #' + d.id + '</h3><div class="empty">This creature has died.</div>';
+      if (S.pinned === d.id) setTimeout(function () { if (S.pinned === d.id) S.pinned = null; }, 1500);
+      return;
+    }
+    var h = '<h3>Creature #' + d.id + (S.pinned === d.id ? ' <span class="pin">PINNED</span>' : '') + '</h3>';
+    h += '<div class="facts"><div><b>' + d.gen + '</b><span>generation</span></div><div><b>' + d.age + 's</b><span>age</span></div>' +
+      '<div><b>' + d.energy + '</b><span>energy</span></div><div><b>' + d.kids + '</b><span>babies</span></div></div>';
+    h += '<div class="dna">';
+    d.genes.forEach(function (g) {
+      var letters = d.dna.slice(g.a, g.b).split('').map(function (ch) { return '<span class="b' + esc(ch) + '">' + esc(ch) + '</span>'; }).join('');
+      var norm = Math.max(0, Math.min(1, (g.value - g.lo) / ((g.hi - g.lo) || 1)));
+      h += '<div class="gseg"><div class="gn"><span>' + esc(g.name) + '</span><b>' + fmtNum(g.value) + '</b></div><div class="bases">' + letters +
+        '</div><div class="bar"><i style="width:' + Math.round(norm * 100) + '%' + (g.name === 'hue' ? ';background:' + ramp(g.value) : '') + '"></i></div></div>';
+    });
+    h += '</div>';
+    h += '<p class="tip" style="margin:10px 0 0">Camouflage gap vs ground: <b class="mono">' + d.contrast.toFixed(2) + '</b> (lower hides better)' +
+      (d.parent ? '. Parent #' + d.parent : '') + '.</p>';
+    box.innerHTML = h;
+  }
+
 })();
