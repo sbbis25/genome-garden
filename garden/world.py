@@ -742,3 +742,20 @@ class World:
     def reload_settings_from_file(self):
         for kk, v in self.hooks.settings.items():
             self.settings.set(kk, v, user=False)
+
+    # ── numbers for the ui ───────────────────────────────────────────────────
+    def compute_stats(self):
+        cs = self.creatures
+        out = {}
+        n = len(cs)
+        for name, a, b, lo, hi in self.layout:
+            bins = [0] * 12
+            tot = 0.0
+            span = (hi - lo) or 1.0
+            for c in cs:
+                v = c.t[name]
+                tot += v
+                i = int((v - lo) / span * 12)
+                bins[0 if i < 0 else (11 if i > 11 else i)] += 1
+            out[name] = {"bins": bins, "mean": tot / n if n else 0.0, "lo": lo, "hi": hi}
+        self.stats = out
