@@ -216,4 +216,31 @@
     if (S.tab === 'code') renderCode();
   }
 
+  // ── toasts and hints ───────────────────────────────────────────────────────────
+  function toast(text) {
+    var box = $('#toasts');
+    var t = el('div', 'toast'); t.textContent = text;
+    box.appendChild(t);
+    while (box.children.length > 4) box.removeChild(box.firstChild);
+    setTimeout(function () { if (t.parentNode) t.parentNode.removeChild(t); }, 5000);
+  }
+  var hintTimer = 0;
+  function showHint(text, ms) {
+    var h = $('#hint');
+    h.textContent = text; h.classList.remove('gone');
+    clearTimeout(hintTimer);
+    if (ms) hintTimer = setTimeout(function () { h.classList.add('gone'); }, ms);
+  }
+  function advanceHint(stage) {
+    if (S.hintStage >= stage) return;
+    S.hintStage = stage; pref('hint', '0', String(stage));
+    if (stage === 1) {
+      S.pulseId = 'predators';
+      showHint('Now open "How harsh is the world?" and drag Predators up. Watch what happens.', 0);
+      buildTune();
+    } else if (stage === 2) {
+      S.pulseId = null; $('#hint').classList.add('gone'); buildTune();
+    }
+  }
+
 })();
