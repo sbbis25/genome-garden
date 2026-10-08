@@ -3,12 +3,14 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="theme-color" content="#f3f2f7">
+<meta name="theme-color" content="#131219">
 <script>
 (function () {
+  document.documentElement.dataset.theme = 'dark';
   try {
     var t = localStorage.getItem('gg.theme');
-    if (t !== 'light' && t !== 'dark') t = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+    if (t === 'auto') t = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+    else if (t !== 'light') t = 'dark';
     document.documentElement.dataset.theme = t;
     document.querySelector('meta[name="theme-color"]').setAttribute('content', t === 'dark' ? '#131219' : '#f3f2f7');
   } catch (e) {}
@@ -43,7 +45,7 @@
     <button data-mult="30" aria-pressed="false">30x</button>
   </div>
   <div class="achieved" id="achieved" title="How fast time is actually running"></div>
-  <button id="btn-theme" class="btn icon-btn" data-mode="auto" aria-label="Theme: follows your system. Switch to light" title="Theme: follows your system. Switch to light">
+  <button id="btn-theme" class="btn icon-btn" data-mode="dark" aria-label="Theme: dark. Switch to light" title="Theme: dark. Switch to light">
     <svg class="auto" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><path d="M12 3.5a8.5 8.5 0 0 1 0 17z" fill="currentColor"/></svg>
     <svg class="moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"/></svg>
     <svg class="sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2.5v2.2M12 19.3v2.2M4.9 4.9l1.6 1.6M17.5 17.5l1.6 1.6M2.5 12h2.2M19.3 12h2.2M4.9 19.1l1.6-1.6M17.5 6.5l1.6-1.6"/></svg>
