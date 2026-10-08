@@ -695,3 +695,13 @@ class World:
                 self.schema_version += 1
         elif tool == "smite":
             self.kill_in_circle(x, y, 9, "disaster")
+
+    def run_button(self, index):
+        try:
+            b = self.hooks.buttons[index]
+        except IndexError:
+            return
+        try:
+            b.fn(self)
+        except Exception as e:
+            self.fail("BUTTONS: " + str(b.label), e)
