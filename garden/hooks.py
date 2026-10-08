@@ -56,3 +56,48 @@ class WorkshopLoader:
 
     def changed(self):
         return self._stamp() != self.mtime
+
+    def load(self):
+        """read workshop.py into a fresh hooks. never raises: problems land in .load_error."""
+        self.mtime = self._stamp()
+        h = Hooks()
+        try:
+            with open(self.path, encoding="utf-8") as f:
+                source = f.read()
+        except OSError as e:
+            h.load_error = {"where": "workshop.py", "msg": "Could not read the file: %s" % e,
+                            "line": None, "src": ""}
+            return h
+        ns = {k: getattr(api, k) for k in api.__all__}
+        ns["__name__"] = "workshop"
+        ns["GENES"] = default_genes()
+        ns["SETTINGS"] = {}
+        ns["CONTROLS"] = []
+        ns["CHARTS"] = []
+        ns["BUTTONS"] = []
+        try:
+            exec(compile(source, self.path, "exec"), ns)
+        except SyntaxError as e:
+            h.load_error = {"where": "workshop.py", "msg": "SyntaxError: %s" % (e.msg,),
+                            "line": e.lineno, "src": (e.text or "").strip()}
+            return h
+        except Exception as e:
+            h.fail("workshop.py", e, self.path)
+            h.load_error = h.errors.pop("workshop.py")
+            return h
+        for name in HOOK_NAMES:
+            fn = ns.get(name)
+            if callable(fn):
+                h.fns[name] = fn
+        genes = ns.get("GENES")
+        if isinstance(genes, dict) and all(hasattr(g, "length") for g in genes.values()):
+            for core in CORE_GENES:
+                if core not in genes:
+                    genes[core] = default_genes()[core]
+            h.genes = genes
+        h.controls = [c for c in ns.get("CONTROLS", []) if hasattr(c, "id")]
+        h.charts = [c for c in ns.get("CHARTS", []) if hasattr(c, "fn")]
+        h.buttons = [b for b in ns.get("BUTTONS", []) if hasattr(b, "fn")]
+        if isinstance(ns.get("SETTINGS"), dict):
+            h.settings = ns["SETTINGS"]
+        return h
