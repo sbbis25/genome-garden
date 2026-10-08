@@ -557,4 +557,43 @@
     S.chartsDirty = true;
   }
 
+  function buildScience() {
+    var genes = S.schema.genes, key = genes.map(function (g) { return g.name + g.lo + g.hi; }).join('|');
+    if (key === S.scienceBuilt) return;
+    S.scienceBuilt = key;
+    var box = $('#science'); box.innerHTML = '';
+    genes.forEach(function (g) {
+      var c = el('div', 'card hcard',
+        '<div class="ht"><span>' + esc(g.name) + '</span><b class="mono" data-mean="' + esc(g.name) + '"></b></div><canvas data-gene="' + esc(g.name) +
+        '"></canvas><div class="hs"><span>' + fmtNum(g.lo) + '</span><span>' + fmtNum(g.hi) + '</span></div>');
+      c.title = g.desc || g.name;
+      box.appendChild(c);
+    });
+    var lg = $('#lgd-traits'); lg.innerHTML = '';
+    genes.forEach(function (g, i) {
+      lg.appendChild(el('span', null, '<i style="background:' + traitColor(g.name, i) + '"></i>' + esc(g.name)));
+    });
+  }
+
+  function drawHistograms() {
+    var st = S.frame && S.frame.stats; if (!st || !S.schema) return;
+    $$('#science canvas').forEach(function (cv, idx) {
+      var name = cv.dataset.gene, d = st[name]; if (!d) return;
+      var g = sizeCanvas(cv); if (!g) return;
+      var ctx = g.ctx, bins = d.bins, mx = 1;
+      bins.forEach(function (b) { if (b > mx) mx = b; });
+      var bw = g.w / bins.length;
+      bins.forEach(function (b, i) {
+        var bh = (g.h - 4) * b / mx;
+        ctx.fillStyle = name === 'hue' ? ramp((i + 0.5) / bins.length) : traitColor(name, idx);
+        ctx.globalAlpha = 0.9;
+        ctx.fillRect(i * bw + 1, g.h - bh, bw - 2, bh);
+      });
+      ctx.globalAlpha = 1;
+      var mxp = (d.mean - d.lo) / ((d.hi - d.lo) || 1) * g.w;
+      ctx.fillStyle = '#ffffff'; ctx.fillRect(Math.max(0, Math.min(g.w - 2, mxp - 1)), 0, 2, g.h);
+      var m = $('[data-mean="' + name + '"]'); if (m) m.textContent = fmtNum(d.mean);
+    });
+  }
+
 })();
