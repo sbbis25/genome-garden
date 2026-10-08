@@ -7,6 +7,7 @@
   var $ = function (s, el) { return (el || document).querySelector(s); };
   var $$ = function (s, el) { return Array.prototype.slice.call((el || document).querySelectorAll(s)); };
   var DPR = Math.max(1, Math.min(2, window.devicePixelRatio || 1));
+  var REDUCED = !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
 
   function el(tag, cls, html) {
     var e = document.createElement(tag);
@@ -613,17 +614,17 @@
 
   function animateHistograms() {
     if (!S.histDirty) return;
-    var moving = false;
+    var moving = false, k = REDUCED ? 1 : 0.2;
     $$('#science canvas').forEach(function (cv, idx) {
       var name = cv.dataset.gene, h = S.hist[name]; if (!h || !h.tgt) return;
       var mx = 1;
       for (var i = 0; i < h.cur.length; i++) {
         var diff = h.tgt[i] - h.cur[i];
-        if (Math.abs(diff) > 0.05) { h.cur[i] += diff * 0.2; moving = true; } else { h.cur[i] = h.tgt[i]; }
+        if (Math.abs(diff) > 0.05) { h.cur[i] += diff * k; moving = true; } else { h.cur[i] = h.tgt[i]; }
         if (h.cur[i] > mx) mx = h.cur[i];
       }
       var md = h.tmean - h.mean;
-      if (Math.abs(md) > (h.hi - h.lo) * 0.002) { h.mean += md * 0.2; moving = true; } else { h.mean = h.tmean; }
+      if (Math.abs(md) > (h.hi - h.lo) * 0.002) { h.mean += md * k; moving = true; } else { h.mean = h.tmean; }
       var g = sizeCanvas(cv); if (!g) return;
       var ctx = g.ctx, bw = g.w / h.cur.length;
       h.cur.forEach(function (b, i) {
