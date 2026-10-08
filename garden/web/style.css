@@ -250,14 +250,14 @@ pre.code { margin: 0; background: var(--wash); border-radius: 10px; padding: 12p
 .lgd i { display: inline-block; width: 10px; height: 3px; border-radius: 2px; margin-right: 5px; vertical-align: 3px; }
 
 @media (max-width: 1400px) {
-  .top { gap: 8px; padding: 0 12px; }
-  .app { grid-template-columns: 270px minmax(0, 1fr) 270px; gap: 10px; padding: 10px; }
-  .app[data-view="simple"] { grid-template-columns: 270px minmax(0, 1fr); }
-  .seg-group button { padding: 6px 9px; min-width: 38px; }
+  .top { gap: 8px; padding: 0 14px; }
+  .app { grid-template-columns: 264px minmax(0, 1fr) 270px; gap: 20px; padding: 6px 14px 14px; }
+  .app[data-view="simple"] { grid-template-columns: 264px minmax(0, 1fr); }
+  .seg-group button { padding: 5px 9px; min-width: 36px; }
   .achieved { display: none; }
 }
 @media (max-width: 1180px) {
-  .app { grid-template-columns: 280px minmax(0, 1fr); }
+  .app { grid-template-columns: 264px minmax(0, 1fr); }
   .app[data-view="full"] .right { display: none; }
 }
 @media (prefers-reduced-motion: reduce) {
