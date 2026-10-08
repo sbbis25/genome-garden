@@ -233,3 +233,53 @@ class World:
                         if d < bd:
                             bd, best = d, f
         return best
+
+    # ── terrain ──────────────────────────────────────────────────────────────
+    def _tidx(self, x, y):
+        ix = int(x / GCELL)
+        iy = int(y / GCELL)
+        ix = 0 if ix < 0 else (GW - 1 if ix >= GW else ix)
+        iy = 0 if iy < 0 else (GH - 1 if iy >= GH else iy)
+        return iy * GW + ix
+
+    def ground_hue(self, x, y):
+        """ground colour (0..1) at a spot. creatures whose hue matches hide from predators."""
+        return self.t_hue[self._tidx(x, y)]
+
+    def rebuild_terrain(self):
+        ground = self.settings.ground_color
+        fn = self.hooks.get("terrain")
+        hue, food, danger = [], [], []
+        secs = self.tick / float(TICKS_PER_SEC)
+        for iy in range(GH):
+            y = (iy + 0.5) * GCELL
+            for ix in range(GW):
+                x = (ix + 0.5) * GCELL
+                a = math.exp(-(((x - 45) / 22.0) ** 2 + ((y - 62) / 16.0) ** 2))
+                b = math.exp(-(((x - 118) / 24.0) ** 2 + ((y - 30) / 20.0) ** 2))
+                hv, fv, dv = min(1.0, max(0.0, ground + 0.30 * a - 0.22 * b)), 1.0, 1.0
+                if fn is not None:
+                    try:
+                        r = fn(x, y, secs)
+                    except Exception as e:
+                        self.fail("terrain", e)
+                        fn = None
+                        r = None
+                    if isinstance(r, dict):
+                        r = Patch(r.get("hue"), r.get("food"), r.get("danger"))
+                    if isinstance(r, (int, float)):
+                        r = Patch(hue=r)
+                    if isinstance(r, Patch):
+                        if r.hue is not None:
+                            hv = min(1.0, max(0.0, float(r.hue)))
+                        if r.food is not None:
+                            fv = max(0.0, float(r.food))
+                        if r.danger is not None:
+                            dv = max(0.0, float(r.danger))
+                hue.append(hv)
+                food.append(fv)
+                danger.append(dv)
+        self.t_hue, self.t_food, self.t_danger = hue, food, danger
+        self.t_foodmax = max(food) or 1.0
+        self.terrain_dirty = False
+        self.terrain_version += 1
