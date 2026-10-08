@@ -22,3 +22,13 @@ from garden.api import *
 
 # ── level 1: start values (instead of dragging sliders) ──────────────────────
 # SETTINGS = {"predators": 8, "mutation_rate": 0.03}
+
+
+# ── level 2: breed your own creatures ────────────────────────────────────────
+# fitness() scores each creature. a score above 1 means it has babies sooner and
+# more often; below 1, later and less. it sits on top of natural selection.
+#
+# def fitness(c, world):
+#     return 1 + c.speed * 2            # fast creatures breed more
+#     # return 3 - c.size               # small creatures breed more
+#     # return 2 if c.hue > 0.6 else 1  # reward one particular colour
