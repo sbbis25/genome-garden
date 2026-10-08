@@ -479,7 +479,7 @@
 
   function switchTab(name) {
     S.tab = name;
-    $$('.tabs button').forEach(function (b) { b.setAttribute('aria-selected', String(b.dataset.tab === name)); });
+    $$('.tabs button').forEach(function (b) { b.setAttribute('aria-selected', String(b.dataset.tab === name)); b.tabIndex = b.dataset.tab === name ? 0 : -1; });
     placeIndicator($('.tabs'), 'button[aria-selected="true"]');
     ['tune', 'code', 'presets'].forEach(function (n) { $('#panel-' + n).hidden = n !== name; });
     if (name === 'code') renderCode();
@@ -789,7 +789,15 @@
     ev.target.value = '';
   };
   $('#banner-error-open').onclick = function () { switchTab('code'); };
-  $$('.tabs button').forEach(function (b) { b.onclick = function () { switchTab(b.dataset.tab); }; });
+  $$('.tabs button').forEach(function (b) { b.onclick = function () { switchTab(b.dataset.tab); }; b.tabIndex = b.dataset.tab === S.tab ? 0 : -1; });
+  $('.tabs').addEventListener('keydown', function (ev) {
+    var tabs = $$('.tabs button'), i = tabs.indexOf(document.activeElement);
+    if (i < 0) return;
+    var j = ev.key === 'ArrowRight' ? (i + 1) % tabs.length : ev.key === 'ArrowLeft' ? (i + tabs.length - 1) % tabs.length
+      : ev.key === 'Home' ? 0 : ev.key === 'End' ? tabs.length - 1 : -1;
+    if (j < 0) return;
+    ev.preventDefault(); tabs[j].focus(); switchTab(tabs[j].dataset.tab);
+  });
 
   function applyView() {
     $('#app').dataset.view = S.view;
