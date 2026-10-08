@@ -60,3 +60,20 @@ from garden.api import *
 #     if river:
 #         return Patch(hue=0.9, food=2.0, danger=1.5)   # a rich, risky river
 #     return Patch(hue=0.25)
+
+
+# steer() decides where a creature heads. return an (x, y) point, or none to
+# leave it to its instincts. whatever you return replaces its foraging, so when
+# food is in sight let the creature's own instincts take over, or it will starve.
+#
+# def steer(c, world):
+#     if world.food_near(c.x, c.y, c.sense):
+#         return None                 # food in sight: carry on as usual
+#     best = None
+#     for dx, dy in ((10, 0), (-10, 0), (0, 10), (0, -10)):
+#         x, y = c.x + dx, c.y + dy
+#         if 0 < x < 160 and 0 < y < 100:
+#             match = abs(c.hue - world.ground_hue(x, y))
+#             if best is None or match < best[0]:
+#                 best = (match, x, y)
+#     return (best[1], best[2]) if best else None
