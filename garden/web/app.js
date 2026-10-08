@@ -596,4 +596,17 @@
     });
   }
 
+  // ── the world canvas ───────────────────────────────────────────────────────────
+  var cv = $('#world'), ctx = cv.getContext('2d');
+
+  function fitCanvas() {
+    var wrap = $('#worldwrap'), ww = wrap.clientWidth, wh = wrap.clientHeight;
+    if (!ww || !wh) return;
+    var scale = Math.min(ww / WORLD_W, wh / WORLD_H), cw = WORLD_W * scale, ch = WORLD_H * scale;
+    cv.style.width = cw + 'px'; cv.style.height = ch + 'px';
+    cv.style.left = ((ww - cw) / 2) + 'px'; cv.style.top = ((wh - ch) / 2) + 'px';
+    cv.width = Math.round(cw * DPR); cv.height = Math.round(ch * DPR);
+    S.scale = scale;
+  }
+
 })();
