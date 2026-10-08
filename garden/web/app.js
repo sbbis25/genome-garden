@@ -390,4 +390,73 @@
     S.creatures.clear(); S.ghosts.length = 0; S.pinned = null; S.hover = null; S.firstFrame = true;
   }
 
+  // ── code tab ───────────────────────────────────────────────────────────────────
+  function pyVal(v) {
+    if (typeof v === 'boolean') return v ? 'True' : 'False';
+    if (typeof v === 'number') return String(Number(v.toFixed(4)));
+    return JSON.stringify(v);
+  }
+  var codeTimer = 0;
+  function scheduleCode() {
+    if (S.tab !== 'code') return;
+    clearTimeout(codeTimer); codeTimer = setTimeout(renderCode, 200);
+  }
+  function renderCode() {
+    if (!S.schema) return;
+    var panel = $('#panel-code'), scroll = panel.scrollTop;
+    var h = '<div class="sec">Hooks in workshop.py</div><div class="hookrow">';
+    Object.keys(S.schema.hooks).forEach(function (n) {
+      var k = S.schema.hooks[n];
+      h += '<span class="hook ' + (k.failed ? 'bad' : (k.defined ? 'on' : '')) + '" title="' +
+        (k.failed ? 'raised an error, using the default' : (k.defined ? 'your code is running' : 'not defined: default behaviour')) +
+        '">' + n + (k.failed ? ' (error)' : '') + '</span>';
+    });
+    h += '</div><p class="tip" style="margin-top:8px">Teal means your code is running. Grey means the built-in behaviour. Red means it hit an error.</p>';
+
+    var errs = S.frame ? (S.frame.errors || []).slice() : [];
+    if (S.frame && S.frame.load_error) errs.unshift(S.frame.load_error);
+    if (errs.length) {
+      h += '<div class="sec">Problems</div>';
+      errs.forEach(function (e) {
+        h += '<div class="err"><b>' + esc(e.line ? 'Line ' + e.line : e.where || 'workshop.py') + ' in ' + esc(e.where || 'workshop.py') + '</b><br>' + esc(e.msg) +
+          (e.src ? '<code>' + esc(e.src) + '</code>' : '') + '</div>';
+      });
+    }
+
+    var changed = [];
+    S.schema.groups.forEach(function (g) {
+      g.controls.forEach(function (c) {
+        if (c.value !== c.default) changed.push('    ' + JSON.stringify(c.id) + ': ' + pyVal(c.value) + ',');
+      });
+    });
+    h += '<div class="sec">Your slider changes as Python</div>';
+    var text = changed.length ? 'SETTINGS = {\n' + changed.join('\n') + '\n}' : '# Nothing changed yet. Move a slider.';
+    h += '<div class="codebox"><pre class="code" id="code-settings">' + esc(text) + '</pre><button class="btn copy" data-copy="code-settings">Copy</button></div>';
+    h += '<p class="tip">Paste this into <span class="mono">workshop.py</span> to start with these values every time.</p>';
+
+    if (S.snippet) {
+      h += '<div class="sec">' + esc(S.snippet.title) + ' as code</div>';
+      h += '<div class="codebox"><pre class="code" id="code-snippet">' + esc(S.snippet.code) + '</pre><button class="btn copy" data-copy="code-snippet">Copy</button></div>';
+      h += '<p class="tip">Paste into <span class="mono">workshop.py</span> and save. The running world updates.</p>';
+    } else {
+      h += '<p class="tip">Click the <span class="mono">&lt;/&gt;</span> button next to any slider to see the Python behind it.</p>';
+    }
+    panel.innerHTML = h;
+    $$('.copy', panel).forEach(function (b) {
+      b.onclick = function () {
+        var txt = $('#' + b.dataset.copy).textContent;
+        try { navigator.clipboard.writeText(txt); b.textContent = 'Copied'; } catch (e) { b.textContent = 'Select and copy'; }
+        setTimeout(function () { b.textContent = 'Copy'; }, 1200);
+      };
+    });
+    panel.scrollTop = scroll;
+  }
+
+  function switchTab(name) {
+    S.tab = name;
+    $$('.tabs button').forEach(function (b) { b.setAttribute('aria-selected', String(b.dataset.tab === name)); });
+    ['tune', 'code', 'presets'].forEach(function (n) { $('#panel-' + n).hidden = n !== name; });
+    if (name === 'code') renderCode();
+  }
+
 })();
