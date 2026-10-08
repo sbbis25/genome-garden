@@ -68,7 +68,7 @@
       pin: cssVar('--accent'), sense: cssVar('--sense-ring'), meteor: cssVar('--meteor'), axisText: cssVar('--axis-text'),
       axisLine: cssVar('--axis-line'), mark: cssVar('--mark'), pop: cssVar('--series-pop'), foodLine: cssVar('--series-food'),
       base: cssRGB('--world-base'), groundAmt: parseFloat(cssVar('--ground-amount')), tint: cssRGB('--body-tint'),
-      bodyAmt: parseFloat(cssVar('--body-amount')),
+      bodyAmt: parseFloat(cssVar('--body-amount')), rampLift: parseFloat(cssVar('--ramp-lift')),
       trait: { speed: cssVar('--trait-speed'), size: cssVar('--trait-size'), sense: cssVar('--trait-sense'), hue: cssVar('--trait-hue'), efficiency: cssVar('--trait-efficiency') },
       extra: [1, 2, 3, 4, 5, 6].map(function (i) { return cssVar('--extra-' + i); })
     };
@@ -76,6 +76,7 @@
   readTheme();
   function mixRGB(a, b, t) { return [a[0] + (b[0] - a[0]) * t, a[1] + (b[1] - a[1]) * t, a[2] + (b[2] - a[2]) * t]; }
   function body(h) { return rgbStr(mixRGB(rampRGB(h), T.tint, T.bodyAmt)); }
+  function lifted(h) { return rgbStr(mixRGB(rampRGB(h), [255, 255, 255], T.rampLift)); }
   var RAMP_BG = 'linear-gradient(to right,' + [0, 0.15, 0.33, 0.5, 0.66, 0.85, 1].map(ramp).join(',') + ')';
 
   function traitColor(name, i) { return T.trait[name] || T.extra[i % T.extra.length]; }
@@ -525,7 +526,7 @@
       var letters = d.dna.slice(g.a, g.b).split('').map(function (ch) { return '<span class="b' + esc(ch) + '">' + esc(ch) + '</span>'; }).join('');
       var norm = Math.max(0, Math.min(1, (g.value - g.lo) / ((g.hi - g.lo) || 1)));
       h += '<div class="gseg"><div class="gn"><span>' + esc(g.name) + '</span><b>' + fmtNum(g.value) + '</b></div><div class="bases">' + letters +
-        '</div><div class="bar"><i style="width:' + Math.round(norm * 100) + '%' + (g.name === 'hue' ? ';background:' + ramp(g.value) : '') + '"></i></div></div>';
+        '</div><div class="bar"><i style="width:' + Math.round(norm * 100) + '%' + (g.name === 'hue' ? ';background:' + lifted(g.value) : '') + '"></i></div></div>';
     });
     h += '</div>';
     h += '<p class="tip" style="margin:10px 0 0">Camouflage gap vs ground: <b class="mono">' + d.contrast.toFixed(2) + '</b> (lower hides better)' +
@@ -647,7 +648,7 @@
       var ctx = g.ctx, bw = g.w / h.cur.length;
       h.cur.forEach(function (b, i) {
         var bh = (g.h - 4) * b / mx;
-        ctx.fillStyle = name === 'hue' ? ramp((i + 0.5) / h.cur.length) : traitColor(name, idx);
+        ctx.fillStyle = name === 'hue' ? lifted((i + 0.5) / h.cur.length) : traitColor(name, idx);
         ctx.globalAlpha = 0.78;
         ctx.fillRect(i * bw + 1, g.h - bh, bw - 2, bh);
       });

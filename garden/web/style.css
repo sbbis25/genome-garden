@@ -63,6 +63,7 @@
   --veil-2: rgba(27, 26, 36, 0.08);
   --ring-soft: rgba(27, 26, 36, 0.15);
   --thumb-shadow: rgba(27, 26, 36, 0.25);
+  --ramp-lift: 0;
   --radius: 12px;
   --radius-s: 8px;
   --ease: cubic-bezier(0.16, 1, 0.3, 1);
@@ -134,6 +135,7 @@
   --veil-2: rgba(255, 255, 255, 0.1);
   --ring-soft: rgba(255, 255, 255, 0.18);
   --thumb-shadow: rgba(0, 0, 0, 0.55);
+  --ramp-lift: 0.22;
   color-scheme: dark;
 }
 
