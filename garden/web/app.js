@@ -28,8 +28,8 @@
   }
   function fmtNum(v) { return Math.abs(v) >= 10 ? v.toFixed(1) : v.toFixed(2); }
 
-  // ── colour ramp: body hue 0..1 (green, ochre, rust, blue). the same ramp paints the ground. ──
-  var STOPS = [[0, [63, 191, 110]], [0.33, [201, 178, 74]], [0.66, [196, 102, 63]], [1, [90, 120, 214]]];
+  // ── colour ramp: body hue 0..1 as natural dyes (sage, straw, clay, slate). the same ramp tints the ground. ──
+  var STOPS = [[0, [111, 159, 120]], [0.33, [201, 168, 92]], [0.66, [185, 116, 90]], [1, [112, 136, 187]]];
   function rampRGB(h) {
     h = Math.max(0, Math.min(1, h));
     for (var i = 1; i < STOPS.length; i++) {
@@ -42,6 +42,9 @@
   }
   function rgbStr(c) { return 'rgb(' + Math.round(c[0]) + ',' + Math.round(c[1]) + ',' + Math.round(c[2]) + ')'; }
   function ramp(h) { return rgbStr(rampRGB(h)); }
+  var WORLD_PAPER = [243, 242, 247], INK = [27, 26, 36];
+  function mixRGB(a, b, t) { return [a[0] + (b[0] - a[0]) * t, a[1] + (b[1] - a[1]) * t, a[2] + (b[2] - a[2]) * t]; }
+  function body(h) { return rgbStr(mixRGB(rampRGB(h), INK, 0.1)); }
   var RAMP_BG = 'linear-gradient(to right,' + [0, 0.15, 0.33, 0.5, 0.66, 0.85, 1].map(ramp).join(',') + ')';
 
   var TRAIT_COLORS = { speed: '#55b6ff', size: '#c58bff', sense: '#ffd166', hue: '#ff8a65', efficiency: '#7be3a8' };
@@ -108,12 +111,12 @@
       S.tv = t.v;
       var cv = document.createElement('canvas');
       cv.width = t.gw; cv.height = t.gh;
-      var ctx = cv.getContext('2d'), img = ctx.createImageData(t.gw, t.gh), base = [10, 16, 22];
+      var ctx = cv.getContext('2d'), img = ctx.createImageData(t.gw, t.gh);
       for (var i = 0; i < t.hue.length; i++) {
-        var c = rampRGB(t.hue[i]);
-        img.data[i * 4] = c[0] * 0.5 + base[0] * 0.5;
-        img.data[i * 4 + 1] = c[1] * 0.5 + base[1] * 0.5;
-        img.data[i * 4 + 2] = c[2] * 0.5 + base[2] * 0.5;
+        var c = mixRGB(rampRGB(t.hue[i]), WORLD_PAPER, 0.58);
+        img.data[i * 4] = c[0];
+        img.data[i * 4 + 1] = c[1];
+        img.data[i * 4 + 2] = c[2];
         img.data[i * 4 + 3] = 255;
       }
       ctx.putImageData(img, 0, 0);
@@ -145,7 +148,7 @@
       seen.add(id);
       var e = S.creatures.get(id);
       if (!e) {
-        e = { id: id, sx: c[1], sy: c[2], tx: c[1], ty: c[2], t0: now, born: S.firstFrame ? -9999 : now, col: ramp(c[3]) };
+        e = { id: id, sx: c[1], sy: c[2], tx: c[1], ty: c[2], t0: now, born: S.firstFrame ? -9999 : now, col: body(c[3]) };
         S.creatures.set(id, e);
       } else {
         var p = posOf(e, now);
