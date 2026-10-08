@@ -326,7 +326,7 @@ Circles (50%) are slider thumbs (16px, 2px accent ring), switch knobs (16px), le
 - **Scenario run (dark only):** in the Scenarios tab, dark replaces the ink fill of the primary button with Hematoxylin Mist fill and accent text; light keeps the ink fill. The only dark-specific selector in the stylesheet besides the colour tokens.
 - **Danger action:** same as default; hover turns Rose Wash with Signal Red text.
 - **Select:** a default button with a custom ink-3 chevron drawn in CSS gradients.
-- **Theme toggle:** 34px square icon button (18px inline SVG, 1.8 stroke). Three states cycled in order auto, light, dark; the icon shows the current state (half disc, sun, moon) and the label names the next. Persisted as `gg.theme`.
+- **Theme toggle:** 34px square icon button (18px inline SVG, 1.8 stroke). Three states cycled in order dark (the default), light, auto; the icon shows the current state (half disc, sun, moon) and the label names the next. Persisted as `gg.theme`.
 
 ### Selected pills (options, tools, speed)
 Unselected is Wash with ink-2 text; selected fills with `--ink` and sets text to `--paper`, so it inverts with the theme. Two-up option grids (36px high, 6px gap) and the tool pill (32px buttons inside a raised pill) swap fill in 140ms.
@@ -362,7 +362,7 @@ Three small mono stat tiles and two line charts (110px high canvases) sit on the
 A Wash matte (16px radius) holds the canvas. Ground is a ramp-tinted mix toward `--world-base`; creatures are dye bodies with a thin edge from `--creature-edge`; hover is a ring in `--hover-ring` and the pinned creature an accent ring with a dashed trail; predators use `--pred` with a faint dashed range. The caption beneath is one plain line: a bold ink "What's selecting" then ink-2 text.
 
 ### Theme switching
-The theme is a `data-theme` attribute on `<html>`, resolved before first paint by an inline script in `index.html` (localStorage `gg.theme` of `light` or `dark`, else the system `prefers-color-scheme`), which also sets the `theme-color` meta. The toggle cycles auto, light, dark; the system-scheme listener acts only in auto. A change adds `.theme-fade` to the root for 450ms, crossfading background, colour, border, fill, stroke and shadow over 420ms on the house ease. Canvases are excluded from that fade: they drop to opacity 0 over 160ms, recolour (`readTheme()`, rebuild the ground, recolour bodies and legends, redraw charts) at 170ms, then fade in over 240ms. Reduced motion skips the canvas fade and snaps transitions to 0.01ms.
+The theme is a `data-theme` attribute on `<html>`, resolved before first paint by an inline script in `index.html` (localStorage `gg.theme`: `light` gives light, `auto` follows the system `prefers-color-scheme`, and anything else, including nothing stored, gives dark), which also sets the `theme-color` meta. The toggle cycles dark, light, auto; the system-scheme listener acts only in auto. A change adds `.theme-fade` to the root for 450ms, crossfading background, colour, border, fill, stroke and shadow over 420ms on the house ease. Canvases are excluded from that fade: they drop to opacity 0 over 160ms, recolour (`readTheme()`, rebuild the ground, recolour bodies and legends, redraw charts) at 170ms, then fade in over 240ms. Reduced motion skips the canvas fade and snaps transitions to 0.01ms.
 
 ## Do's and Don'ts
 
