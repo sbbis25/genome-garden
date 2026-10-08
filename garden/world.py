@@ -198,3 +198,38 @@ class World:
         self.by_id.pop(c.id, None)
         self.deaths.append((self.tick, cause, c.speed, c.size, c.sense, c.efficiency,
                             abs(c.hue - self.ground_hue(c.x, c.y))))
+
+    def add_food(self, x, y):
+        if self.food_n >= MAX_FOOD:
+            return
+        key = (int(x / CELL), int(y / CELL))
+        item = [x, y, 1, key]
+        lst = self.fgrid.get(key)
+        if lst is None:
+            self.fgrid[key] = [item]
+        else:
+            lst.append(item)
+        self.food_n += 1
+
+    def remove_food(self, f):
+        f[2] = 0
+        lst = self.fgrid.get(f[3])
+        if lst is not None and f in lst:
+            lst.remove(f)
+        self.food_n -= 1
+
+    def find_food(self, c):
+        r = c.sense
+        cx, cy = int(c.x / CELL), int(c.y / CELL)
+        rc = int(r / CELL) + 1
+        best, bd = None, r * r
+        fg, x, y = self.fgrid, c.x, c.y
+        for gx in range(cx - rc, cx + rc + 1):
+            for gy in range(cy - rc, cy + rc + 1):
+                lst = fg.get((gx, gy))
+                if lst:
+                    for f in lst:
+                        d = (f[0] - x) ** 2 + (f[1] - y) ** 2
+                        if d < bd:
+                            bd, best = d, f
+        return best
