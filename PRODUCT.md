@@ -35,3 +35,11 @@ A live workshop, probably projected or run on participants' own laptops. People 
 - Main screen layout: chosen by the user as the "dashboard" layout, three columns (tabbed controls on the left, world plus trait histograms in the centre, creature card plus lineage tree on the right), with a top bar for presets, undo/reset, seed and time controls.
 - Feedback: live trait charts and histograms, hover card with DNA and decoded traits, lineage following, and a plain-language "what's selecting right now" caption.
 - Built as a v0 prototype: engine, local server, dashboard UI with Simple/Full views, Tune/Code/Scenarios tabs, five presets. Performance gate passed (pure Python runs about 2,000 ticks/s with 200-250 creatures, so 30x is safe). Still deferred: live lineage tree (a cluster count stands in), undo, biome brush, coach marks beyond the first two hints, devcontainer and uv setup guide.
+
+## Brand Commitments
+
+"Genome Garden" is the project name (it started life as the working title "Evolution Sandbox"). The user indicated club name, logo or colours may be provided; none have been supplied yet and none are to be invented.
+
+## Evidence on Hand
+
+The previous infection-simulation project in this repo (`simulation.py`, `workshop.py`, `model.py`, `img/sim.png`) is a reference for the workshop format, not a visual or code base to keep. There are no club branding assets, no real workshop attendee data, and no usage evidence yet; future work must not fabricate any.
