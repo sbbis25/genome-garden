@@ -144,3 +144,19 @@ def make_handler(sim):
                 self._send(sim.schema)
             else:
                 self.send_error(404)
+
+        def do_POST(self):
+            if urlparse(self.path).path != "/api/cmd":
+                self.send_error(404)
+                return
+            try:
+                n = int(self.headers.get("Content-Length", "0"))
+                cmd = json.loads(self.rfile.read(n).decode("utf-8"))
+            except Exception:
+                self.send_error(400)
+                return
+            if isinstance(cmd, dict) and cmd.get("type") in COMMANDS:
+                sim.q.put(cmd)
+            self._send(b"{}")
+
+    return Handler
