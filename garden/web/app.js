@@ -32,6 +32,7 @@
   function placeIndicator(group, activeSel) {
     var a = group.querySelector(activeSel);
     if (!a) return;
+    if (!a.offsetWidth) { group.dataset.placed = ''; return; }
     var first = !group.dataset.placed;
     if (first) group.classList.add('still');
     group.style.setProperty('--ix', a.offsetLeft + 'px');
