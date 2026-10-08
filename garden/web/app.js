@@ -74,7 +74,7 @@
     creatures: new Map(), ghosts: [], preds: [], frameAt: 0, frameDur: 60,
     lastMsg: -1, firstFrame: true, hintStage: parseInt(pref('hint', '0'), 10) || 0, pulseId: null,
     watch: null, cardKey: '', errKey: '', scale: 1, statsAt: 0, chartsDirty: true, scienceBuilt: '',
-    customBuilt: '', offline: 0, speedKey: '', hist: {}, histDirty: false
+    customBuilt: '', offline: 0, speedKey: '', hist: {}, histDirty: false, cardId: null
   };
 
   // ── network ────────────────────────────────────────────────────────────────────
@@ -490,6 +490,8 @@
     if (key === S.cardKey) return;
     S.cardKey = key;
     var box = $('#creature');
+    var cid = d ? d.id : null;
+    if (cid !== S.cardId) { S.cardId = cid; box.classList.remove('swap'); void box.offsetWidth; box.classList.add('swap'); }
     if (!d) { box.innerHTML = '<h3>Creature</h3><div class="empty">Hover over a creature to read its DNA. Click one to pin it.</div>'; return; }
     if (d.gone) {
       box.innerHTML = '<h3>Creature #' + d.id + '</h3><div class="empty">This creature has died.</div>';
