@@ -90,8 +90,11 @@ select.btn { appearance: none; padding-right: 30px; background-image: linear-gra
 .achieved { font: 12px var(--mono); color: var(--ink-3); min-width: 62px; }
 
 /* ── banners ───────────────────────────────────────────────────────────────── */
-.banner { flex: none; display: none; align-items: center; gap: 12px; padding: 9px 20px; font-size: 13px; }
-.banner.show { display: flex; }
+.banner { flex: none; display: grid; grid-template-rows: 0fr; font-size: 13px; transition: grid-template-rows var(--t3) var(--ease); }
+.banner.show { grid-template-rows: 1fr; }
+.banner-in { min-height: 0; overflow: hidden; }
+.banner-row { display: flex; align-items: center; gap: 12px; padding: 9px 20px; opacity: 0; transition: opacity var(--t2) var(--ease); }
+.banner.show .banner-row { opacity: 1; transition-delay: 80ms; }
 .banner.error { background: var(--danger-soft); color: #5e1422; }
 .banner.warn { background: var(--amber-soft); color: #4d3300; }
 .banner code { font-family: var(--mono); background: rgba(27, 26, 36, 0.07); padding: 1px 6px; border-radius: 4px; }
