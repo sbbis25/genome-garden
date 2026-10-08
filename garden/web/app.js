@@ -74,7 +74,7 @@
     creatures: new Map(), ghosts: [], preds: [], frameAt: 0, frameDur: 60,
     lastMsg: -1, firstFrame: true, hintStage: parseInt(pref('hint', '0'), 10) || 0, pulseId: null,
     watch: null, cardKey: '', errKey: '', scale: 1, statsAt: 0, chartsDirty: true, scienceBuilt: '',
-    customBuilt: '', offline: 0
+    customBuilt: '', offline: 0, speedKey: ''
   };
 
   // ── network ────────────────────────────────────────────────────────────────────
@@ -193,6 +193,8 @@
       var m = parseFloat(b.dataset.mult);
       b.setAttribute('aria-pressed', String(f.paused ? m === 0 : m === f.mult));
     });
+    var sk = String(f.paused ? 0 : f.mult);
+    if (sk !== S.speedKey) { S.speedKey = sk; placeIndicator($('#speed-seg'), 'button[aria-pressed="true"]'); }
     $('#achieved').textContent = f.paused ? 'paused' : (f.x < f.mult * 0.85 ? 'x' + f.x.toFixed(1) + ' (max)' : '');
     $('#worldwrap').classList.toggle('paused', !!f.paused);
 
