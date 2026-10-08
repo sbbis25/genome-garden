@@ -620,3 +620,40 @@ class World:
             self.make_creature(self.mutate_dna(s.dna), s.x + random.uniform(-3, 3), s.y + random.uniform(-3, 3),
                                s.id, s.gen + 1, 60)
         self.say("Almost extinct. Extinction insurance cloned the survivors.")
+
+    # ── disasters and tools ──────────────────────────────────────────────────
+    def kill_in_circle(self, x, y, r, cause="disaster"):
+        """kill every creature within r of (x, y). returns how many died."""
+        n = 0
+        for c in self.creatures:
+            if c.alive and (c.x - x) ** 2 + (c.y - y) ** 2 < r * r:
+                self.kill(c, cause)
+                n += 1
+        return n
+
+    def spawn(self, x, y, dna=None, energy=60.0):
+        """add a creature (random dna unless you pass some). returns it."""
+        return self.make_creature(dna if dna else G.random_dna(self.genes), x, y, None, 0, energy)
+
+    def kill_creature(self, c):
+        """remove one creature."""
+        self.kill(c, "disaster")
+
+    def food_near(self, x, y, r):
+        """food items within r of (x, y), as [x, y, ...] lists."""
+        out = []
+        for gx in range(int((x - r) / CELL), int((x + r) / CELL) + 1):
+            for gy in range(int((y - r) / CELL), int((y + r) / CELL) + 1):
+                for f in self.fgrid.get((gx, gy), ()):
+                    if (f[0] - x) ** 2 + (f[1] - y) ** 2 < r * r:
+                        out.append(f)
+        return out
+
+    def mean(self, trait):
+        """average value of a trait across living creatures (0 if nobody is alive)."""
+        cs = self.creatures
+        return sum(c.t[trait] for c in cs) / len(cs) if cs else 0.0
+
+    @property
+    def predators(self):
+        return self.preds
