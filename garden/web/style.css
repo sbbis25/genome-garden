@@ -178,3 +178,6 @@ pre.code { margin: 0; background: #0a1016; border: 1px solid var(--line); border
 @keyframes toast-in { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
 .legend { position: absolute; right: 10px; bottom: 10px; display: flex; gap: 12px; font-size: 12px; color: var(--muted); background: rgba(8, 13, 18, 0.78); padding: 5px 10px; border-radius: 8px; pointer-events: none; }
 .legend i { display: inline-block; width: 9px; height: 9px; border-radius: 50%; margin-right: 5px; vertical-align: -1px; }
+.caption { flex: none; display: flex; align-items: center; gap: 10px; min-height: 44px; padding: 10px 16px; background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius); }
+.caption .why { font-size: 12px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--accent); font-weight: 700; flex: none; }
+.caption #caption-text { color: var(--text); }
