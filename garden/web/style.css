@@ -98,12 +98,13 @@ select.btn { appearance: none; padding-right: 30px; background-image: linear-gra
 .achieved { font: 12px var(--mono); color: var(--ink-3); min-width: 62px; }
 
 /* ── banners ───────────────────────────────────────────────────────────────── */
-.banner { flex: none; display: none; align-items: center; gap: 12px; padding: 8px 16px; font-size: 13px; border-bottom: 1px solid var(--line); }
+.banner { flex: none; display: none; align-items: center; gap: 12px; padding: 9px 20px; font-size: 13px; }
 .banner.show { display: flex; }
-.banner.error { background: #2a1217; color: #ffd5da; border-color: #5a222b; }
-.banner.warn { background: #2a2012; color: #ffe2b8; border-color: #5a4422; }
-.banner code { font-family: var(--mono); background: rgba(255, 255, 255, 0.08); padding: 1px 6px; border-radius: 4px; }
-.banner .btn { margin-left: auto; }
+.banner.error { background: var(--danger-soft); color: #5e1422; }
+.banner.warn { background: var(--amber-soft); color: #4d3300; }
+.banner code { font-family: var(--mono); background: rgba(27, 26, 36, 0.07); padding: 1px 6px; border-radius: 4px; }
+.banner .btn { margin-left: auto; background: rgba(27, 26, 36, 0.08); }
+.banner .btn.primary { background: var(--ink); }
 
 /* ── layout ────────────────────────────────────────────────────────────────── */
 .app {
