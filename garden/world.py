@@ -331,3 +331,16 @@ class World:
             if rnd() < rate:
                 out[i] = random.choice("ACGT".replace(ch, ""))
         return "".join(out)
+
+    def nearby_creatures(self, c, r, limit=14):
+        cx, cy = int(c.x / CELL), int(c.y / CELL)
+        rc = int(r / CELL) + 1
+        r2, out = r * r, []
+        for gx in range(cx - rc, cx + rc + 1):
+            for gy in range(cy - rc, cy + rc + 1):
+                for o in self.cg.get((gx, gy), ()):
+                    if o is not c and o.alive and (o.x - c.x) ** 2 + (o.y - c.y) ** 2 < r2:
+                        out.append(o)
+                        if len(out) >= limit:
+                            return out
+        return out
