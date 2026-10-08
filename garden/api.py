@@ -36,3 +36,19 @@ class Slider:
         self.default = float(lo if default is None else default)
         self.step = float(step) if step else (self.hi - self.lo) / 100.0
         self.help = help
+
+
+class Choice:
+    """a pick-one control. world.controls.<id> is the chosen option text."""
+
+    def __init__(self, id, label, options, default=None, help=""):
+        self.id, self.label, self.options = id, label, list(options)
+        self.default = default if default is not None else self.options[0]
+        self.help = help
+
+
+class Toggle:
+    """an on/off switch. world.controls.<id> is true or false."""
+
+    def __init__(self, id, label, default=False, help=""):
+        self.id, self.label, self.default, self.help = id, label, bool(default), help
