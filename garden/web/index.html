@@ -46,5 +46,23 @@
   <span>Lost the connection to Genome Garden. Is <code>python run.py</code> still running?</span>
 </div>
 
+<main class="app" id="app" data-view="simple">
+
+  <!-- left: controls -->
+  <aside class="col left">
+    <div class="card">
+      <div class="tabs" role="tablist">
+        <button role="tab" id="tab-tune" data-tab="tune" aria-selected="true">Tune</button>
+        <button role="tab" id="tab-code" data-tab="code" aria-selected="false">Code<span class="dot" id="code-dot"></span></button>
+        <button role="tab" id="tab-presets" data-tab="presets" aria-selected="false">Scenarios</button>
+      </div>
+      <div class="panel" id="panel-tune" role="tabpanel"></div>
+      <div class="panel" id="panel-code" role="tabpanel" hidden></div>
+      <div class="panel" id="panel-presets" role="tabpanel" hidden></div>
+      <div class="panel-foot"><button id="btn-reset-settings" class="btn" title="Put every slider back to its starting value">Reset sliders</button></div>
+    </div>
+  </aside>
+
+</main>
 </body>
 </html>
