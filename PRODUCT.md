@@ -21,3 +21,17 @@ An event project for a club workshop: an open evolution garden with a very low b
 ## Positioning
 
 Creatures carry a real DNA string (over ACGT) whose segments decode into traits, so the garden teaches sequence-level ideas (mutation, Hamming distance, phylogenetic trees, drift versus selection) rather than only showing dots that move. One `Settings` config drives three layers: no-code controls, copy-paste code, and write-your-own hooks. Every no-code control has a Python equivalent. Participants only ever edit Python, never HTML.
+
+## Operating Context
+
+A live workshop, probably projected or run on participants' own laptops. People start from a repo and one command. Evolution is slow, so time controls (pause, 0.5x, 1x, 3x, 10x, 30x) matter. Participant surface is `workshop.py`; the engine and web front end in `garden/` are read-only for them.
+
+## Capabilities and Constraints
+
+- Simulation: 2D arena, regrowing food, creatures with energy, hidden predators that spot creatures more easily when creature colour contrasts with the ground colour (camouflage), biome zones.
+- Genome: DNA string decoded into traits (`speed`, `size`, `sense`, `hue`, `efficiency`); new genes are added through a `GENES` table and do nothing until a hook reads them; changing `GENES` requires a world restart.
+- No-code controls grouped by plain-language question: How harsh is the world? Who survives? How do they change? Who mates? Disasters. Plus time controls, seed, presets, undo/reset, an "Extinction insurance" toggle, and mouse "god tools".
+- Hooks in `workshop.py`: `terrain`, `fitness` (neutral by default, optional bonus on top of natural selection), `mutate`, `choose_mate`, `on_tick`, `steer`, and optional `look`. UI is data-driven from Python via `CONTROLS`, `CHARTS`, `BUTTONS`. Hook edits hot-reload; errors appear in the UI with line numbers; broken hooks fall back to defaults.
+- Main screen layout: chosen by the user as the "dashboard" layout, three columns (tabbed controls on the left, world plus trait histograms in the centre, creature card plus lineage tree on the right), with a top bar for presets, undo/reset, seed and time controls.
+- Feedback: live trait charts and histograms, hover card with DNA and decoded traits, lineage following, and a plain-language "what's selecting right now" caption.
+- Built as a v0 prototype: engine, local server, dashboard UI with Simple/Full views, Tune/Code/Scenarios tabs, five presets. Performance gate passed (pure Python runs about 2,000 ticks/s with 200-250 creatures, so 30x is safe). Still deferred: live lineage tree (a cluster count stands in), undo, biome brush, coach marks beyond the first two hints, devcontainer and uv setup guide.
