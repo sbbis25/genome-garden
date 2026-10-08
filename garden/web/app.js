@@ -826,8 +826,8 @@
   }
   $('#btn-view').onclick = function () { S.view = S.view === 'full' ? 'simple' : 'full'; applyView(); };
 
-  var MODES = ['auto', 'light', 'dark'];
-  function themeMode() { var m = pref('theme', 'auto'); return m === 'light' || m === 'dark' ? m : 'auto'; }
+  var MODES = ['dark', 'light', 'auto'];
+  function themeMode() { var m = pref('theme', 'dark'); return m === 'light' || m === 'auto' ? m : 'dark'; }
   function systemTheme() { return window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'; }
   function syncThemeButton() {
     var b = $('#btn-theme'); if (!b) return;
@@ -873,7 +873,7 @@
   window.addEventListener('resize', placeIndicators);
   $('#btn-theme').onclick = function () {
     var next = MODES[(MODES.indexOf(themeMode()) + 1) % MODES.length];
-    pref('theme', 'auto', next);
+    pref('theme', 'dark', next);
     applyTheme(next === 'auto' ? systemTheme() : next, true);
   };
   S.theme = document.documentElement.dataset.theme === 'dark' ? 'dark' : 'light';
