@@ -28,3 +28,13 @@ on Windows), or ask an organizer for a shared machine.
   that stand out, so the ones that blend in survive.
 - Try the **Scenarios** tab, or speed time up with 3x, 10x or 30x.
 - Press **Show the science** for DNA, trait histograms and charts.
+
+### 2. A little code: copy and paste
+Every slider has a `</>` button that shows the Python behind it. Open `workshop.py`, uncomment an
+example, and save. The running world picks it up straight away. Mistakes show up in the **Code** tab
+with the line number, and the world keeps running.
+
+```python
+def fitness(c, world):
+    return 1 + c.speed * 2     # fast creatures have more babies
+```
