@@ -432,3 +432,97 @@ class World:
             self.compute_diversity()
         if t % self.hist_stride == 0:
             self.record_history()
+
+    def _update_creatures(self, t):
+        cs = self.creatures
+        S = self.settings
+        steer = self.hooks.get("steer")
+        preds = self.preds
+        cap = S.pop_cap
+        n_alive = len(cs)
+        newborn = []
+        cos, sin, atan2, rnd = math.cos, math.sin, math.atan2, random.random
+        for c in cs:
+            if not c.alive:
+                continue
+            c.age += 1
+            e = c.energy - c.cost
+            if c.flee > 0:
+                e -= c.cost * 0.4
+            c.energy = e
+            if e <= 0:
+                self.kill(c, "starved")
+                continue
+            if c.age > c.maxage:
+                self.kill(c, "old")
+                continue
+            c.cool -= 1
+            cid = c.id
+            if (t + cid) % 15 == 0:
+                self.refresh_score(c)
+
+            if steer is not None and (t + cid) % 2 == 0:
+                try:
+                    r = steer(c, self)
+                except Exception as ex:
+                    self.fail("steer", ex)
+                    steer = None
+                    r = None
+                if r is not None:
+                    try:
+                        c.h = atan2(float(r[1]) - c.y, float(r[0]) - c.x)
+                        c.hold = 2
+                        c.target = None
+                        c.flee = 0
+                    except Exception:
+                        self.fail("steer", ValueError("steer() must return an (x, y) point or None"))
+                        steer = None
+
+            if c.hold > 0:
+                c.hold -= 1
+            elif (t + cid) % 3 == 0:
+                sr = c.sense * 0.9
+                sr2 = sr * sr
+                for p in preds:
+                    dx, dy = p.x - c.x, p.y - c.y
+                    if dx * dx + dy * dy < sr2:
+                        c.h = atan2(-dy, -dx) + (rnd() - 0.5) * 0.6
+                        c.flee = 14
+                        c.target = None
+                        break
+                if c.flee <= 0 and (c.target is None or not c.target[2]):
+                    c.target = self.find_food(c)
+
+            spd = c.speed
+            if c.flee > 0:
+                c.flee -= 1
+                spd *= 1.15
+            else:
+                f = c.target
+                if f is not None:
+                    if not f[2]:
+                        c.target = None
+                    else:
+                        dx, dy = f[0] - c.x, f[1] - c.y
+                        reach = 1.2 + 0.6 * c.size
+                        if dx * dx + dy * dy < reach * reach:
+                            c.energy = min(ENERGY_CAP, c.energy + FOOD_ENERGY)
+                            self.remove_food(f)
+                            c.target = None
+                        elif c.hold <= 0:
+                            c.h = atan2(dy, dx)
+                elif c.hold <= 0:
+                    c.h += (rnd() - 0.5) * 0.7
+            x = c.x + cos(c.h) * spd
+            y = c.y + sin(c.h) * spd
+            if x < 1.0 or x > W - 1.0:
+                c.h = math.pi - c.h
+                x = 1.0 if x < 1.0 else W - 1.0
+            if y < 1.0 or y > H - 1.0:
+                c.h = -c.h
+                y = 1.0 if y < 1.0 else H - 1.0
+            c.x, c.y = x, y
+
+            if c.cool <= 0 and c.energy >= c.thresh and n_alive + len(newborn) < cap:
+                self.reproduce(c, newborn)
+        self.creatures = [c for c in cs if c.alive]
