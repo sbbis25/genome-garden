@@ -43,3 +43,12 @@ class Creature:
         if name in t:
             return t[name]
         raise AttributeError(name)
+
+
+class Predator:
+    __slots__ = ("x", "y", "h", "target", "rest", "chase")
+
+    def __init__(self, x, y):
+        self.x, self.y = x, y
+        self.h = random.uniform(0, 6.28)
+        self.target, self.rest, self.chase = None, 0, 0
