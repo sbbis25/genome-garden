@@ -12,10 +12,10 @@
 
 <header class="top">
   <div class="brand">
-    <svg viewBox="0 0 32 32" aria-hidden="true" fill="none" stroke-width="2.4" stroke-linecap="round">
-      <path d="M8 3c0 8 16 8 16 16s-16 8-16 10" stroke="#4b4396"/>
-      <path d="M24 3c0 8-16 8-16 16s16 8 16 10" stroke="#1b1a24"/>
-      <path d="M11 9h10M10 23h12M9.5 16h13" stroke="#9a99ab" stroke-width="1.8"/>
+    <svg viewBox="0 0 32 32" aria-hidden="true" fill="none" stroke-width="2.4" stroke-linecap="round" class="logo">
+      <path class="l1" d="M8 3c0 8 16 8 16 16s-16 8-16 10"/>
+      <path class="l2" d="M24 3c0 8-16 8-16 16s16 8 16 10"/>
+      <path class="l3" d="M11 9h10M10 23h12M9.5 16h13" stroke-width="1.8"/>
     </svg>
     Genome Garden
   </div>
@@ -77,8 +77,8 @@
       <div class="hint" id="hint">Click anywhere in the world to drop some food.</div>
       <div class="toasts" id="toasts"></div>
       <div class="legend" aria-hidden="true">
-        <span><i style="background:#6a6975"></i>food</span>
-        <span><i style="background:#c0394f"></i>predator</span>
+        <span><i class="sw-food"></i>food</span>
+        <span><i class="sw-pred"></i>predator</span>
         <span>colour = body hue</span>
       </div>
     </div>
@@ -96,17 +96,17 @@
     </div>
     <div class="card chartcard"><h4>Average traits over time</h4><canvas id="ch-traits"></canvas><div class="lgd" id="lgd-traits"></div></div>
     <div class="card chartcard"><h4>Creatures and food</h4><canvas id="ch-pop"></canvas>
-      <div class="lgd"><span><i style="background:#4b4396"></i>creatures</span><span><i style="background:#b8914a"></i>food</span></div></div>
+      <div class="lgd"><span><i class="sw-pop"></i>creatures</span><span><i class="sw-foodline"></i>food</span></div></div>
     <div id="custom-charts"></div>
   </aside>
 
 </main>
 
 <div class="narrow-note" role="note">
-  <svg viewBox="0 0 32 32" aria-hidden="true" fill="none" stroke-width="2.4" stroke-linecap="round">
-    <path d="M8 3c0 8 16 8 16 16s-16 8-16 10" stroke="#4b4396"/>
-    <path d="M24 3c0 8-16 8-16 16s16 8 16 10" stroke="#1b1a24"/>
-    <path d="M11 9h10M10 23h12M9.5 16h13" stroke="#9a99ab" stroke-width="1.8"/>
+  <svg viewBox="0 0 32 32" aria-hidden="true" fill="none" stroke-width="2.4" stroke-linecap="round" class="logo">
+    <path class="l1" d="M8 3c0 8 16 8 16 16s-16 8-16 10"/>
+    <path class="l2" d="M24 3c0 8-16 8-16 16s16 8 16 10"/>
+    <path class="l3" d="M11 9h10M10 23h12M9.5 16h13" stroke-width="1.8"/>
   </svg>
   <h1>Genome Garden needs a wider window</h1>
   <p>Open it on a laptop, or widen this window to at least 900px.</p>
