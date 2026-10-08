@@ -123,3 +123,22 @@ class Settings:
 
     def get(self, name, default=None):
         return self._v.get(name, default)
+
+    def set(self, name, value, user=True):
+        d = self._defs.get(name)
+        if d is None:
+            return False
+        k = d["kind"]
+        if k == "slider":
+            value = max(d["lo"], min(d["hi"], float(value)))
+            if d.get("fmt") == "int":
+                value = int(round(value))
+        elif k == "choice":
+            if value not in d["options"]:
+                return False
+        else:
+            value = bool(value)
+        self._v[name] = value
+        if user:
+            self.touched.add(name)
+        return True
