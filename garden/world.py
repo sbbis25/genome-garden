@@ -705,3 +705,40 @@ class World:
             b.fn(self)
         except Exception as e:
             self.fail("BUTTONS: " + str(b.label), e)
+
+    # ── commands from the browser ────────────────────────────────────────────
+    def apply(self, cmd):
+        k = cmd.get("type")
+        if k == "set":
+            if self.settings.set(cmd["id"], cmd["value"]) and cmd["id"] == "ground_color":
+                self.terrain_dirty = True
+        elif k == "reset":
+            self.reset()
+        elif k == "reset_settings":
+            self.settings.reset_all()
+            self.reload_settings_from_file()
+            self.terrain_dirty = True
+            self.schema_version += 1
+        elif k == "preset":
+            for p in PRESETS:
+                if p["id"] == cmd.get("id"):
+                    self.settings.reset_all()
+                    for kk, v in p["values"].items():
+                        self.settings.set(kk, v)
+                    self.terrain_dirty = True
+                    self.reset()
+        elif k == "action":
+            self.action(cmd.get("id"))
+        elif k == "button":
+            self.run_button(int(cmd.get("index", -1)))
+        elif k == "click":
+            self.click(cmd.get("tool"), float(cmd.get("x", 0)), float(cmd.get("y", 0)))
+        elif k == "speed":
+            self.mult = float(cmd.get("mult", 1))
+            self.paused = self.mult <= 0
+        elif k == "watch":
+            self.watch_id = cmd.get("id")
+
+    def reload_settings_from_file(self):
+        for kk, v in self.hooks.settings.items():
+            self.settings.set(kk, v, user=False)
