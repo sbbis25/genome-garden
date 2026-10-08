@@ -119,3 +119,18 @@ def crossover(dna_a, dna_b, cut=None):
     if cut is None:
         cut = random.randrange(1, len(dna_a))
     return dna_a[:cut] + dna_b[cut:]
+
+
+def gc_content(dna):
+    """share of g and c letters in a dna string, 0..1."""
+    return (dna.count("G") + dna.count("C")) / float(len(dna)) if dna else 0.0
+
+
+def lerp(a, b, t):
+    """blend from a to b; t=0 gives a, t=1 gives b."""
+    return a + (b - a) * t
+
+
+def clamp(x, lo, hi):
+    """keep x between lo and hi."""
+    return max(lo, min(hi, x))
