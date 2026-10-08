@@ -75,3 +75,12 @@ Helpers: `nearest`, `hamming`, `similarity`, `most_similar`, `most_different`, `
 Each creature has 80 letters of DNA, cut into five genes of 16 letters: `speed`, `size`, `sense`, `hue`
 and `efficiency`. A trait is the share of `G` and `C` letters in its gene, stretched onto a range, so one
 mutation changes a trait a little. Pin a creature to see its letters, colour-banded by gene.
+
+## If something goes wrong
+
+- **Nothing opens:** go to the address printed in the terminal, usually http://127.0.0.1:8765/
+- **Port busy:** another copy is running. Close it, or it will pick the next free port for you.
+- **Red banner at the top:** your `workshop.py` has a mistake. The line number is in the Code tab.
+  The last working version keeps running until you fix it.
+- **Everything died:** that is allowed. Press **Restart world**, or leave **Extinction insurance** on.
+- **Slow on an old laptop:** lower **Crowding limit**, or drop to 1x speed.
