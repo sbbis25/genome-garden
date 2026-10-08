@@ -160,3 +160,35 @@ def make_handler(sim):
             self._send(b"{}")
 
     return Handler
+
+
+def serve(workshop_path, port=8765, open_browser=True):
+    world = World(workshop_path)
+    sim = Sim(world)
+    sim.start()
+    httpd = None
+    for p in range(port, port + 25):
+        try:
+            ThreadingHTTPServer.daemon_threads = True
+            httpd = ThreadingHTTPServer(("127.0.0.1", p), make_handler(sim))
+            port = p
+            break
+        except OSError:
+            continue
+    if httpd is None:
+        print("Could not find a free port near %d. Close other copies and try again." % port)
+        sys.exit(1)
+    url = "http://127.0.0.1:%d/" % port
+    print("", flush=True)
+    print("  Genome Garden is running at  %s" % url, flush=True)
+    print("  Edit workshop.py and save it: the running world picks up your changes.", flush=True)
+    print("  Press Ctrl+C to stop.", flush=True)
+    print("", flush=True)
+    if open_browser:
+        threading.Timer(0.8, lambda: webbrowser.open(url)).start()
+    try:
+        httpd.serve_forever()
+    except KeyboardInterrupt:
+        print("\nStopped.")
+    finally:
+        httpd.server_close()
