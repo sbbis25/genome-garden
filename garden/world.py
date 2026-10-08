@@ -858,3 +858,15 @@ class World:
                 share, "from predators" if cause == "eaten" else "from hunger")
         phrase = words[best][1 if best_d > 0 else 0]
         return (lead % phrase) + " (%d%% of recent deaths)." % share
+
+    # ── json for the browser ─────────────────────────────────────────────────
+    def detail(self, cid):
+        c = self.by_id.get(cid)
+        if c is None:
+            return {"id": cid, "gone": True}
+        return {"id": c.id, "gone": False, "x": round(c.x, 1), "y": round(c.y, 1), "dna": c.dna,
+                "genes": [{"name": n, "a": a, "b": b, "value": round(c.t[n], 3), "lo": lo, "hi": hi}
+                          for n, a, b, lo, hi in self.layout],
+                "energy": round(c.energy), "age": c.age // TICKS_PER_SEC, "parent": c.parent,
+                "gen": c.gen, "kids": c.kids, "score": round(c.score, 2),
+                "contrast": round(abs(c.hue - self.ground_hue(c.x, c.y)), 2)}
