@@ -44,3 +44,13 @@ def layout(genes):
 
 def dna_length(genes):
     return sum(g.length for g in genes.values())
+
+
+def decode(dna, lay):
+    """dna string -> {trait name: value}."""
+    traits = {}
+    for name, a, b, lo, hi in lay:
+        seg = dna[a:b]
+        gc = (seg.count("G") + seg.count("C")) / float(b - a)
+        traits[name] = lo + gc * (hi - lo)
+    return traits
