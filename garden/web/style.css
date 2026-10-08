@@ -261,6 +261,6 @@ pre.code { margin: 0; background: var(--wash); border-radius: 10px; padding: 12p
   .app[data-view="full"] .right { display: none; }
 }
 @media (prefers-reduced-motion: reduce) {
-  .ctl.pulse input[type="range"] { animation: none; outline: 2px solid var(--accent); }
-  .toast { animation: none; }
+  *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
+  .ctl.pulse input[type="range"] { outline: 2px solid var(--accent); }
 }
