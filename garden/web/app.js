@@ -692,4 +692,35 @@
     requestAnimationFrame(loop);
   }
 
+  // ── mouse on the world ─────────────────────────────────────────────────────────
+  function worldPoint(ev) {
+    var r = cv.getBoundingClientRect();
+    return { x: (ev.clientX - r.left) / r.width * WORLD_W, y: (ev.clientY - r.top) / r.height * WORLD_H };
+  }
+  function hit(pt) {
+    var best = null, bd = 1e9;
+    S.creatures.forEach(function (e) {
+      if (e.px == null) return;
+      var d = Math.hypot(e.px - pt.x, e.py - pt.y), reach = Math.max(3.4, e.pr + 2);
+      if (d < reach && d < bd) { best = e; bd = d; }
+    });
+    return best;
+  }
+  cv.addEventListener('mousemove', function (ev) {
+    var h = hit(worldPoint(ev));
+    S.hover = h ? h.id : null;
+    cv.style.cursor = h ? 'pointer' : 'crosshair';
+  });
+  cv.addEventListener('mouseleave', function () { S.hover = null; });
+  cv.addEventListener('click', function (ev) {
+    var pt = worldPoint(ev), h = hit(pt);
+    if (h && S.tool === 'food') { S.pinned = S.pinned === h.id ? null : h.id; S.cardKey = ''; return; }
+    post({ type: 'click', tool: S.tool, x: pt.x, y: pt.y });
+    if (S.tool === 'food') advanceHint(1);
+  });
+  document.addEventListener('keydown', function (ev) { if (ev.key === 'Escape') { S.pinned = null; S.cardKey = ''; } });
+  document.addEventListener('pointerup', function () {
+    if (S.dragging) { S.dragging = false; if (S.pendingSchema) { S.pendingSchema = false; buildAll(); } }
+  });
+
 })();
