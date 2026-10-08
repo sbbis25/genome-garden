@@ -4,6 +4,16 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="theme-color" content="#f3f2f7">
+<script>
+(function () {
+  try {
+    var t = localStorage.getItem('gg.theme');
+    if (t !== 'light' && t !== 'dark') t = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+    document.documentElement.dataset.theme = t;
+    document.querySelector('meta[name="theme-color"]').setAttribute('content', t === 'dark' ? '#131219' : '#f3f2f7');
+  } catch (e) {}
+})();
+</script>
 <title>Genome Garden</title>
 <link rel="preload" href="/fonts/chivo.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="/style.css">
@@ -12,10 +22,10 @@
 
 <header class="top">
   <div class="brand">
-    <svg viewBox="0 0 32 32" aria-hidden="true" fill="none" stroke-width="2.4" stroke-linecap="round">
-      <path d="M8 3c0 8 16 8 16 16s-16 8-16 10" stroke="#4b4396"/>
-      <path d="M24 3c0 8-16 8-16 16s16 8 16 10" stroke="#1b1a24"/>
-      <path d="M11 9h10M10 23h12M9.5 16h13" stroke="#9a99ab" stroke-width="1.8"/>
+    <svg viewBox="0 0 32 32" aria-hidden="true" fill="none" stroke-width="2.4" stroke-linecap="round" class="logo">
+      <path class="l1" d="M8 3c0 8 16 8 16 16s-16 8-16 10"/>
+      <path class="l2" d="M24 3c0 8-16 8-16 16s16 8 16 10"/>
+      <path class="l3" d="M11 9h10M10 23h12M9.5 16h13" stroke-width="1.8"/>
     </svg>
     Genome Garden
   </div>
@@ -33,6 +43,11 @@
     <button data-mult="30" aria-pressed="false">30x</button>
   </div>
   <div class="achieved" id="achieved" title="How fast time is actually running"></div>
+  <button id="btn-theme" class="btn icon-btn" data-mode="auto" aria-label="Theme: follows your system. Switch to light" title="Theme: follows your system. Switch to light">
+    <svg class="auto" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><path d="M12 3.5a8.5 8.5 0 0 1 0 17z" fill="currentColor"/></svg>
+    <svg class="moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"/></svg>
+    <svg class="sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2.5v2.2M12 19.3v2.2M4.9 4.9l1.6 1.6M17.5 17.5l1.6 1.6M2.5 12h2.2M19.3 12h2.2M4.9 19.1l1.6-1.6M17.5 6.5l1.6-1.6"/></svg>
+  </button>
   <button id="btn-view" class="btn primary">Show the science</button>
 </header>
 
@@ -61,7 +76,9 @@
       <div class="panel" id="panel-tune" role="tabpanel"></div>
       <div class="panel" id="panel-code" role="tabpanel" hidden></div>
       <div class="panel" id="panel-presets" role="tabpanel" hidden></div>
-      <div class="panel-foot"><button id="btn-reset-settings" class="btn" title="Put every slider back to its starting value">Reset sliders</button></div>
+      <div class="panel-foot">
+        <button id="btn-reset-settings" class="btn" title="Put every slider back to its starting value">Reset sliders</button>
+      </div>
     </div>
   </aside>
 
@@ -77,8 +94,8 @@
       <div class="hint" id="hint">Click anywhere in the world to drop some food.</div>
       <div class="toasts" id="toasts"></div>
       <div class="legend" aria-hidden="true">
-        <span><i style="background:#6a6975"></i>food</span>
-        <span><i style="background:#c0394f"></i>predator</span>
+        <span><i class="sw-food"></i>food</span>
+        <span><i class="sw-pred"></i>predator</span>
         <span>colour = body hue</span>
       </div>
     </div>
@@ -96,17 +113,17 @@
     </div>
     <div class="card chartcard"><h4>Average traits over time</h4><canvas id="ch-traits"></canvas><div class="lgd" id="lgd-traits"></div></div>
     <div class="card chartcard"><h4>Creatures and food</h4><canvas id="ch-pop"></canvas>
-      <div class="lgd"><span><i style="background:#4b4396"></i>creatures</span><span><i style="background:#b8914a"></i>food</span></div></div>
+      <div class="lgd"><span><i class="sw-pop"></i>creatures</span><span><i class="sw-foodline"></i>food</span></div></div>
     <div id="custom-charts"></div>
   </aside>
 
 </main>
 
 <div class="narrow-note" role="note">
-  <svg viewBox="0 0 32 32" aria-hidden="true" fill="none" stroke-width="2.4" stroke-linecap="round">
-    <path d="M8 3c0 8 16 8 16 16s-16 8-16 10" stroke="#4b4396"/>
-    <path d="M24 3c0 8-16 8-16 16s16 8 16 10" stroke="#1b1a24"/>
-    <path d="M11 9h10M10 23h12M9.5 16h13" stroke="#9a99ab" stroke-width="1.8"/>
+  <svg viewBox="0 0 32 32" aria-hidden="true" fill="none" stroke-width="2.4" stroke-linecap="round" class="logo">
+    <path class="l1" d="M8 3c0 8 16 8 16 16s-16 8-16 10"/>
+    <path class="l2" d="M24 3c0 8-16 8-16 16s16 8 16 10"/>
+    <path class="l3" d="M11 9h10M10 23h12M9.5 16h13" stroke-width="1.8"/>
   </svg>
   <h1>Genome Garden needs a wider window</h1>
   <p>Open it on a laptop, or widen this window to at least 900px.</p>
