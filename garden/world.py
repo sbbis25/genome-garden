@@ -526,3 +526,12 @@ class World:
             if c.cool <= 0 and c.energy >= c.thresh and n_alive + len(newborn) < cap:
                 self.reproduce(c, newborn)
         self.creatures = [c for c in cs if c.alive]
+
+    def _sync_predators(self):
+        want = int(self.settings.predators)
+        while len(self.preds) < want:
+            side = random.random()
+            self.preds.append(Predator(random.choice((2.0, W - 2.0)) if side < 0.5 else random.uniform(0, W),
+                                       random.uniform(0, H) if side < 0.5 else random.choice((2.0, H - 2.0))))
+        while len(self.preds) > want:
+            self.preds.pop()
