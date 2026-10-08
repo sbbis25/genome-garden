@@ -814,3 +814,47 @@ class World:
             self.hist_custom = [s[::2] for s in self.hist_custom]
             self.hist_stride *= 2
         self.hist_version += 1
+
+    def compute_caption(self):
+        recent = [d for d in self.deaths if d[0] > self.tick - 900]
+        if len(recent) < 14:
+            return "Warming up. Watch the colours and bars for a minute."
+        tally = {}
+        for d in recent:
+            tally[d[1]] = tally.get(d[1], 0) + 1
+        total = float(len(recent))
+        cause = max(("eaten", "starved"), key=lambda k: tally.get(k, 0))
+        sample = [d for d in recent if d[1] == cause]
+        if len(sample) < 8:
+            return "No clear pressure yet. Try more predators or less food."
+        cs = self.creatures
+        if not cs:
+            return "Everyone is gone."
+        alive = {
+            "speed": sum(c.speed for c in cs) / len(cs), "size": sum(c.size for c in cs) / len(cs),
+            "sense": sum(c.sense for c in cs) / len(cs), "efficiency": sum(c.efficiency for c in cs) / len(cs),
+            "contrast": sum(abs(c.hue - self.ground_hue(c.x, c.y)) for c in cs) / len(cs),
+        }
+        idx = {"speed": 2, "size": 3, "sense": 4, "efficiency": 5, "contrast": 6}
+        scale = {"speed": 1.2, "size": 1.4, "sense": 20.0, "efficiency": 0.8, "contrast": 0.5}
+        if cause == "eaten":
+            words = {"speed": ("slower", "faster"), "size": ("smaller", "bigger"),
+                     "sense": ("less alert", "more alert"),
+                     "contrast": ("well-camouflaged", "conspicuous, colourful")}
+            lead = "Predators are catching %s creatures"
+        else:
+            words = {"speed": ("slower", "faster"), "size": ("smaller", "bigger"),
+                     "sense": ("short-sighted", "far-sighted"), "efficiency": ("thrifty", "wasteful")}
+            lead = "Hunger is hitting %s creatures"
+        best, best_d = None, 0.0
+        for k in words:
+            dead_mean = sum(d[idx[k]] for d in sample) / len(sample)
+            diff = (dead_mean - alive[k]) / scale[k]
+            if abs(diff) > abs(best_d):
+                best, best_d = k, diff
+        share = int(round(100 * tally[cause] / total))
+        if best is None or abs(best_d) < 0.05:
+            return "%d%% of recent deaths are %s, with no clear pattern in who dies." % (
+                share, "from predators" if cause == "eaten" else "from hunger")
+        phrase = words[best][1 if best_d > 0 else 0]
+        return (lead % phrase) + " (%d%% of recent deaths)." % share
