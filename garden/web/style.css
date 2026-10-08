@@ -126,7 +126,8 @@ select.btn { appearance: none; padding-right: 30px; background-image: linear-gra
 .tabs.still::after, .seg-group.still::before { transition: none; }
 .tabs .dot { position: absolute; top: 9px; right: 14px; width: 7px; height: 7px; border-radius: 50%; background: var(--danger); display: none; }
 .tabs .dot.on { display: block; }
-.panel { overflow-y: auto; flex: 1; padding: 6px 6px 16px 0; -webkit-mask-image: linear-gradient(to bottom, #000 calc(100% - 24px), transparent); mask-image: linear-gradient(to bottom, #000 calc(100% - 24px), transparent); }
+.tabs button:focus-visible, .group-head:focus-visible { outline-offset: -3px; border-radius: 8px; }
+.panel { overflow-y: auto; flex: 1; padding: 6px 8px 16px 6px; margin-left: -6px; -webkit-mask-image: linear-gradient(to bottom, #000 calc(100% - 24px), transparent); mask-image: linear-gradient(to bottom, #000 calc(100% - 24px), transparent); }
 .panel[hidden] { display: none; }
 .panel:not([hidden]) { animation: rise var(--t3) var(--ease); }
 @keyframes rise { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
@@ -139,9 +140,9 @@ select.btn { appearance: none; padding-right: 30px; background-image: linear-gra
 .group.open .group-head .chev { transform: rotate(45deg); }
 .group-body { display: grid; grid-template-rows: 0fr; transition: grid-template-rows var(--t3) var(--ease); }
 .group.open .group-body { grid-template-rows: 1fr; }
-.group-inner { min-height: 0; overflow: hidden; visibility: hidden; opacity: 0; transition: opacity var(--t2) var(--ease), visibility 0s linear var(--t3); }
+.group-inner { min-height: 0; margin: 0 -6px; padding: 0 6px; overflow: hidden; visibility: hidden; opacity: 0; transition: opacity var(--t2) var(--ease), visibility 0s linear var(--t3); }
 .group.open .group-inner { visibility: visible; opacity: 1; transition-delay: 60ms, 0s; }
-.group-pad { padding: 2px 4px 14px 2px; }
+.group-pad { padding: 2px 0 14px; }
 
 .ctl { margin-bottom: 18px; }
 .ctl-head { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; }
