@@ -681,3 +681,17 @@ class World:
         elif name == "iceage":
             self.food_mod_until = self.tick + 20 * TICKS_PER_SEC * 2
             self.say("Ice age. Food barely grows for a while.")
+
+    def click(self, tool, x, y):
+        x, y = min(W - 1, max(1, x)), min(H - 1, max(1, y))
+        if tool == "food":
+            for _ in range(8):
+                self.add_food(min(W - 1, max(1, x + random.uniform(-3, 3))),
+                              min(H - 1, max(1, y + random.uniform(-3, 3))))
+        elif tool == "predator":
+            if len(self.preds) < 12:
+                self.preds.append(Predator(x, y))
+                self.settings.set("predators", len(self.preds), user=True)
+                self.schema_version += 1
+        elif tool == "smite":
+            self.kill_in_circle(x, y, 9, "disaster")
