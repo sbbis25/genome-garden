@@ -48,4 +48,16 @@
   var EXTRA_COLORS = ['#f78fb3', '#63cdda', '#f5cd79', '#a29bfe', '#b8e994', '#fab1a0'];
   function traitColor(name, i) { return TRAIT_COLORS[name] || EXTRA_COLORS[i % EXTRA_COLORS.length]; }
 
+  // ── state ──────────────────────────────────────────────────────────────────────
+  var S = {
+    schema: null, frame: null, history: null, terrain: null, groundCv: null,
+    sv: -1, tv: -1, hv: -1, histAt: 0,
+    tool: 'food', pinned: null, hover: null, openGroup: 'harsh', tab: 'tune',
+    view: pref('view', 'simple'), snippet: null, dragging: false, pendingSchema: false,
+    creatures: new Map(), ghosts: [], preds: [], frameAt: 0, frameDur: 60,
+    lastMsg: -1, firstFrame: true, hintStage: parseInt(pref('hint', '0'), 10) || 0, pulseId: null,
+    watch: null, cardKey: '', errKey: '', scale: 1, statsAt: 0, chartsDirty: true, scienceBuilt: '',
+    customBuilt: '', offline: 0
+  };
+
 })();
