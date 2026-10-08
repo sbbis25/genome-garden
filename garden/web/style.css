@@ -67,3 +67,11 @@ select.btn { appearance: none; padding-right: 28px; background-image: linear-gra
 .seg-group button:last-child { border-right: 0; }
 .seg-group button[aria-pressed="true"] { background: var(--accent); color: var(--accent-ink); font-weight: 650; }
 .achieved { font: 12px var(--mono); color: var(--muted); min-width: 62px; }
+
+/* ── banners ───────────────────────────────────────────────────────────────── */
+.banner { flex: none; display: none; align-items: center; gap: 12px; padding: 8px 16px; font-size: 13px; border-bottom: 1px solid var(--line); }
+.banner.show { display: flex; }
+.banner.error { background: #2a1217; color: #ffd5da; border-color: #5a222b; }
+.banner.warn { background: #2a2012; color: #ffe2b8; border-color: #5a4422; }
+.banner code { font-family: var(--mono); background: rgba(255, 255, 255, 0.08); padding: 1px 6px; border-radius: 4px; }
+.banner .btn { margin-left: auto; }
