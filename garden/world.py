@@ -131,3 +131,41 @@ class World:
     def say(self, text):
         self.msg_id += 1
         self.msgs.append([self.msg_id, text])
+
+    # ── (re)starting ─────────────────────────────────────────────────────────
+    def reset(self):
+        self.genes = self.pending_genes
+        self.gene_sig = [(n, g.length, g.range) for n, g in self.genes.items()]
+        self.layout = G.layout(self.genes)
+        self.dna_len = G.dna_length(self.genes)
+        self.needs_restart = False
+        self.tick = 0
+        self.creatures = []
+        self.by_id = {}
+        self.fgrid = {}
+        self.food_n = 0
+        self.food_acc = 0.0
+        self.preds = []
+        self.cg = {}
+        self.deaths = deque(maxlen=600)
+        self.births = 0
+        self.hist = {"pop": [], "food": [], "div": [], "traits": {n: [] for n in self.genes}}
+        self.hist_custom = [[] for _ in self.hooks.charts]
+        self.hist_stride = TICKS_PER_SEC
+        self.hist_version = 0
+        self.food_mod_until = 0
+        self.terrain_dirty = True
+        for _ in range(START_N):
+            c = self.make_creature(G.random_dna(self.genes), random.uniform(4, W - 4),
+                                   random.uniform(4, H - 4), None, 0, random.uniform(45, 80))
+            c.age = random.randint(0, 300)
+        for _ in range(int(MAX_FOOD * 0.4)):
+            self.add_food(random.uniform(1, W - 1), random.uniform(1, H - 1))
+        self.rebuild_terrain()
+        self._refresh_all()
+        self.schema_version += 1
+
+    def _refresh_all(self):
+        self.compute_stats()
+        self.compute_diversity()
+        self.record_history()
