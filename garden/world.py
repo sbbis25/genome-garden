@@ -52,3 +52,16 @@ class Predator:
         self.x, self.y = x, y
         self.h = random.uniform(0, 6.28)
         self.target, self.rest, self.chase = None, 0, 0
+
+
+def _control_dict(c):
+    base = dict(group="mine", id=c.id, label=c.label, help=getattr(c, "help", ""), hook=None, code="",
+                fmt="num", ramp=False, default=c.default)
+    n = type(c).__name__
+    if n == "Slider":
+        base.update(kind="slider", lo=c.lo, hi=c.hi, step=c.step)
+    elif n == "Choice":
+        base.update(kind="choice", options=c.options, labels={o: o for o in c.options})
+    else:
+        base.update(kind="toggle")
+    return base
