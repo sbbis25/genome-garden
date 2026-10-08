@@ -1,0 +1,33 @@
+"""dna strings and how they decode into traits.
+
+a creature's genome is one string over a, c, g, t. it is cut into segments, one
+per gene. a trait is the share of g and c letters in its segment, stretched onto
+the gene's range. one point mutation therefore nudges a trait a little, which is
+what lets selection read clearly on the screen.
+"""
+
+import random
+
+BASES = "ACGT"
+
+
+class Gene:
+    """one gene: how many dna letters it uses and what range its trait spans."""
+
+    def __init__(self, length=16, range=(0.0, 1.0), description=""):
+        self.length = int(length)
+        self.range = (float(range[0]), float(range[1]))
+        self.description = description
+
+
+def default_genes():
+    return {
+        "speed": Gene(16, (0.4, 1.6), "how fast it moves"),
+        "size": Gene(16, (0.6, 2.0), "body size; big bodies are easier to spot"),
+        "sense": Gene(16, (4.0, 24.0), "how far it can see food and danger"),
+        "hue": Gene(16, (0.0, 1.0), "body colour; match the ground to hide"),
+        "efficiency": Gene(16, (0.6, 1.4), "how little energy it burns"),
+    }
+
+
+CORE_GENES = tuple(default_genes().keys())
