@@ -84,3 +84,11 @@ mutation changes a trait a little. Pin a creature to see its letters, colour-ban
   The last working version keeps running until you fix it.
 - **Everything died:** that is allowed. Press **Restart world**, or leave **Extinction insurance** on.
 - **Slow on an old laptop:** lower **Crowding limit**, or drop to 1x speed.
+
+## What is in the folder
+
+```
+run.py          start here
+workshop.py     the one file you edit
+garden/         the engine and the web page (you do not need to touch it)
+```
