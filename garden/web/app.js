@@ -855,6 +855,11 @@
   placeIndicators();
   if (document.fonts && document.fonts.ready) document.fonts.ready.then(placeIndicators);
   window.addEventListener('resize', placeIndicators);
+  $('#btn-theme').onclick = function () {
+    var next = S.theme === 'dark' ? 'light' : 'dark';
+    pref('theme', 'light', next);
+    applyTheme(next, true);
+  };
   S.theme = document.documentElement.dataset.theme === 'dark' ? 'dark' : 'light';
   syncThemeButton(S.theme);
   if (window.matchMedia) {

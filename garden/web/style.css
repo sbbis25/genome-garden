@@ -236,7 +236,12 @@ select.btn { appearance: none; padding-right: 30px; background-image: linear-gra
 .panel[hidden] { display: none; }
 .panel:not([hidden]) { animation: rise var(--t3) var(--ease); }
 @keyframes rise { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
-.panel-foot { border-top: 1px solid var(--line); padding: 12px 0 2px; flex: none; }
+.panel-foot { border-top: 1px solid var(--line); padding: 12px 0 2px; flex: none; display: flex; align-items: center; justify-content: space-between; }
+.icon-btn { width: 34px; padding: 0; display: grid; place-items: center; }
+.icon-btn svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+.icon-btn .sun { display: none; }
+:root[data-theme="dark"] .icon-btn .sun { display: block; }
+:root[data-theme="dark"] .icon-btn .moon { display: none; }
 
 .group { border-bottom: 1px solid var(--line); }
 .group:last-child { border-bottom: 0; }
