@@ -69,3 +69,9 @@ Helpers: `nearest`, `hamming`, `similarity`, `most_similar`, `most_different`, `
 5. Write a `steer()` that sends creatures towards ground that matches their colour.
 6. Add a `night_owl` gene and make owls breed more at some times than others.
 7. Add a `Button` that drops a meteor on the middle of the map.
+
+## How the DNA works
+
+Each creature has 80 letters of DNA, cut into five genes of 16 letters: `speed`, `size`, `sense`, `hue`
+and `efficiency`. A trait is the share of `G` and `C` letters in its gene, stretched onto a range, so one
+mutation changes a trait a little. Pin a creature to see its letters, colour-banded by gene.
