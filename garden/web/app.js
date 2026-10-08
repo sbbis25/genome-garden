@@ -60,4 +60,26 @@
     customBuilt: '', offline: 0
   };
 
+  // ── network ────────────────────────────────────────────────────────────────────
+  function getJSON(url) {
+    return fetch(url, { cache: 'no-store' }).then(function (r) {
+      if (!r.ok) throw new Error('HTTP ' + r.status);
+      return r.json();
+    });
+  }
+  function post(cmd) {
+    return fetch('/api/cmd', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(cmd) })
+      .catch(function () {});
+  }
+  var pending = {}, sendTimer = 0;
+  function sendSet(id, value) {
+    pending[id] = value;
+    if (!sendTimer) {
+      sendTimer = setTimeout(function () {
+        var p = pending; pending = {}; sendTimer = 0;
+        Object.keys(p).forEach(function (k) { post({ type: 'set', id: k, value: p[k] }); });
+      }, 60);
+    }
+  }
+
 })();
