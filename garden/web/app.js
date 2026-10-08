@@ -841,11 +841,21 @@
     }
     root.dataset.theme = name;
     var meta = $('meta[name="theme-color"]'); if (meta) meta.setAttribute('content', cssVar('--paper'));
-    readTheme(); buildGround();
-    S.creatures.forEach(function (e) { e.col = body(e.hue); });
-    if (S.schema) $$('#lgd-traits i').forEach(function (sw, i) { sw.style.background = traitColor(S.schema.genes[i].name, i); });
-    S.chartsDirty = true; S.histDirty = true;
-    syncThemeButton(name);
+    var canvases = $$('#world, .chartcard canvas, .hcard canvas');
+    var recolour = function () {
+      readTheme(); buildGround();
+      S.creatures.forEach(function (e) { e.col = body(e.hue); });
+      if (S.schema) $$('#lgd-traits i').forEach(function (sw, i) { sw.style.background = traitColor(S.schema.genes[i].name, i); });
+      S.cardKey = ''; S.chartsDirty = true; S.histDirty = true;
+      canvases.forEach(function (c) { c.classList.remove('swap'); });
+    };
+    syncThemeButton();
+    if (fade && !REDUCED) {
+      canvases.forEach(function (c) { c.classList.add('swap'); });
+      setTimeout(recolour, 170);
+    } else {
+      recolour();
+    }
   }
 
   // ── go ─────────────────────────────────────────────────────────────────────────

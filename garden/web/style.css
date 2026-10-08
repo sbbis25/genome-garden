@@ -160,6 +160,8 @@ button:focus-visible, input:focus-visible, select:focus-visible { outline: 2px s
 ::-webkit-scrollbar { width: 10px; height: 10px; }
 ::-webkit-scrollbar-thumb { background: var(--line-2); border-radius: 10px; border: 3px solid transparent; background-clip: content-box; }
 .mono { font-family: var(--mono); }
+canvas { transition: opacity var(--t2) var(--ease); }
+canvas.swap { opacity: 0; transition-duration: 160ms; }
 
 /* ── top bar ───────────────────────────────────────────────────────────────── */
 .top {
