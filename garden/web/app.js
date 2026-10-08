@@ -361,4 +361,33 @@
     panel.scrollTop = scroll;
   }
 
+  function buildPresets() {
+    var sel = $('#preset-select');
+    sel.innerHTML = '<option value="">Presets...</option>';
+    var panel = $('#panel-presets');
+    panel.innerHTML = '<p class="tip">Each scenario sets a handful of sliders and restarts the world. The code shows how you would write the same thing in <span class="mono">workshop.py</span>.</p>';
+    S.schema.presets.forEach(function (p) {
+      var o = el('option'); o.value = p.id; o.textContent = p.label; sel.appendChild(o);
+      var card = el('div', 'preset', '<h4>' + esc(p.label) + '</h4><p>' + esc(p.blurb) + '</p>');
+      var row = el('div', 'row');
+      var run = el('button', 'btn primary'); run.textContent = 'Run it';
+      run.onclick = function () { runPreset(p.id); };
+      var show = el('button', 'btn'); show.textContent = 'Show code';
+      var pre = el('pre', 'code'); pre.textContent = p.code; pre.style.display = 'none'; pre.style.marginTop = '10px';
+      show.onclick = function () {
+        var on = pre.style.display === 'none'; pre.style.display = on ? 'block' : 'none';
+        show.textContent = on ? 'Hide code' : 'Show code';
+      };
+      row.appendChild(run); row.appendChild(show);
+      card.appendChild(row); card.appendChild(pre); panel.appendChild(card);
+    });
+  }
+
+  function runPreset(id) {
+    post({ type: 'preset', id: id }); resetClientWorld();
+  }
+  function resetClientWorld() {
+    S.creatures.clear(); S.ghosts.length = 0; S.pinned = null; S.hover = null; S.firstFrame = true;
+  }
+
 })();
