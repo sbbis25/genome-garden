@@ -18,3 +18,7 @@ helpers: nearest, hamming, similarity, most_similar, most_different,
 """
 
 from garden.api import *
+
+
+# ── level 1: start values (instead of dragging sliders) ──────────────────────
+# SETTINGS = {"predators": 8, "mutation_rate": 0.03}
