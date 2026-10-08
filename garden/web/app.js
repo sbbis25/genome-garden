@@ -74,7 +74,7 @@
     creatures: new Map(), ghosts: [], preds: [], frameAt: 0, frameDur: 60,
     lastMsg: -1, firstFrame: true, hintStage: parseInt(pref('hint', '0'), 10) || 0, pulseId: null,
     watch: null, cardKey: '', errKey: '', scale: 1, statsAt: 0, chartsDirty: true, scienceBuilt: '',
-    customBuilt: '', offline: 0, speedKey: ''
+    customBuilt: '', offline: 0, speedKey: '', hist: {}, histDirty: false
   };
 
   // ── network ────────────────────────────────────────────────────────────────────
@@ -212,7 +212,7 @@
     updateBanners(f);
     S.watch = f.watch;
     updateCard(now);
-    if (f.stats && S.view === 'full' && now - S.statsAt > 250) { S.statsAt = now; drawHistograms(); }
+    if (f.stats && S.view === 'full' && now - S.statsAt > 250) { S.statsAt = now; updateHistograms(); }
   }
 
   function updateBanners(f) {
@@ -599,25 +599,43 @@
     });
   }
 
-  function drawHistograms() {
+  function updateHistograms() {
     var st = S.frame && S.frame.stats; if (!st || !S.schema) return;
+    Object.keys(st).forEach(function (name) {
+      var d = st[name], h = S.hist[name];
+      if (!h) h = S.hist[name] = { cur: d.bins.map(function () { return 0; }), mean: d.mean, lo: d.lo, hi: d.hi };
+      h.tgt = d.bins; h.tmean = d.mean; h.lo = d.lo; h.hi = d.hi;
+    });
+    S.histDirty = true;
+  }
+
+  function animateHistograms() {
+    if (!S.histDirty) return;
+    var moving = false;
     $$('#science canvas').forEach(function (cv, idx) {
-      var name = cv.dataset.gene, d = st[name]; if (!d) return;
+      var name = cv.dataset.gene, h = S.hist[name]; if (!h || !h.tgt) return;
+      var mx = 1;
+      for (var i = 0; i < h.cur.length; i++) {
+        var diff = h.tgt[i] - h.cur[i];
+        if (Math.abs(diff) > 0.05) { h.cur[i] += diff * 0.2; moving = true; } else { h.cur[i] = h.tgt[i]; }
+        if (h.cur[i] > mx) mx = h.cur[i];
+      }
+      var md = h.tmean - h.mean;
+      if (Math.abs(md) > (h.hi - h.lo) * 0.002) { h.mean += md * 0.2; moving = true; } else { h.mean = h.tmean; }
       var g = sizeCanvas(cv); if (!g) return;
-      var ctx = g.ctx, bins = d.bins, mx = 1;
-      bins.forEach(function (b) { if (b > mx) mx = b; });
-      var bw = g.w / bins.length;
-      bins.forEach(function (b, i) {
+      var ctx = g.ctx, bw = g.w / h.cur.length;
+      h.cur.forEach(function (b, i) {
         var bh = (g.h - 4) * b / mx;
-        ctx.fillStyle = name === 'hue' ? ramp((i + 0.5) / bins.length) : traitColor(name, idx);
+        ctx.fillStyle = name === 'hue' ? ramp((i + 0.5) / h.cur.length) : traitColor(name, idx);
         ctx.globalAlpha = 0.9;
         ctx.fillRect(i * bw + 1, g.h - bh, bw - 2, bh);
       });
       ctx.globalAlpha = 1;
-      var mxp = (d.mean - d.lo) / ((d.hi - d.lo) || 1) * g.w;
+      var mxp = (h.mean - h.lo) / ((h.hi - h.lo) || 1) * g.w;
       ctx.fillStyle = '#1b1a24'; ctx.fillRect(Math.max(0, Math.min(g.w - 2, mxp - 1)), 0, 2, g.h);
-      var m = $('[data-mean="' + name + '"]'); if (m) m.textContent = fmtNum(d.mean);
+      var m = $('[data-mean="' + name + '"]'); if (m) m.textContent = fmtNum(h.mean);
     });
+    S.histDirty = moving;
   }
 
   // ── the world canvas ───────────────────────────────────────────────────────────
@@ -714,6 +732,7 @@
   function loop(now) {
     draw(now);
     if (S.chartsDirty && S.view === 'full') { S.chartsDirty = false; drawCharts(); }
+    if (S.view === 'full') animateHistograms();
     requestAnimationFrame(loop);
   }
 
@@ -779,9 +798,9 @@
 
   // ── go ─────────────────────────────────────────────────────────────────────────
   if (typeof ResizeObserver !== 'undefined') {
-    new ResizeObserver(function () { fitCanvas(); S.chartsDirty = true; }).observe($('#worldwrap'));
+    new ResizeObserver(function () { fitCanvas(); S.chartsDirty = true; S.histDirty = true; }).observe($('#worldwrap'));
   }
-  window.addEventListener('resize', function () { fitCanvas(); S.chartsDirty = true; });
+  window.addEventListener('resize', function () { fitCanvas(); S.chartsDirty = true; S.histDirty = true; });
   placeIndicators();
   if (document.fonts && document.fonts.ready) document.fonts.ready.then(placeIndicators);
   window.addEventListener('resize', placeIndicators);
