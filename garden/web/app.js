@@ -609,4 +609,87 @@
     S.scale = scale;
   }
 
+  function draw(now) {
+    var f = S.frame;
+    ctx.setTransform(DPR * S.scale, 0, 0, DPR * S.scale, 0, 0);
+    ctx.fillStyle = '#0a1016'; ctx.fillRect(0, 0, WORLD_W, WORLD_H);
+    if (S.groundCv) {
+      ctx.imageSmoothingEnabled = true; ctx.imageSmoothingQuality = 'high';
+      ctx.drawImage(S.groundCv, 0, 0, WORLD_W, WORLD_H);
+    }
+    ctx.strokeStyle = 'rgba(255,255,255,0.045)'; ctx.lineWidth = 0.15; ctx.beginPath();
+    for (var gx = 20; gx < WORLD_W; gx += 20) { ctx.moveTo(gx, 0); ctx.lineTo(gx, WORLD_H); }
+    for (var gy = 20; gy < WORLD_H; gy += 20) { ctx.moveTo(0, gy); ctx.lineTo(WORLD_W, gy); }
+    ctx.stroke();
+    if (!f) return;
+
+    // food
+    ctx.fillStyle = '#e9f2a0';
+    for (var i = 0; i < f.f.length; i++) { var fd = f.f[i]; ctx.fillRect(fd[0] - 0.4, fd[1] - 0.4, 0.8, 0.8); }
+
+    // predators and what they can see
+    var eye = f.eye;
+    for (var j = 0; j < S.preds.length; j++) {
+      var pr = S.preds[j], pp = posOf(pr, now);
+      ctx.strokeStyle = 'rgba(255,92,108,0.2)'; ctx.lineWidth = 0.25; ctx.setLineDash([1.2, 1.4]);
+      ctx.beginPath(); ctx.arc(pp.x, pp.y, eye, 0, 6.2832); ctx.stroke(); ctx.setLineDash([]);
+      ctx.fillStyle = '#ff5c6c'; ctx.strokeStyle = '#2a0a10'; ctx.lineWidth = 0.3;
+      ctx.beginPath();
+      ctx.moveTo(pp.x, pp.y - 2.6); ctx.lineTo(pp.x + 2, pp.y); ctx.lineTo(pp.x, pp.y + 2.6); ctx.lineTo(pp.x - 2, pp.y);
+      ctx.closePath(); ctx.fill(); ctx.stroke();
+    }
+
+    // creatures
+    var hoverE = null, pinE = null;
+    S.creatures.forEach(function (e) {
+      var p = posOf(e, now), age = now - e.born, k = age >= 350 ? 1 : age / 350;
+      var r = e.size * 0.85 * (0.3 + 0.7 * k);
+      ctx.fillStyle = e.col; ctx.strokeStyle = 'rgba(0,0,0,0.5)'; ctx.lineWidth = 0.22;
+      ctx.beginPath(); ctx.arc(p.x, p.y, r, 0, 6.2832); ctx.fill(); ctx.stroke();
+      ctx.fillStyle = 'rgba(0,0,0,0.55)';
+      ctx.beginPath(); ctx.arc(p.x + Math.cos(e.h) * r * 0.55, p.y + Math.sin(e.h) * r * 0.55, r * 0.24, 0, 6.2832); ctx.fill();
+      e.px = p.x; e.py = p.y; e.pr = r;
+      if (e.id === S.hover) hoverE = e;
+      if (e.id === S.pinned) pinE = e;
+    });
+    if (hoverE && hoverE !== pinE) { ring(hoverE, 'rgba(255,255,255,0.9)', 0.5, 0.25); }
+    if (pinE) {
+      ring(pinE, '#ffb454', 0.8, 0.4);
+      var sense = S.watch && S.watch.id === pinE.id ? senseOf(S.watch) : 0;
+      if (sense) {
+        ctx.strokeStyle = 'rgba(255,180,84,0.4)'; ctx.lineWidth = 0.25; ctx.setLineDash([1, 1.2]);
+        ctx.beginPath(); ctx.arc(pinE.px, pinE.py, sense * 0.9, 0, 6.2832); ctx.stroke(); ctx.setLineDash([]);
+      }
+    }
+
+    // creatures that just died fade out
+    for (var q = S.ghosts.length - 1; q >= 0; q--) {
+      var gh = S.ghosts[q], ga = (now - gh.t) / 500;
+      if (ga >= 1) { S.ghosts.splice(q, 1); continue; }
+      ctx.globalAlpha = 0.7 * (1 - ga); ctx.strokeStyle = gh.col; ctx.lineWidth = 0.3;
+      ctx.beginPath(); ctx.arc(gh.x, gh.y, gh.size * 0.85 * (1 + ga * 1.4), 0, 6.2832); ctx.stroke(); ctx.globalAlpha = 1;
+    }
+
+    // meteor shockwave
+    if (f.meteor && f.tick - f.meteor[3] >= 0 && f.tick - f.meteor[3] < 40) {
+      var mt = (f.tick - f.meteor[3]) / 40;
+      ctx.globalAlpha = 1 - mt; ctx.strokeStyle = '#ffb454'; ctx.lineWidth = 0.8;
+      ctx.beginPath(); ctx.arc(f.meteor[0], f.meteor[1], f.meteor[2] * Math.min(1, mt * 2), 0, 6.2832); ctx.stroke(); ctx.globalAlpha = 1;
+    }
+  }
+  function ring(e, color, extra, lw) {
+    ctx.strokeStyle = color; ctx.lineWidth = lw;
+    ctx.beginPath(); ctx.arc(e.px, e.py, e.pr + extra, 0, 6.2832); ctx.stroke();
+  }
+  function senseOf(d) {
+    for (var i = 0; i < d.genes.length; i++) if (d.genes[i].name === 'sense') return d.genes[i].value;
+    return 0;
+  }
+
+  function loop(now) {
+    draw(now);
+    if (S.chartsDirty && S.view === 'full') { S.chartsDirty = false; drawCharts(); }
+    requestAnimationFrame(loop);
+  }
+
 })();
