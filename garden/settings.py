@@ -92,3 +92,34 @@ PRESETS = [
     dict(id="speed_breeders", label="Speed breeders", blurb="No predators. You choose: fast creatures breed.",
          values={"predators": 0, "reward_speed": 1.0, "mutation_rate": 0.02}),
 ]
+
+
+class Settings:
+    """current value of every control. read as settings.predators or controls.my_slider."""
+
+    def __init__(self):
+        object.__setattr__(self, "_defs", {})
+        object.__setattr__(self, "_v", {})
+        object.__setattr__(self, "touched", set())
+        self.define(BUILTIN)
+
+    def define(self, defs):
+        """(re)declare controls, keeping the values of ones that still exist."""
+        keep = dict(self._v)
+        self._defs.clear()
+        self._v.clear()
+        for d in defs:
+            self._defs[d["id"]] = d
+            self._v[d["id"]] = keep.get(d["id"], d["default"])
+
+    def __getattr__(self, name):
+        try:
+            return object.__getattribute__(self, "_v")[name]
+        except KeyError:
+            raise AttributeError("no control called %r" % name)
+
+    def __getitem__(self, name):
+        return self._v[name]
+
+    def get(self, name, default=None):
+        return self._v.get(name, default)
