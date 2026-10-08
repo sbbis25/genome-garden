@@ -1,0 +1,19 @@
+/* genome garden: a dark field-instrument look. light-on-ink, one teal accent, amber for "you pinned this". */
+:root {
+  --bg: #080d12;
+  --panel: #0f161d;
+  --panel-2: #141e27;
+  --line: #1f2d39;
+  --line-2: #2b3d4c;
+  --text: #dde8f0;
+  --muted: #9fb2c1;
+  --accent: #46e0c0;
+  --accent-ink: #03211b;
+  --amber: #ffb454;
+  --danger: #ff6b7a;
+  --track: #22313e;
+  --radius: 10px;
+  --font: -apple-system, "Segoe UI", system-ui, Roboto, "Helvetica Neue", Arial, sans-serif;
+  --mono: ui-monospace, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
+  color-scheme: dark;
+}
