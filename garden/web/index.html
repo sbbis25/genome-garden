@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Genome Garden</title>
+<link rel="stylesheet" href="/style.css">
+</head>
+<body>
+
+<header class="top">
+  <div class="brand">
+    <svg viewBox="0 0 32 32" aria-hidden="true" fill="none" stroke-width="2.4" stroke-linecap="round">
+      <path d="M8 3c0 8 16 8 16 16s-16 8-16 10" stroke="#46e0c0"/>
+      <path d="M24 3c0 8-16 8-16 16s16 8 16 10" stroke="#ffb454"/>
+      <path d="M11 9h10M10 23h12M9.5 16h13" stroke="#9fb2c1" stroke-width="1.8"/>
+    </svg>
+    Genome Garden
+  </div>
+  <select id="preset-select" class="btn" aria-label="Load a preset scenario"><option value="">Presets...</option></select>
+  <button id="btn-restart" class="btn" title="Start a fresh population with your current settings">Restart world</button>
+  <div class="spacer"></div>
+  <div class="chip-stat"><b id="stat-n">0</b><span>creatures</span></div>
+  <div class="chip-stat"><b id="stat-gen">0</b><span>generations</span></div>
+  <div class="seg-group" id="speed-seg" role="group" aria-label="Time speed">
+    <button data-mult="0" aria-pressed="false" title="Pause">Pause</button>
+    <button data-mult="0.5" aria-pressed="false" title="Half speed: easier to hover and click creatures">0.5x</button>
+    <button data-mult="1" aria-pressed="true">1x</button>
+    <button data-mult="3" aria-pressed="false">3x</button>
+    <button data-mult="10" aria-pressed="false">10x</button>
+    <button data-mult="30" aria-pressed="false">30x</button>
+  </div>
+  <div class="achieved" id="achieved" title="How fast time is actually running"></div>
+  <button id="btn-view" class="btn primary">Show the science</button>
+</header>
+
+<div id="banner-error" class="banner error" role="alert">
+  <span id="banner-error-text"></span>
+  <button class="btn" id="banner-error-open">See details</button>
+</div>
+<div id="banner-restart" class="banner warn">
+  <span>You changed the gene table in workshop.py. Restart the world so every creature gets the new DNA.</span>
+  <button class="btn primary" id="banner-restart-go">Restart world</button>
+</div>
+<div id="banner-offline" class="banner error">
+  <span>Lost the connection to Genome Garden. Is <code>python run.py</code> still running?</span>
+</div>
+
+<main class="app" id="app" data-view="simple">
+
+  <!-- left: controls -->
+  <aside class="col left">
+    <div class="card">
+      <div class="tabs" role="tablist">
+        <button role="tab" id="tab-tune" data-tab="tune" aria-selected="true">Tune</button>
+        <button role="tab" id="tab-code" data-tab="code" aria-selected="false">Code<span class="dot" id="code-dot"></span></button>
+        <button role="tab" id="tab-presets" data-tab="presets" aria-selected="false">Scenarios</button>
+      </div>
+      <div class="panel" id="panel-tune" role="tabpanel"></div>
+      <div class="panel" id="panel-code" role="tabpanel" hidden></div>
+      <div class="panel" id="panel-presets" role="tabpanel" hidden></div>
+      <div class="panel-foot"><button id="btn-reset-settings" class="btn" title="Put every slider back to its starting value">Reset sliders</button></div>
+    </div>
+  </aside>
+
+  <!-- centre: the world -->
+  <section class="col center">
+    <div class="worldwrap" id="worldwrap">
+      <canvas id="world"></canvas>
+      <div class="tools" id="tools" role="group" aria-label="Mouse tool">
+        <button data-tool="food" aria-pressed="true" title="Click the world to drop food">Drop food</button>
+        <button data-tool="predator" aria-pressed="false" title="Click to add a predator">Add predator</button>
+        <button data-tool="smite" aria-pressed="false" title="Click to wipe out creatures in a small circle">Smite</button>
+      </div>
+      <div class="hint" id="hint">Click anywhere in the world to drop some food.</div>
+      <div class="toasts" id="toasts"></div>
+      <div class="legend" aria-hidden="true">
+        <span><i style="background:#e9f2a0"></i>food</span>
+        <span><i style="background:#ff5c6c"></i>predator</span>
+        <span>colour = body hue</span>
+      </div>
+    </div>
+    <div class="caption" aria-live="polite"><span class="why">What's selecting</span><span id="caption-text"></span></div>
+    <div class="science" id="science"></div>
+  </section>
+
+  <!-- right: creature card + charts -->
+  <aside class="col right">
+    <div class="card creature" id="creature"></div>
+    <div class="tiles">
+      <div class="card tile"><b id="t-div">-</b><span>DNA diversity</span></div>
+      <div class="card tile"><b id="t-clu">-</b><span>lineage clusters</span></div>
+      <div class="card tile"><b id="t-gen">-</b><span>newest generation</span></div>
+    </div>
+    <div class="card chartcard"><h4>Average traits over time</h4><canvas id="ch-traits"></canvas><div class="lgd" id="lgd-traits"></div></div>
+    <div class="card chartcard"><h4>Creatures and food</h4><canvas id="ch-pop"></canvas>
+      <div class="lgd"><span><i style="background:#46e0c0"></i>creatures</span><span><i style="background:#ffb454"></i>food</span></div></div>
+    <div id="custom-charts"></div>
+  </aside>
+
+</main>
+
+<script src="/app.js"></script>
+</body>
+</html>
