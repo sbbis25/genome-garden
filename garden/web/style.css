@@ -126,7 +126,7 @@ select.btn { appearance: none; padding-right: 30px; background-image: linear-gra
 .tabs.still::after, .seg-group.still::before { transition: none; }
 .tabs .dot { position: absolute; top: 9px; right: 14px; width: 7px; height: 7px; border-radius: 50%; background: var(--danger); display: none; }
 .tabs .dot.on { display: block; }
-.panel { overflow-y: auto; flex: 1; padding: 6px 6px 16px 0; }
+.panel { overflow-y: auto; flex: 1; padding: 6px 6px 16px 0; -webkit-mask-image: linear-gradient(to bottom, #000 calc(100% - 24px), transparent); mask-image: linear-gradient(to bottom, #000 calc(100% - 24px), transparent); }
 .panel[hidden] { display: none; }
 .panel:not([hidden]) { animation: rise var(--t3) var(--ease); }
 @keyframes rise { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
