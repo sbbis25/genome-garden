@@ -263,17 +263,19 @@ pre.code { margin: 0; background: var(--wash); border-radius: 10px; padding: 12p
   .center, .right { padding-left: 20px; }
   .seg-group button { padding: 5px 9px; min-width: 36px; }
   .achieved { display: none; }
+  #preset-select { width: 112px; }
 }
 @media (max-width: 1180px) {
   .app, .app[data-view="simple"], .app[data-view="full"] { grid-template-columns: 264px minmax(0, 1fr); }
   .right { display: none; }
-  .chip-gen { display: none; }
+  .top { gap: 6px; }
+  .seg-group button { padding: 5px 7px; min-width: 34px; }
 }
-@media (max-width: 1100px) {
+@media (max-width: 1039px) {
   #preset-select { display: none; }
 }
-@media (max-width: 960px) {
-  .chip-stat { display: none; }
+@media (max-width: 930px) {
+  .chip-gen { display: none; }
 }
 .narrow-note { display: none; flex: 1; flex-direction: column; align-items: center; justify-content: center; gap: 10px; padding: 32px; text-align: center; }
 .narrow-note svg { width: 36px; height: 36px; }
