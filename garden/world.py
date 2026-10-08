@@ -759,3 +759,27 @@ class World:
                 bins[0 if i < 0 else (11 if i > 11 else i)] += 1
             out[name] = {"bins": bins, "mean": tot / n if n else 0.0, "lo": lo, "hi": hi}
         self.stats = out
+
+    def compute_diversity(self):
+        cs = self.creatures
+        n = len(cs)
+        if n < 2:
+            self.stats2.update(div=0.0, clusters=n, maxgen=cs[0].gen if cs else 0)
+            return
+        L = float(self.dna_len)
+        tot = 0.0
+        for _ in range(60):
+            a, b = random.sample(cs, 2)
+            tot += sum(1 for x, y in zip(a.dna, b.dna) if x != y) / L
+        sample = random.sample(cs, min(n, 120))
+        reps, counts = [], []
+        for c in sample:
+            for i, r in enumerate(reps):
+                if sum(1 for x, y in zip(c.dna, r) if x != y) / L < 0.2:
+                    counts[i] += 1
+                    break
+            else:
+                reps.append(c.dna)
+                counts.append(1)
+        big = sum(1 for k in counts if k >= max(3, len(sample) * 0.06))
+        self.stats2.update(div=tot / 60.0, clusters=max(1, big), maxgen=max(c.gen for c in cs))
