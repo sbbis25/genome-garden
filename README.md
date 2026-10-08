@@ -59,3 +59,13 @@ Also in `workshop.py`:
 
 Helpers: `nearest`, `hamming`, `similarity`, `most_similar`, `most_different`, `point_mutate`,
 `crossover`, `gc_content`, `lerp`, `clamp`, `noise`.
+
+## Things to try
+
+1. Make predators rare, then make them everywhere. What happens to body colour?
+2. Set **Reward speed** to +1 with no predators. Then try -1. Who wins?
+3. Turn on **Mate choice: Most similar DNA** and watch **lineage clusters** in the science panel.
+4. Write a `terrain()` with a river that has lots of food and lots of danger.
+5. Write a `steer()` that sends creatures towards ground that matches their colour.
+6. Add a `night_owl` gene and make owls breed more at some times than others.
+7. Add a `Button` that drops a meteor on the middle of the map.
