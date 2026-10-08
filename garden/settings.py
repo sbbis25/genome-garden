@@ -72,3 +72,10 @@ BUILTIN = [
          help="If almost everyone dies, a few survivors are cloned so you can keep experimenting.", code="",
          hook=None),
 ]
+
+BUILTIN_ACTIONS = [
+    dict(id="meteor", label="Meteor strike", help="Wipes out everything in a big circle."),
+    dict(id="plague", label="Plague", help="Kills about 40% of creatures at random."),
+    dict(id="famine", label="Famine", help="Clears all the food right now."),
+    dict(id="iceage", label="Ice age", help="Food nearly stops growing for a while."),
+]
