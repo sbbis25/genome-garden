@@ -18,3 +18,13 @@ Do this the night before to be sure you are ready: `python run.py --check`
 
 **No Python on your laptop?** Install it from https://www.python.org/downloads/ (tick "Add Python to PATH"
 on Windows), or ask an organizer for a shared machine.
+
+## Three ways to play
+
+### 1. No code: use the controls
+- Click anywhere in the world to drop food. Click a creature to pin it and read its DNA.
+- Open **How harsh is the world?** and drag **Predators** up.
+- Drag **Ground colour** and watch the creatures' body colours follow it. Predators spot creatures
+  that stand out, so the ones that blend in survive.
+- Try the **Scenarios** tab, or speed time up with 3x, 10x or 30x.
+- Press **Show the science** for DNA, trait histograms and charts.
