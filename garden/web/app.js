@@ -82,4 +82,49 @@
     }
   }
 
+  function poll() {
+    var watch = S.pinned != null ? S.pinned : (S.hover != null ? S.hover : '');
+    getJSON('/frame?watch=' + watch).then(function (f) {
+      S.offline = 0;
+      $('#banner-offline').classList.remove('show');
+      if (f && f.c) {
+        try { onFrame(f); } catch (err) { if (window.console) console.error('frame error', err); }
+      }
+    }).catch(function () {
+      S.offline++;
+      if (S.offline > 6) $('#banner-offline').classList.add('show');
+    }).then(function () { setTimeout(poll, 30); });
+  }
+
+  function fetchSchema() {
+    getJSON('/api/schema').then(function (sc) {
+      S.schema = sc; S.sv = sc.version;
+      if (S.dragging) { S.pendingSchema = true; return; }
+      buildAll();
+    }).catch(function () {});
+  }
+  function fetchTerrain() {
+    getJSON('/api/terrain').then(function (t) {
+      S.tv = t.v;
+      var cv = document.createElement('canvas');
+      cv.width = t.gw; cv.height = t.gh;
+      var ctx = cv.getContext('2d'), img = ctx.createImageData(t.gw, t.gh), base = [10, 16, 22];
+      for (var i = 0; i < t.hue.length; i++) {
+        var c = rampRGB(t.hue[i]);
+        img.data[i * 4] = c[0] * 0.5 + base[0] * 0.5;
+        img.data[i * 4 + 1] = c[1] * 0.5 + base[1] * 0.5;
+        img.data[i * 4 + 2] = c[2] * 0.5 + base[2] * 0.5;
+        img.data[i * 4 + 3] = 255;
+      }
+      ctx.putImageData(img, 0, 0);
+      S.groundCv = cv;
+    }).catch(function () {});
+  }
+  function fetchHistory() {
+    S.histAt = performance.now();
+    getJSON('/api/history').then(function (h) {
+      S.history = h; S.hv = h.v; S.chartsDirty = true;
+    }).catch(function () {});
+  }
+
 })();
