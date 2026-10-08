@@ -379,3 +379,56 @@ class World:
                                    min(H - 1, max(1, c.y + random.uniform(-1.5, 1.5))),
                                    c.id, c.gen + 1, CHILD_ENERGY)
         newborn.append(child)
+
+    # ── one tick ─────────────────────────────────────────────────────────────
+    def step(self):
+        self.tick += 1
+        t = self.tick
+        S = self.settings
+        if self.terrain_dirty or (t % 60 == 0 and self.hooks.active("terrain")):
+            self.rebuild_terrain()
+
+        # food
+        mod = 0.12 if t < self.food_mod_until else 1.0
+        self.food_acc += 2.6 * S.food_rate * mod
+        rnd = random.random
+        while self.food_acc >= 1.0:
+            self.food_acc -= 1.0
+            for _ in range(3):
+                x, y = rnd() * (W - 2) + 1, rnd() * (H - 2) + 1
+                if rnd() * self.t_foodmax <= self.t_food[self._tidx(x, y)]:
+                    self.add_food(x, y)
+                    break
+
+        fn = self.hooks.get("on_tick")
+        if fn is not None:
+            try:
+                fn(self)
+            except Exception as e:
+                self.fail("on_tick", e)
+
+        if t % 3 == 0:
+            cg = {}
+            for c in self.creatures:
+                key = (int(c.x / CELL), int(c.y / CELL))
+                lst = cg.get(key)
+                if lst is None:
+                    cg[key] = [c]
+                else:
+                    lst.append(c)
+            self.cg = cg
+
+        if t % 15 == 0:
+            self._sync_predators()
+        self._update_predators(t)
+        self._update_creatures(t)
+
+        if t % 10 == 0:
+            self.compute_stats()
+        if t % 30 == 0:
+            self._insurance()
+            self.caption = self.compute_caption()
+        if t % 90 == 0:
+            self.compute_diversity()
+        if t % self.hist_stride == 0:
+            self.record_history()
