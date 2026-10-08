@@ -578,3 +578,26 @@ class World:
             if p.y < 1 or p.y > H - 1:
                 p.h = -p.h
                 p.y = min(H - 1, max(1, p.y))
+
+    def _spot(self, p, eye, eye2):
+        """pick a victim: of the creatures in view, the one that stands out most against the ground."""
+        cx, cy = int(p.x / CELL), int(p.y / CELL)
+        rc = int(eye / CELL) + 1
+        best, best_v, best_s = None, 0.0, 0.0
+        for gx in range(cx - rc, cx + rc + 1):
+            for gy in range(cy - rc, cy + rc + 1):
+                for c in self.cg.get((gx, gy), ()):
+                    if not c.alive:
+                        continue
+                    d2 = (c.x - p.x) ** 2 + (c.y - p.y) ** 2
+                    if d2 > eye2:
+                        continue
+                    idx = self._tidx(c.x, c.y)
+                    v = abs(c.hue - self.t_hue[idx]) * 3.0
+                    pspot = (0.02 + 0.98 * min(1.0, v * math.sqrt(v))) * (0.7 + 0.3 * c.size) * self.t_danger[idx]
+                    val = pspot * (1.0 - 0.5 * d2 / eye2)
+                    if val > best_v:
+                        best, best_v, best_s = c, val, pspot
+        if best is not None and random.random() < min(1.0, best_s):
+            return best
+        return None
