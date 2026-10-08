@@ -825,6 +825,28 @@
   }
   $('#btn-view').onclick = function () { S.view = S.view === 'full' ? 'simple' : 'full'; applyView(); };
 
+  function syncThemeButton(name) {
+    var b = $('#btn-theme'); if (!b) return;
+    var next = name === 'dark' ? 'light' : 'dark';
+    b.setAttribute('aria-label', 'Switch to ' + next + ' theme');
+    b.title = 'Switch to ' + next + ' theme';
+  }
+  function applyTheme(name, fade) {
+    var root = document.documentElement;
+    S.theme = name;
+    if (fade) {
+      root.classList.add('theme-fade');
+      setTimeout(function () { root.classList.remove('theme-fade'); }, 450);
+    }
+    root.dataset.theme = name;
+    var meta = $('meta[name="theme-color"]'); if (meta) meta.setAttribute('content', cssVar('--paper'));
+    readTheme(); buildGround();
+    S.creatures.forEach(function (e) { e.col = body(e.hue); });
+    if (S.schema) $$('#lgd-traits i').forEach(function (sw, i) { sw.style.background = traitColor(S.schema.genes[i].name, i); });
+    S.chartsDirty = true; S.histDirty = true;
+    syncThemeButton(name);
+  }
+
   // ── go ─────────────────────────────────────────────────────────────────────────
   if (typeof ResizeObserver !== 'undefined') {
     new ResizeObserver(function () { fitCanvas(); S.chartsDirty = true; S.histDirty = true; }).observe($('#worldwrap'));
@@ -833,6 +855,13 @@
   placeIndicators();
   if (document.fonts && document.fonts.ready) document.fonts.ready.then(placeIndicators);
   window.addEventListener('resize', placeIndicators);
+  S.theme = document.documentElement.dataset.theme === 'dark' ? 'dark' : 'light';
+  syncThemeButton(S.theme);
+  if (window.matchMedia) {
+    var scheme = window.matchMedia('(prefers-color-scheme: dark)');
+    var onScheme = function (ev) { if (!pref('theme', '')) applyTheme(ev.matches ? 'dark' : 'light', true); };
+    if (scheme.addEventListener) scheme.addEventListener('change', onScheme); else if (scheme.addListener) scheme.addListener(onScheme);
+  }
   applyView();
   fitCanvas();
   if (S.hintStage === 0) showHint('Click anywhere in the world to drop some food.', 0);
