@@ -61,8 +61,8 @@
   function body(h) { return rgbStr(mixRGB(rampRGB(h), INK, 0.1)); }
   var RAMP_BG = 'linear-gradient(to right,' + [0, 0.15, 0.33, 0.5, 0.66, 0.85, 1].map(ramp).join(',') + ')';
 
-  var TRAIT_COLORS = { speed: '#3f6fb5', size: '#7b5ea7', sense: '#b9801f', hue: '#c0643a', efficiency: '#4c8c64' };
-  var EXTRA_COLORS = ['#b5547f', '#2f8aa0', '#9a7a1f', '#6b5fb5', '#6e9a3c', '#b86b4f'];
+  var TRAIT_COLORS = { speed: '#6a82b5', size: '#8c76ad', sense: '#b8914a', hue: '#b4694f', efficiency: '#5f9170' };
+  var EXTRA_COLORS = ['#b0657f', '#4f93a3', '#a38a3f', '#7d73b0', '#7d9a55', '#b87b5c'];
   function traitColor(name, i) { return TRAIT_COLORS[name] || EXTRA_COLORS[i % EXTRA_COLORS.length]; }
 
   // ── state ──────────────────────────────────────────────────────────────────────
@@ -563,7 +563,7 @@
     lineChart($('#ch-traits'), names.map(function (nm, i) { return { data: hst.traits[nm], color: traitColor(nm, i) }; }), { min: 0, max: 1 });
     var mx = 10;
     hst.pop.concat(hst.food).forEach(function (v) { if (v > mx) mx = v; });
-    lineChart($('#ch-pop'), [{ data: hst.food, color: '#b9801f' }, { data: hst.pop, color: '#4b4396' }], { min: 0, max: mx });
+    lineChart($('#ch-pop'), [{ data: hst.food, color: '#b8914a' }, { data: hst.pop, color: '#4b4396' }], { min: 0, max: mx });
     $$('#custom-charts canvas').forEach(function (cv, i) {
       var c = hst.custom[i]; if (!c) return;
       lineChart(cv, c.series.map(function (d, k) { return { data: d, color: EXTRA_COLORS[(k + i) % EXTRA_COLORS.length] }; }), {});
@@ -629,7 +629,7 @@
       h.cur.forEach(function (b, i) {
         var bh = (g.h - 4) * b / mx;
         ctx.fillStyle = name === 'hue' ? ramp((i + 0.5) / h.cur.length) : traitColor(name, idx);
-        ctx.globalAlpha = 0.9;
+        ctx.globalAlpha = 0.78;
         ctx.fillRect(i * bw + 1, g.h - bh, bw - 2, bh);
       });
       ctx.globalAlpha = 1;

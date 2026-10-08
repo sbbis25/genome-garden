@@ -244,7 +244,7 @@ pre.code { margin: 0; background: var(--wash); border-radius: 10px; padding: 12p
 .gseg .bases { font: 500 12.5px/1.25 var(--mono); letter-spacing: 0.03em; word-break: break-all; margin-top: 2px; }
 .gseg .bar { height: 3px; background: var(--line); border-radius: 2px; margin-top: 5px; overflow: hidden; }
 .gseg .bar i { display: block; height: 100%; background: var(--accent); border-radius: 2px; }
-.bA { color: #3f8f5b; } .bC { color: #3f6fb5; } .bG { color: #a8710a; } .bT { color: #c0394f; }
+.bA { color: #3c7a52; } .bC { color: #4a6498; } .bG { color: #8f6a1c; } .bT { color: #a8445a; }
 .tiles { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
 .tile { padding: 0; }
 .tile b { display: block; font: 500 16px var(--mono); font-variant-numeric: tabular-nums; }
