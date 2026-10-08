@@ -109,17 +109,17 @@ select.btn { appearance: none; padding-right: 30px; background-image: linear-gra
 /* ── layout ────────────────────────────────────────────────────────────────── */
 .app {
   display: grid;
-  grid-template-columns: 300px minmax(0, 1fr) 320px;
-  gap: 12px;
-  padding: 12px;
+  grid-template-columns: 292px minmax(0, 1fr) 316px;
+  gap: 28px;
+  padding: 6px 20px 20px;
   flex: 1;
   min-height: 0;
 }
-.app[data-view="simple"] { grid-template-columns: 300px minmax(0, 1fr); }
+.app[data-view="simple"] { grid-template-columns: 292px minmax(0, 1fr); }
 .app[data-view="simple"] .right, .app[data-view="simple"] .science { display: none; }
-.col { min-height: 0; display: flex; flex-direction: column; gap: 12px; }
-.card { background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius); }
-.right { overflow-y: auto; padding-right: 2px; }
+.col { min-height: 0; display: flex; flex-direction: column; gap: 14px; }
+.card { background: none; border: 0; }
+.right { overflow-y: auto; padding-right: 4px; gap: 26px; }
 
 /* ── left: tabs and controls ───────────────────────────────────────────────── */
 .left .card { flex: 1; min-height: 0; display: flex; flex-direction: column; }
