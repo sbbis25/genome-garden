@@ -65,3 +65,33 @@ def _control_dict(c):
     else:
         base.update(kind="toggle")
     return base
+
+
+class World:
+    width, height = W, H
+
+    def __init__(self, workshop_path):
+        self.loader = WorkshopLoader(workshop_path)
+        self.settings = Settings()
+        self.controls = self.settings
+        self.hooks = self.loader.current
+        self.load_error = None
+        self.gene_sig = None
+        self.genes = G.default_genes()
+        self.needs_restart = False
+        self.schema_version = 1
+        self.terrain_version = 0
+        self.msg_id = 0
+        self.msgs = deque(maxlen=6)
+        self.mult = 1.0
+        self.paused = False
+        self.watch_id = None
+        self.next_id = 1
+        self.terrain_dirty = True
+        self.food_mod_until = 0
+        self.stats = {}
+        self.stats2 = {"div": 0.0, "clusters": 1, "maxgen": 0}
+        self.caption = "Warming up. Watch the colours and bars for a minute."
+        self.hist_stride = TICKS_PER_SEC
+        self.reload(first=True)
+        self.reset()
