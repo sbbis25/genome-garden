@@ -127,4 +127,73 @@
     }).catch(function () {});
   }
 
+  // ── frames ─────────────────────────────────────────────────────────────────────
+  function posOf(e, now) {
+    var k = Math.min(1, (now - e.t0) / S.frameDur);
+    return { x: e.sx + (e.tx - e.sx) * k, y: e.sy + (e.ty - e.sy) * k };
+  }
+
+  function onFrame(f) {
+    var now = performance.now();
+    if (S.frame) S.frameDur = Math.max(30, Math.min(140, now - S.frameAt));
+    S.frameAt = now;
+    S.frame = f;
+
+    var seen = new Set();
+    for (var i = 0; i < f.c.length; i++) {
+      var c = f.c[i], id = c[0];
+      seen.add(id);
+      var e = S.creatures.get(id);
+      if (!e) {
+        e = { id: id, sx: c[1], sy: c[2], tx: c[1], ty: c[2], t0: now, born: S.firstFrame ? -9999 : now, col: ramp(c[3]) };
+        S.creatures.set(id, e);
+      } else {
+        var p = posOf(e, now);
+        e.sx = p.x; e.sy = p.y; e.tx = c[1]; e.ty = c[2]; e.t0 = now;
+      }
+      e.hue = c[3]; e.size = c[4]; e.h = c[5];
+    }
+    S.creatures.forEach(function (e, id) {
+      if (!seen.has(id)) {
+        var p = posOf(e, now);
+        if (S.ghosts.length < 90) S.ghosts.push({ x: p.x, y: p.y, size: e.size, col: e.col, t: now });
+        S.creatures.delete(id);
+      }
+    });
+    for (var j = 0; j < f.p.length; j++) {
+      var q = f.p[j], pr = S.preds[j];
+      if (!pr) { S.preds[j] = { sx: q[0], sy: q[1], tx: q[0], ty: q[1], t0: now }; }
+      else { var pp = posOf(pr, now); pr.sx = pp.x; pr.sy = pp.y; pr.tx = q[0]; pr.ty = q[1]; pr.t0 = now; }
+    }
+    S.preds.length = f.p.length;
+
+    $('#stat-n').textContent = f.n;
+    $('#stat-gen').textContent = f.s2 ? f.s2.maxgen : 0;
+    $('#t-div').textContent = f.s2 ? Math.round(f.s2.div * 100) + '%' : '-';
+    $('#t-clu').textContent = f.s2 ? f.s2.clusters : '-';
+    $('#t-gen').textContent = f.s2 ? f.s2.maxgen : '-';
+    $$('#speed-seg button').forEach(function (b) {
+      var m = parseFloat(b.dataset.mult);
+      b.setAttribute('aria-pressed', String(f.paused ? m === 0 : m === f.mult));
+    });
+    $('#achieved').textContent = f.paused ? 'paused' : (f.x < f.mult * 0.85 ? 'x' + f.x.toFixed(1) + ' (max)' : '');
+    $('#worldwrap').classList.toggle('paused', !!f.paused);
+
+    if ($('#caption-text').textContent !== f.caption) $('#caption-text').textContent = f.caption;
+
+    f.msgs.forEach(function (m) {
+      if (m[0] > S.lastMsg) { if (!S.firstFrame) toast(m[1]); S.lastMsg = m[0]; }
+    });
+    S.firstFrame = false;
+
+    if (f.sv !== S.sv) fetchSchema();
+    if (f.tv !== S.tv) fetchTerrain();
+    if (f.hv !== S.hv && now - S.histAt > 400) fetchHistory();
+
+    updateBanners(f);
+    S.watch = f.watch;
+    updateCard(now);
+    if (f.stats && S.view === 'full' && now - S.statsAt > 250) { S.statsAt = now; drawHistograms(); }
+  }
+
 })();
