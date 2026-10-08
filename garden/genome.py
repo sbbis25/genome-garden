@@ -31,3 +31,16 @@ def default_genes():
 
 
 CORE_GENES = tuple(default_genes().keys())
+
+
+def layout(genes):
+    """[(name, start, end, lo, hi)] for each gene, in table order."""
+    out, pos = [], 0
+    for name, g in genes.items():
+        out.append((name, pos, pos + g.length, g.range[0], g.range[1]))
+        pos += g.length
+    return out
+
+
+def dna_length(genes):
+    return sum(g.length for g in genes.values())
