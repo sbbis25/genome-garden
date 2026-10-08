@@ -226,3 +226,7 @@ pre.code { margin: 0; background: #0a1016; border: 1px solid var(--line); border
   .app { grid-template-columns: 280px minmax(0, 1fr); }
   .app[data-view="full"] .right { display: none; }
 }
+@media (prefers-reduced-motion: reduce) {
+  .ctl.pulse input[type="range"] { animation: none; outline: 2px solid var(--accent); }
+  .toast { animation: none; }
+}
