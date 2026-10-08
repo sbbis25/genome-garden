@@ -27,15 +27,6 @@
   --t3: 420ms;
   --font: "Mona Sans", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   --mono: "Chivo Mono", ui-monospace, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
-  /* legacy aliases, removed once every section is restyled */
-  --bg: var(--paper);
-  --panel: var(--raised);
-  --panel-2: var(--wash);
-  --text: var(--ink);
-  --muted: var(--ink-3);
-  --accent-ink: #ffffff;
-  --track: var(--line-2);
-  /* end legacy aliases */
   color-scheme: light;
 }
 
