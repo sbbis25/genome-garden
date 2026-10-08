@@ -870,3 +870,27 @@ class World:
                 "energy": round(c.energy), "age": c.age // TICKS_PER_SEC, "parent": c.parent,
                 "gen": c.gen, "kids": c.kids, "score": round(c.score, 2),
                 "contrast": round(abs(c.hue - self.ground_hue(c.x, c.y)), 2)}
+
+    def frame_bytes(self, achieved):
+        cs = self.creatures
+        foods = []
+        for lst in self.fgrid.values():
+            for f in lst:
+                foods.append([round(f[0], 1), round(f[1], 1)])
+        errors = list(self.hooks.errors.values())
+        d = {
+            "tick": self.tick, "n": len(cs), "x": round(achieved, 1), "mult": self.mult, "paused": self.paused,
+            "c": [[c.id, round(c.x, 1), round(c.y, 1), round(c.hue, 3), round(c.size, 2), round(c.h, 2)]
+                  for c in cs],
+            "f": foods,
+            "p": [[round(p.x, 1), round(p.y, 1)] for p in self.preds],
+            "eye": self.settings.eyesight,
+            "stats": self.stats, "s2": self.stats2, "caption": self.caption,
+            "msgs": list(self.msgs), "errors": errors, "load_error": self.load_error,
+            "restart": self.needs_restart,
+            "sv": self.schema_version, "tv": self.terrain_version, "hv": self.hist_version,
+            "watch": self.detail(self.watch_id) if self.watch_id is not None else None,
+            "meteor": list(getattr(self, "meteor", ())) if getattr(self, "meteor", None) else None,
+            "food_n": self.food_n,
+        }
+        return json.dumps(d, separators=(",", ":")).encode("utf-8")
