@@ -271,6 +271,14 @@ pre.code { margin: 0; background: var(--wash); border-radius: 10px; padding: 12p
 @media (max-width: 1020px) {
   #preset-select { display: none; }
 }
+.narrow-note { display: none; flex: 1; flex-direction: column; align-items: center; justify-content: center; gap: 10px; padding: 32px; text-align: center; }
+.narrow-note svg { width: 36px; height: 36px; }
+.narrow-note h1 { margin: 6px 0 0; font-size: 20px; font-weight: 760; letter-spacing: -0.01em; }
+.narrow-note p { margin: 0; color: var(--ink-3); max-width: 28ch; }
+@media (max-width: 899px) {
+  .top, .banner, .app { display: none; }
+  .narrow-note { display: flex; }
+}
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
   .ctl.pulse input[type="range"] { outline: 2px solid var(--accent); }
