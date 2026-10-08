@@ -283,3 +283,30 @@ class World:
         self.t_foodmax = max(food) or 1.0
         self.terrain_dirty = False
         self.terrain_version += 1
+
+    # ── selection ────────────────────────────────────────────────────────────
+    def refresh_score(self, c):
+        """how strongly this creature breeds: >1 breeds sooner and more, <1 later and less."""
+        fn = self.hooks.get("fitness")
+        score = 1.0
+        if fn is not None:
+            try:
+                score = float(fn(c, self))
+                if score != score or score in (float("inf"), float("-inf")):
+                    raise ValueError("fitness() returned %r; it needs to return a normal number" % (score,))
+            except Exception as e:
+                self.fail("fitness", e)
+                score = 1.0
+            score = max(0.0, score)
+        else:
+            s = self.settings
+            total = 0.0
+            for name, key in REWARDS:
+                w = s[key]
+                if w:
+                    lo, hi = self.genes[name].range if name in self.genes else (0.0, 1.0)
+                    total += w * ((c.t[name] - lo) / (hi - lo) - 0.5) * 2.0
+            if total:
+                score = math.exp(1.5 * total)
+        c.score = score
+        c.thresh = 130.0 if score < 0.0001 else min(130.0, max(45.0, 85.0 / math.sqrt(score)))
