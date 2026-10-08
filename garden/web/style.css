@@ -1,4 +1,7 @@
 /* genome garden: a dark field-instrument look. light-on-ink, one teal accent, amber for "you pinned this". */
+@font-face { font-family: "Mona Sans"; src: url("/fonts/mona-sans.woff2") format("woff2"); font-weight: 200 900; font-stretch: 75% 125%; font-display: swap; }
+@font-face { font-family: "Chivo Mono"; src: url("/fonts/chivo-mono.woff2") format("woff2"); font-weight: 100 900; font-display: swap; }
+
 :root {
   --bg: #080d12;
   --panel: #0f161d;
@@ -13,8 +16,8 @@
   --danger: #ff6b7a;
   --track: #22313e;
   --radius: 10px;
-  --font: -apple-system, "Segoe UI", system-ui, Roboto, "Helvetica Neue", Arial, sans-serif;
-  --mono: ui-monospace, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
+  --font: "Mona Sans", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --mono: "Chivo Mono", ui-monospace, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
   color-scheme: dark;
 }
 
