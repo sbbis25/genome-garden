@@ -314,6 +314,7 @@ pre.code { margin: 0; background: var(--wash); border-radius: 10px; padding: 12p
 .preset h4 { margin: 0 0 2px; font-size: 15px; font-weight: 700; }
 .preset p { margin: 0 0 10px; color: var(--ink-3); font-size: 13px; }
 .preset .row { display: flex; gap: 8px; }
+:root[data-theme="dark"] .preset .btn.primary { background: var(--accent-soft); color: var(--accent); }
 
 /* ── centre: the world ─────────────────────────────────────────────────────── */
 .center { min-width: 0; padding-left: 28px; gap: 0; }
