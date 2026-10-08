@@ -25,3 +25,31 @@ STATIC = {
     "/style.css": ("style.css", "text/css; charset=utf-8"),
 }
 COMMANDS = {"set", "reset", "reset_settings", "preset", "action", "button", "click", "speed", "watch"}
+
+
+class Sim(threading.Thread):
+    """runs the world and publishes ready-made json for the http threads to hand out."""
+
+    def __init__(self, world):
+        threading.Thread.__init__(self, daemon=True)
+        self.world = world
+        self.q = queue.Queue()
+        self.frame = b"{}"
+        self.terrain = b"{}"
+        self.history = b"{}"
+        self.schema = b"{}"
+        self._seen = {"tv": -1, "hv": -1, "sv": -1}
+        self.achieved = 1.0
+
+    def publish(self, force=False):
+        w = self.world
+        if w.terrain_version != self._seen["tv"] or force:
+            self.terrain = w.terrain_json()
+            self._seen["tv"] = w.terrain_version
+        if w.hist_version != self._seen["hv"] or force:
+            self.history = w.history_json()
+            self._seen["hv"] = w.hist_version
+        if w.schema_version != self._seen["sv"] or force:
+            self.schema = w.schema_json()
+            self._seen["sv"] = w.schema_version
+        self.frame = w.frame_bytes(self.achieved)
