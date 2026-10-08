@@ -123,21 +123,22 @@ select.btn { appearance: none; padding-right: 30px; background-image: linear-gra
 
 /* ── left: tabs and controls ───────────────────────────────────────────────── */
 .left .card { flex: 1; min-height: 0; display: flex; flex-direction: column; }
-.tabs { display: flex; border-bottom: 1px solid var(--line); }
-.tabs button { flex: 1; background: none; border: 0; padding: 12px 6px; color: var(--muted); border-bottom: 2px solid transparent; position: relative; }
-.tabs button[aria-selected="true"] { color: var(--text); border-bottom-color: var(--accent); font-weight: 600; }
-.tabs .dot { position: absolute; top: 9px; right: 14px; width: 8px; height: 8px; border-radius: 50%; background: var(--danger); display: none; }
+.tabs { display: flex; gap: 4px; border-bottom: 1px solid var(--line); position: relative; }
+.tabs button { flex: 1; background: none; border: 0; padding: 10px 6px 12px; color: var(--ink-3); font-weight: 560; position: relative; border-bottom: 2px solid transparent; margin-bottom: -1px; transition: color var(--t1) var(--ease); }
+.tabs button:hover { color: var(--ink); }
+.tabs button[aria-selected="true"] { color: var(--ink); border-bottom-color: var(--ink); }
+.tabs .dot { position: absolute; top: 9px; right: 14px; width: 7px; height: 7px; border-radius: 50%; background: var(--danger); display: none; }
 .tabs .dot.on { display: block; }
-.panel { overflow-y: auto; flex: 1; padding: 6px 12px 16px; }
+.panel { overflow-y: auto; flex: 1; padding: 6px 6px 16px 0; }
 .panel[hidden] { display: none; }
-.panel-foot { border-top: 1px solid var(--line); padding: 8px 12px; flex: none; }
+.panel-foot { border-top: 1px solid var(--line); padding: 12px 0 2px; flex: none; }
 
 .group { border-bottom: 1px solid var(--line); }
 .group:last-child { border-bottom: 0; }
-.group-head { width: 100%; text-align: left; background: none; border: 0; padding: 12px 0; display: flex; align-items: center; gap: 8px; font-weight: 600; }
-.group-head .chev { width: 8px; height: 8px; border-right: 2px solid var(--muted); border-bottom: 2px solid var(--muted); transform: rotate(-45deg); transition: transform 0.15s; }
+.group-head { width: 100%; text-align: left; background: none; border: 0; padding: 14px 0; display: flex; align-items: center; gap: 10px; font-weight: 640; font-stretch: 106%; color: var(--ink); }
+.group-head .chev { width: 7px; height: 7px; border-right: 1.5px solid var(--ink-3); border-bottom: 1.5px solid var(--ink-3); transform: rotate(-45deg); transition: transform var(--t2) var(--ease); }
 .group.open .group-head .chev { transform: rotate(45deg); }
-.group-body { display: none; padding: 0 0 14px; }
+.group-body { display: none; padding: 0 0 12px; }
 .group.open .group-body { display: block; }
 
 .ctl { margin-bottom: 16px; }
