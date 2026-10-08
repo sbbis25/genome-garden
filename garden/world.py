@@ -601,3 +601,22 @@ class World:
         if best is not None and random.random() < min(1.0, best_s):
             return best
         return None
+
+    def _insurance(self):
+        if not self.settings.insurance:
+            return
+        n = len(self.creatures)
+        if n >= 8:
+            return
+        if n == 0:
+            for _ in range(25):
+                self.make_creature(G.random_dna(self.genes), random.uniform(4, W - 4),
+                                   random.uniform(4, H - 4), None, 0, 60)
+            self.say("Everyone died. Extinction insurance dropped in a fresh population.")
+            return
+        survivors = list(self.creatures)
+        while len(self.creatures) < 20:
+            s = random.choice(survivors)
+            self.make_creature(self.mutate_dna(s.dna), s.x + random.uniform(-3, 3), s.y + random.uniform(-3, 3),
+                               s.id, s.gen + 1, 60)
+        self.say("Almost extinct. Extinction insurance cloned the survivors.")
