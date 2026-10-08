@@ -84,3 +84,14 @@ from garden.api import *
 # def on_tick(world):
 #     if world.tick % 900 == 0:                    # every 30 seconds...
 #         world.kill_in_circle(80, 50, 15)         # ...a meteor hits the middle
+
+
+# ── new genes ────────────────────────────────────────────────────────────────
+# a gene is a stretch of dna that decodes to a number. a new gene does nothing
+# until one of your hooks reads it (c.night_owl below). after you add one, press
+# "restart world" in the banner so every creature gets the new stretch of dna.
+#
+# GENES["night_owl"] = Gene(length=12, range=(0, 1), description="how much it loves the dark")
+#
+# def fitness(c, world):
+#     return 1 + 2 * c.night_owl
