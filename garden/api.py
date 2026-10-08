@@ -103,3 +103,19 @@ def most_similar(me, candidates):
 def most_different(me, candidates):
     """the candidate whose dna is furthest from mine (none if there are none)."""
     return max(candidates, key=lambda o: hamming(me.dna, o.dna), default=None)
+
+
+def point_mutate(dna, rate):
+    """copy of dna where each letter has a `rate` chance (0..1) of becoming a different letter."""
+    out = list(dna)
+    for i, ch in enumerate(out):
+        if random.random() < rate:
+            out[i] = random.choice([b for b in BASES if b != ch])
+    return "".join(out)
+
+
+def crossover(dna_a, dna_b, cut=None):
+    """child dna: the start of one parent joined to the end of the other."""
+    if cut is None:
+        cut = random.randrange(1, len(dna_a))
+    return dna_a[:cut] + dna_b[cut:]
