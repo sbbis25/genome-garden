@@ -909,3 +909,37 @@ class World:
         return json.dumps({"v": self.hist_version, "pop": self.hist["pop"], "food": self.hist["food"],
                            "div": self.hist["div"], "traits": self.hist["traits"],
                            "custom": custom}).encode("utf-8")
+
+    def schema_json(self):
+        s = self.settings
+        groups = []
+        defs = s.definitions()
+        for gid, title in GROUPS + [("mine", "My controls")]:
+            ctrls = []
+            for d in defs:
+                if d["group"] != gid:
+                    continue
+                item = dict(d)
+                item["value"] = s[d["id"]]
+                item["overridden"] = bool(d.get("hook") and self.hooks.active(d["hook"]))
+                ctrls.append(item)
+            actions = []
+            if gid == "disasters":
+                actions = [dict(a, kind="action") for a in BUILTIN_ACTIONS]
+            if gid == "mine":
+                actions = [dict(id=str(i), label=b.label, help="", kind="button")
+                           for i, b in enumerate(self.hooks.buttons)]
+            if ctrls or actions:
+                groups.append({"id": gid, "title": title, "controls": ctrls, "actions": actions})
+        presets = []
+        for p in PRESETS:
+            code = "SETTINGS = {\n" + "".join("    %r: %r,\n" % (k, v) for k, v in p["values"].items()) + "}"
+            presets.append(dict(p, code=code))
+        genes = [{"name": n, "a": a, "b": b, "lo": lo, "hi": hi,
+                  "desc": self.genes[n].description if n in self.genes else ""}
+                 for n, a, b, lo, hi in self.layout]
+        hooks = {n: {"defined": n in self.hooks.fns, "failed": n in self.hooks.disabled} for n in HOOK_NAMES}
+        return json.dumps({"version": self.schema_version, "groups": groups, "presets": presets,
+                           "genes": genes, "dna_len": self.dna_len, "hooks": hooks,
+                           "changed": s.changed(), "mating_labels": MATING_LABELS,
+                           "chart_count": len(self.hooks.charts)}).encode("utf-8")
