@@ -52,3 +52,17 @@ class Toggle:
 
     def __init__(self, id, label, default=False, help=""):
         self.id, self.label, self.default, self.help = id, label, bool(default), help
+
+
+class Chart:
+    """a live chart. fn(world) returns one number, or a list of numbers for several lines."""
+
+    def __init__(self, title, fn):
+        self.title, self.fn = title, fn
+
+
+class Button:
+    """a button in the my controls panel. fn(world) runs when it is pressed."""
+
+    def __init__(self, label, fn):
+        self.label, self.fn = label, fn
