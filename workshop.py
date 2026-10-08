@@ -95,3 +95,19 @@ from garden.api import *
 #
 # def fitness(c, world):
 #     return 1 + 2 * c.night_owl
+
+
+# ── your own controls, charts and buttons ────────────────────────────────────
+# they appear in the "my controls" group and the charts panel. no html needed.
+#
+# CONTROLS = [
+#     Slider("meteor_rate", "Meteor frequency", 0, 10, default=0, step=1),
+#     Toggle("hunger_games", "Hunger games"),
+#     Choice("season", "Season", ["spring", "winter"]),
+# ]
+# CHARTS = [
+#     Chart("Average speed", lambda world: world.mean("speed")),
+# ]
+# BUTTONS = [
+#     Button("Wipe the middle", lambda world: world.kill_in_circle(80, 50, 20)),
+# ]
