@@ -143,3 +143,22 @@ input[type="range"]::-moz-range-thumb { width: 16px; height: 16px; border-radius
 .actions { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
 .actions .btn { text-align: center; font-size: 13px; }
 .actions .btn.danger:hover { border-color: var(--danger); color: #ffd5da; }
+
+/* ── code + presets tabs ───────────────────────────────────────────────────── */
+.sec { margin: 14px 0 6px; font-size: 12px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); font-weight: 650; }
+.hookrow { display: flex; flex-wrap: wrap; gap: 6px; }
+.hook { font: 12px var(--mono); padding: 3px 8px; border-radius: 6px; border: 1px solid var(--line-2); color: var(--muted); }
+.hook.on { color: var(--accent); border-color: var(--accent); }
+.hook.bad { color: var(--danger); border-color: var(--danger); }
+pre.code { margin: 0; background: #0a1016; border: 1px solid var(--line); border-radius: 8px; padding: 10px 12px; font: 12px/1.5 var(--mono); overflow-x: auto; white-space: pre; color: #cfe3f0; }
+.codebox { position: relative; display: flex; flex-direction: column; align-items: flex-start; }
+.codebox pre.code { align-self: stretch; }
+.codebox .copy { margin-top: 6px; }
+.err { background: #2a1217; border: 1px solid #5a222b; border-radius: 8px; padding: 8px 10px; margin-bottom: 8px; font-size: 13px; }
+.err b { color: #ffd5da; }
+.err code { font-family: var(--mono); display: block; margin-top: 4px; color: #ffb8c0; }
+.tip { font-size: 13px; color: var(--muted); }
+.preset { padding: 12px; margin: 10px 0; background: var(--panel-2); border: 1px solid var(--line); border-radius: 10px; }
+.preset h4 { margin: 0 0 2px; font-size: 14px; }
+.preset p { margin: 0 0 10px; color: var(--muted); font-size: 13px; }
+.preset .row { display: flex; gap: 8px; }
