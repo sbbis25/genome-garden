@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Genome Garden</title>
+<link rel="stylesheet" href="/style.css">
+</head>
+<body>
+
+<header class="top">
+  <div class="brand">
+    <svg viewBox="0 0 32 32" aria-hidden="true" fill="none" stroke-width="2.4" stroke-linecap="round">
+      <path d="M8 3c0 8 16 8 16 16s-16 8-16 10" stroke="#46e0c0"/>
+      <path d="M24 3c0 8-16 8-16 16s16 8 16 10" stroke="#ffb454"/>
+      <path d="M11 9h10M10 23h12M9.5 16h13" stroke="#9fb2c1" stroke-width="1.8"/>
+    </svg>
+    Genome Garden
+  </div>
+  <select id="preset-select" class="btn" aria-label="Load a preset scenario"><option value="">Presets...</option></select>
+  <button id="btn-restart" class="btn" title="Start a fresh population with your current settings">Restart world</button>
+  <div class="spacer"></div>
+  <div class="chip-stat"><b id="stat-n">0</b><span>creatures</span></div>
+  <div class="chip-stat"><b id="stat-gen">0</b><span>generations</span></div>
+  <div class="seg-group" id="speed-seg" role="group" aria-label="Time speed">
+    <button data-mult="0" aria-pressed="false" title="Pause">Pause</button>
+    <button data-mult="0.5" aria-pressed="false" title="Half speed: easier to hover and click creatures">0.5x</button>
+    <button data-mult="1" aria-pressed="true">1x</button>
+    <button data-mult="3" aria-pressed="false">3x</button>
+    <button data-mult="10" aria-pressed="false">10x</button>
+    <button data-mult="30" aria-pressed="false">30x</button>
+  </div>
+  <div class="achieved" id="achieved" title="How fast time is actually running"></div>
+  <button id="btn-view" class="btn primary">Show the science</button>
+</header>
+
+</body>
+</html>
