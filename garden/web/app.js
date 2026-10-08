@@ -28,6 +28,20 @@
   }
   function fmtNum(v) { return Math.abs(v) >= 10 ? v.toFixed(1) : v.toFixed(2); }
 
+  function placeIndicator(group, activeSel) {
+    var a = group.querySelector(activeSel);
+    if (!a) return;
+    var first = !group.dataset.placed;
+    if (first) group.classList.add('still');
+    group.style.setProperty('--ix', a.offsetLeft + 'px');
+    group.style.setProperty('--iw', a.offsetWidth + 'px');
+    if (first) { void group.offsetWidth; group.classList.remove('still'); group.dataset.placed = '1'; }
+  }
+  function placeIndicators() {
+    placeIndicator($('.tabs'), 'button[aria-selected="true"]');
+    placeIndicator($('#speed-seg'), 'button[aria-pressed="true"]');
+  }
+
   // ── colour ramp: body hue 0..1 as natural dyes (sage, straw, clay, slate). the same ramp tints the ground. ──
   var STOPS = [[0, [111, 159, 120]], [0.33, [201, 168, 92]], [0.66, [185, 116, 90]], [1, [112, 136, 187]]];
   function rampRGB(h) {
@@ -459,6 +473,7 @@
   function switchTab(name) {
     S.tab = name;
     $$('.tabs button').forEach(function (b) { b.setAttribute('aria-selected', String(b.dataset.tab === name)); });
+    placeIndicator($('.tabs'), 'button[aria-selected="true"]');
     ['tune', 'code', 'presets'].forEach(function (n) { $('#panel-' + n).hidden = n !== name; });
     if (name === 'code') renderCode();
   }
@@ -761,6 +776,9 @@
     new ResizeObserver(function () { fitCanvas(); S.chartsDirty = true; }).observe($('#worldwrap'));
   }
   window.addEventListener('resize', function () { fitCanvas(); S.chartsDirty = true; });
+  placeIndicators();
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(placeIndicators);
+  window.addEventListener('resize', placeIndicators);
   applyView();
   fitCanvas();
   if (S.hintStage === 0) showHint('Click anywhere in the world to drop some food.', 0);

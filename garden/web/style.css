@@ -115,9 +115,11 @@ select.btn { appearance: none; padding-right: 30px; background-image: linear-gra
 /* ── left: tabs and controls ───────────────────────────────────────────────── */
 .left .card { flex: 1; min-height: 0; display: flex; flex-direction: column; }
 .tabs { display: flex; gap: 4px; border-bottom: 1px solid var(--line); position: relative; }
-.tabs button { flex: 1; background: none; border: 0; padding: 10px 6px 12px; color: var(--ink-3); font-weight: 560; position: relative; border-bottom: 2px solid transparent; margin-bottom: -1px; transition: color var(--t1) var(--ease); }
+.tabs button { flex: 1; background: none; border: 0; padding: 10px 6px 12px; color: var(--ink-3); font-weight: 560; position: relative; transition: color var(--t1) var(--ease); }
 .tabs button:hover { color: var(--ink); }
-.tabs button[aria-selected="true"] { color: var(--ink); border-bottom-color: var(--ink); }
+.tabs button[aria-selected="true"] { color: var(--ink); }
+.tabs::after { content: ""; position: absolute; left: 0; bottom: -1px; height: 2px; width: var(--iw, 0px); transform: translateX(var(--ix, 0px)); background: var(--ink); border-radius: 2px; transition: transform var(--t3) var(--ease), width var(--t3) var(--ease); }
+.tabs.still::after, .seg-group.still::before { transition: none; }
 .tabs .dot { position: absolute; top: 9px; right: 14px; width: 7px; height: 7px; border-radius: 50%; background: var(--danger); display: none; }
 .tabs .dot.on { display: block; }
 .panel { overflow-y: auto; flex: 1; padding: 6px 6px 16px 0; }
