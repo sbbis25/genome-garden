@@ -83,3 +83,23 @@ def nearest(me, others):
         if d < best_d:
             best, best_d = o, d
     return best
+
+
+def hamming(a, b):
+    """how many letters differ between two dna strings of the same length."""
+    return sum(1 for x, y in zip(a, b) if x != y)
+
+
+def similarity(a, b):
+    """0..1, how alike two dna strings are (1 = identical)."""
+    return 1.0 - hamming(a, b) / float(len(a))
+
+
+def most_similar(me, candidates):
+    """the candidate whose dna is closest to mine (none if there are none)."""
+    return min(candidates, key=lambda o: hamming(me.dna, o.dna), default=None)
+
+
+def most_different(me, candidates):
+    """the candidate whose dna is furthest from mine (none if there are none)."""
+    return max(candidates, key=lambda o: hamming(me.dna, o.dna), default=None)
