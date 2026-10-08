@@ -1,40 +1,64 @@
-/* genome garden: a dark field-instrument look. light-on-ink, one teal accent, amber for "you pinned this". */
+/* genome garden: a quiet light interface. ink on cool paper, natural-dye colour only inside the colony, one deep accent for selection. */
 @font-face { font-family: "Mona Sans"; src: url("/fonts/mona-sans.woff2") format("woff2"); font-weight: 200 900; font-stretch: 75% 125%; font-display: swap; }
 @font-face { font-family: "Chivo Mono"; src: url("/fonts/chivo-mono.woff2") format("woff2"); font-weight: 100 900; font-display: swap; }
 
 :root {
-  --bg: #080d12;
-  --panel: #0f161d;
-  --panel-2: #141e27;
-  --line: #1f2d39;
-  --line-2: #2b3d4c;
-  --text: #dde8f0;
-  --muted: #9fb2c1;
-  --accent: #46e0c0;
-  --accent-ink: #03211b;
-  --amber: #ffb454;
-  --danger: #ff6b7a;
-  --track: #22313e;
-  --radius: 10px;
+  --paper: #f3f2f7;
+  --raised: #fbfbfd;
+  --wash: #e9e8f0;
+  --wash-2: #dfdee9;
+  --line: #dedde8;
+  --line-2: #cbcad8;
+  --ink: #1b1a24;
+  --ink-2: #4b4a5a;
+  --ink-3: #666575;
+  --accent: #4b4396;
+  --accent-soft: #e7e4f5;
+  --amber: #7a4f00;
+  --amber-soft: #f6e8c6;
+  --danger: #b3263e;
+  --danger-soft: #fbe6ea;
+  --shadow-1: 0 1px 2px rgba(27, 26, 36, 0.08), 0 4px 14px rgba(27, 26, 36, 0.07);
+  --radius: 12px;
+  --radius-s: 8px;
+  --ease: cubic-bezier(0.16, 1, 0.3, 1);
+  --t1: 140ms;
+  --t2: 240ms;
+  --t3: 420ms;
   --font: "Mona Sans", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   --mono: "Chivo Mono", ui-monospace, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
-  color-scheme: dark;
+  /* legacy aliases, removed once every section is restyled */
+  --bg: var(--paper);
+  --panel: var(--raised);
+  --panel-2: var(--wash);
+  --text: var(--ink);
+  --muted: var(--ink-3);
+  --accent-ink: #ffffff;
+  --track: var(--line-2);
+  /* end legacy aliases */
+  color-scheme: light;
 }
 
 * { box-sizing: border-box; }
 html, body { height: 100%; }
 body {
   margin: 0;
-  background: var(--bg);
-  color: var(--text);
-  font: 14px/1.4 var(--font);
+  background: var(--paper);
+  color: var(--ink);
+  font: 14px/1.45 var(--font);
+  font-optical-sizing: auto;
   overflow: hidden;
   -webkit-font-smoothing: antialiased;
   display: flex;
   flex-direction: column;
 }
-button { font: inherit; color: inherit; cursor: pointer; }
+button, input, select { font: inherit; color: inherit; }
+button { cursor: pointer; }
 button:focus-visible, input:focus-visible, select:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+::selection { background: var(--accent-soft); color: var(--ink); }
+* { scrollbar-width: thin; scrollbar-color: var(--line-2) transparent; }
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-thumb { background: var(--line-2); border-radius: 10px; border: 3px solid transparent; background-clip: content-box; }
 .mono { font-family: var(--mono); }
 
 /* ── top bar ───────────────────────────────────────────────────────────────── */
