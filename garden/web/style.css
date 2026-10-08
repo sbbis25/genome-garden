@@ -91,14 +91,14 @@
   --danger-soft: #3d1a23;
   --shadow-1: 0 1px 2px rgba(0, 0, 0, 0.45), 0 6px 18px rgba(0, 0, 0, 0.4);
   --world-base: 36, 35, 47;
-  --ground-amount: 0.62;
-  --body-tint: 255, 255, 255;
-  --body-amount: 0.06;
+  --ground-amount: 0.78;
+  --body-tint: 36, 35, 47;
+  --body-amount: 0.4;
   --grid: rgba(255, 255, 255, 0.05);
   --food: rgba(236, 234, 244, 0.7);
   --pred: #e0566d;
   --pred-edge: #240c13;
-  --pred-ring: rgba(224, 86, 109, 0.32);
+  --pred-ring: rgba(224, 86, 109, 0.5);
   --creature-edge: rgba(0, 0, 0, 0.4);
   --creature-nose: rgba(0, 0, 0, 0.55);
   --hover-ring: rgba(236, 234, 244, 0.85);
