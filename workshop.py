@@ -1,0 +1,113 @@
+"""
+workshop.py  -  the one file you edit.
+
+the simulation is already running with no code at all: use the sliders first.
+when you want more, uncomment an example below: delete the "# " at the start of each
+code line (the hash and the space after it, or python complains about indentation).
+in most editors you can select the lines and press ctrl+/ (cmd+/ on a mac). then save
+the file and the running world picks it up. mistakes show up in the "code" tab with
+the line number, and the world keeps running.
+
+handy things on a creature `c`:
+    c.speed  c.size  c.sense  c.hue  c.efficiency    (its traits)
+    c.x  c.y  c.energy  c.age  c.dna  c.gen
+on `world`:  world.tick  world.creatures  world.predators  world.mean("speed")
+             world.controls.<your slider>  world.kill_in_circle(x, y, r)  world.spawn(x, y)
+helpers: nearest, hamming, similarity, most_similar, most_different,
+         point_mutate, crossover, gc_content, lerp, clamp, noise
+"""
+
+from garden.api import *
+
+
+# ── level 1: start values (instead of dragging sliders) ──────────────────────
+# SETTINGS = {"predators": 8, "mutation_rate": 0.03}
+
+
+# ── level 2: breed your own creatures ────────────────────────────────────────
+# fitness() scores each creature. a score above 1 means it has babies sooner and
+# more often; below 1, later and less. it sits on top of natural selection.
+#
+# def fitness(c, world):
+#     return 1 + c.speed * 2            # fast creatures breed more
+#     # return 3 - c.size               # small creatures breed more
+#     # return 2 if c.hue > 0.6 else 1  # reward one particular colour
+
+
+# choose_mate() picks who a creature mates with (or none). it needs the
+# "mate choice" control to be anything but clone, or this hook defined.
+#
+# def choose_mate(me, candidates):
+#     return most_similar(me, candidates)       # like marries like
+#     # return most_different(me, candidates)   # opposites attract
+
+
+# mutate() makes a baby's dna. keep the same length and use only the four capital
+# letters a, c, g and t.
+#
+# def mutate(dna, rate):
+#     return point_mutate(dna, rate * 2)        # twice as mutation-happy
+
+
+# ── level 3: change the world ────────────────────────────────────────────────
+# terrain() paints the ground. return a patch object for a spot, as in the example.
+#   hue    0..1  ground colour (creatures whose hue matches it hide from predators)
+#   food   1.0 is normal richness
+#   danger 1.0 is normal; higher means predators see better there
+#
+# def terrain(x, y, t):
+#     river = abs(y - 50 - 12 * math.sin(x / 15)) < 5
+#     if river:
+#         return Patch(hue=0.9, food=2.0, danger=1.5)   # a rich, risky river
+#     return Patch(hue=0.25)
+
+
+# steer() decides where a creature heads. return an (x, y) point, or none to
+# leave it to its instincts. whatever you return replaces its foraging, so when
+# food is in sight let the creature's own instincts take over, or it will starve.
+#
+# def steer(c, world):
+#     if world.food_near(c.x, c.y, c.sense):
+#         return None                 # food in sight: carry on as usual
+#     best = None
+#     for dx, dy in ((10, 0), (-10, 0), (0, 10), (0, -10)):
+#         x, y = c.x + dx, c.y + dy
+#         if 0 < x < 160 and 0 < y < 100:
+#             match = abs(c.hue - world.ground_hue(x, y))
+#             if best is None or match < best[0]:
+#                 best = (match, x, y)
+#     return (best[1], best[2]) if best else None
+
+
+# on_tick() runs 30 times a second with the whole world in your hands.
+#
+# def on_tick(world):
+#     if world.tick % 900 == 0:                    # every 30 seconds...
+#         world.kill_in_circle(80, 50, 15)         # ...a meteor hits the middle
+
+
+# ── new genes ────────────────────────────────────────────────────────────────
+# a gene is a stretch of dna that decodes to a number. a new gene does nothing
+# until one of your hooks reads it (c.night_owl below). after you add one, press
+# "restart world" in the banner so every creature gets the new stretch of dna.
+#
+# GENES["night_owl"] = Gene(length=12, range=(0, 1), description="how much it loves the dark")
+#
+# def fitness(c, world):
+#     return 1 + 2 * c.night_owl
+
+
+# ── your own controls, charts and buttons ────────────────────────────────────
+# they appear in the "my controls" group and the charts panel. no html needed.
+#
+# CONTROLS = [
+#     Slider("meteor_rate", "Meteor frequency", 0, 10, default=0, step=1),
+#     Toggle("hunger_games", "Hunger games"),
+#     Choice("season", "Season", ["spring", "winter"]),
+# ]
+# CHARTS = [
+#     Chart("Average speed", lambda world: world.mean("speed")),
+# ]
+# BUTTONS = [
+#     Button("Wipe the middle", lambda world: world.kill_in_circle(80, 50, 20)),
+# ]
