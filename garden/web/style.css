@@ -63,37 +63,39 @@ button:focus-visible, input:focus-visible, select:focus-visible { outline: 2px s
 
 /* ── top bar ───────────────────────────────────────────────────────────────── */
 .top {
-  height: 56px;
+  height: 60px;
   flex: none;
   display: flex;
   align-items: center;
-  gap: 12px;
-  padding: 0 16px;
-  background: var(--panel);
-  border-bottom: 1px solid var(--line);
+  gap: 10px;
+  padding: 0 20px;
 }
-.brand { display: flex; align-items: center; gap: 10px; font-weight: 650; letter-spacing: 0.01em; margin-right: 6px; }
-.brand svg { width: 26px; height: 26px; }
+.brand { display: flex; align-items: center; gap: 10px; font-size: 17px; font-weight: 720; font-stretch: 118%; letter-spacing: -0.01em; margin-right: 10px; }
+.brand svg { width: 24px; height: 24px; }
 .spacer { flex: 1; }
 .btn, .brand, .seg-group button, .chip-stat span, .tabs button { white-space: nowrap; }
 .btn {
-  background: var(--panel-2);
-  border: 1px solid var(--line-2);
-  border-radius: 8px;
-  padding: 6px 12px;
+  background: var(--wash);
+  border: 0;
+  border-radius: var(--radius-s);
+  padding: 6px 13px;
   min-height: 34px;
+  font-weight: 520;
+  transition: background var(--t1) var(--ease), color var(--t1) var(--ease), transform var(--t1) var(--ease);
 }
-.btn:hover { border-color: var(--muted); }
-.btn.primary { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); font-weight: 650; }
-select.btn { appearance: none; padding-right: 28px; background-image: linear-gradient(45deg, transparent 50%, var(--muted) 50%), linear-gradient(135deg, var(--muted) 50%, transparent 50%); background-position: calc(100% - 15px) 14px, calc(100% - 10px) 14px; background-size: 5px 5px; background-repeat: no-repeat; }
-.chip-stat { display: flex; flex-direction: column; line-height: 1.1; padding: 0 6px; }
-.chip-stat b { font: 600 15px var(--mono); }
-.chip-stat span { font-size: 12px; color: var(--muted); }
-.seg-group { display: inline-flex; border: 1px solid var(--line-2); border-radius: 8px; overflow: hidden; }
-.seg-group button { background: var(--panel-2); border: 0; border-right: 1px solid var(--line-2); padding: 6px 12px; min-height: 34px; min-width: 42px; }
-.seg-group button:last-child { border-right: 0; }
-.seg-group button[aria-pressed="true"] { background: var(--accent); color: var(--accent-ink); font-weight: 650; }
-.achieved { font: 12px var(--mono); color: var(--muted); min-width: 62px; }
+.btn:hover { background: var(--wash-2); }
+.btn:active { transform: scale(0.98); }
+.btn.primary { background: var(--ink); color: var(--paper); font-weight: 600; }
+.btn.primary:hover { background: #2e2d3d; }
+select.btn { appearance: none; padding-right: 30px; background-image: linear-gradient(45deg, transparent 50%, var(--ink-3) 50%), linear-gradient(135deg, var(--ink-3) 50%, transparent 50%); background-position: calc(100% - 16px) 15px, calc(100% - 11px) 15px; background-size: 5px 5px; background-repeat: no-repeat; }
+.chip-stat { display: flex; flex-direction: column; line-height: 1.15; padding: 0 6px; }
+.chip-stat b { font: 500 15px var(--mono); font-variant-numeric: tabular-nums; }
+.chip-stat span { font-size: 12px; color: var(--ink-3); }
+.seg-group { display: inline-flex; background: var(--wash); border-radius: 10px; padding: 3px; position: relative; }
+.seg-group button { background: none; border: 0; border-radius: 7px; padding: 5px 11px; min-height: 30px; min-width: 38px; color: var(--ink-2); font-weight: 520; transition: background var(--t1) var(--ease), color var(--t1) var(--ease); }
+.seg-group button:hover { color: var(--ink); }
+.seg-group button[aria-pressed="true"] { background: var(--ink); color: var(--paper); }
+.achieved { font: 12px var(--mono); color: var(--ink-3); min-width: 62px; }
 
 /* ── banners ───────────────────────────────────────────────────────────────── */
 .banner { flex: none; display: none; align-items: center; gap: 12px; padding: 8px 16px; font-size: 13px; border-bottom: 1px solid var(--line); }
