@@ -47,3 +47,16 @@ from garden.api import *
 #
 # def mutate(dna, rate):
 #     return point_mutate(dna, rate * 2)        # twice as mutation-happy
+
+
+# ── level 3: change the world ────────────────────────────────────────────────
+# terrain() paints the ground. return a patch object for a spot, as in the example.
+#   hue    0..1  ground colour (creatures whose hue matches it hide from predators)
+#   food   1.0 is normal richness
+#   danger 1.0 is normal; higher means predators see better there
+#
+# def terrain(x, y, t):
+#     river = abs(y - 50 - 12 * math.sin(x / 15)) < 5
+#     if river:
+#         return Patch(hue=0.9, food=2.0, danger=1.5)   # a rich, risky river
+#     return Patch(hue=0.25)
