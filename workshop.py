@@ -32,3 +32,11 @@ from garden.api import *
 #     return 1 + c.speed * 2            # fast creatures breed more
 #     # return 3 - c.size               # small creatures breed more
 #     # return 2 if c.hue > 0.6 else 1  # reward one particular colour
+
+
+# choose_mate() picks who a creature mates with (or none). it needs the
+# "mate choice" control to be anything but clone, or this hook defined.
+#
+# def choose_mate(me, candidates):
+#     return most_similar(me, candidates)       # like marries like
+#     # return most_different(me, candidates)   # opposites attract
