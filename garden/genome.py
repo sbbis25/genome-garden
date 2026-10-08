@@ -54,3 +54,18 @@ def decode(dna, lay):
         gc = (seg.count("G") + seg.count("C")) / float(b - a)
         traits[name] = lo + gc * (hi - lo)
     return traits
+
+
+def random_dna(genes):
+    """random genome. each gene gets its own gc bias so a fresh population has real variety."""
+    parts = []
+    for g in genes.values():
+        p = random.uniform(0.1, 0.9)
+        seg = []
+        for _ in range(g.length):
+            if random.random() < p:
+                seg.append("G" if random.random() < 0.5 else "C")
+            else:
+                seg.append("A" if random.random() < 0.5 else "T")
+        parts.append("".join(seg))
+    return "".join(parts)
