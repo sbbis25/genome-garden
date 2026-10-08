@@ -142,3 +142,14 @@ class Settings:
         if user:
             self.touched.add(name)
         return True
+
+    def reset_all(self):
+        for k, d in self._defs.items():
+            self._v[k] = d["default"]
+        self.touched.clear()
+
+    def changed(self):
+        return {k: v for k, v in self._v.items() if v != self._defs[k]["default"]}
+
+    def definitions(self):
+        return list(self._defs.values())
