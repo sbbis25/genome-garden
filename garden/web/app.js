@@ -826,11 +826,16 @@
   }
   $('#btn-view').onclick = function () { S.view = S.view === 'full' ? 'simple' : 'full'; applyView(); };
 
-  function syncThemeButton(name) {
+  var MODES = ['auto', 'light', 'dark'];
+  function themeMode() { var m = pref('theme', 'auto'); return m === 'light' || m === 'dark' ? m : 'auto'; }
+  function systemTheme() { return window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'; }
+  function syncThemeButton() {
     var b = $('#btn-theme'); if (!b) return;
-    var next = name === 'dark' ? 'light' : 'dark';
-    b.setAttribute('aria-label', 'Switch to ' + next + ' theme');
-    b.title = 'Switch to ' + next + ' theme';
+    var mode = themeMode(), next = MODES[(MODES.indexOf(mode) + 1) % MODES.length];
+    var label = 'Theme: ' + (mode === 'auto' ? 'follows your system' : mode) + '. Switch to ' + (next === 'auto' ? 'follow system' : next);
+    b.dataset.mode = mode;
+    b.setAttribute('aria-label', label);
+    b.title = label;
   }
   function applyTheme(name, fade) {
     var root = document.documentElement;
@@ -867,15 +872,15 @@
   if (document.fonts && document.fonts.ready) document.fonts.ready.then(placeIndicators);
   window.addEventListener('resize', placeIndicators);
   $('#btn-theme').onclick = function () {
-    var next = S.theme === 'dark' ? 'light' : 'dark';
-    pref('theme', 'light', next);
-    applyTheme(next, true);
+    var next = MODES[(MODES.indexOf(themeMode()) + 1) % MODES.length];
+    pref('theme', 'auto', next);
+    applyTheme(next === 'auto' ? systemTheme() : next, true);
   };
   S.theme = document.documentElement.dataset.theme === 'dark' ? 'dark' : 'light';
-  syncThemeButton(S.theme);
+  syncThemeButton();
   if (window.matchMedia) {
     var scheme = window.matchMedia('(prefers-color-scheme: dark)');
-    var onScheme = function (ev) { if (!pref('theme', '')) applyTheme(ev.matches ? 'dark' : 'light', true); };
+    var onScheme = function (ev) { if (themeMode() === 'auto') applyTheme(ev.matches ? 'dark' : 'light', true); };
     if (scheme.addEventListener) scheme.addEventListener('change', onScheme); else if (scheme.addListener) scheme.addListener(onScheme);
   }
   applyView();
