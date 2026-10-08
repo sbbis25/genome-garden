@@ -43,3 +43,11 @@ A live workshop, probably projected or run on participants' own laptops. People 
 ## Evidence on Hand
 
 The previous infection-simulation project in this repo (`simulation.py`, `workshop.py`, `model.py`, `img/sim.png`) is a reference for the workshop format, not a visual or code base to keep. There are no club branding assets, no real workshop attendee data, and no usage evidence yet; future work must not fabricate any.
+
+## Product Principles
+
+1. **First win in minutes.** A non-coder should change something and see a consequence within five minutes; the world is already running when the page opens.
+2. **One config, three layers.** No-code controls, copy-paste code and custom hooks all edit the same settings, and the UI always shows when code is overriding a control.
+3. **Python only for participants.** The front end is a fixed generic renderer; anything participants add shows up through Python declarations.
+4. **Failure is visible and recoverable.** Errors name the problem and the line; a population crash is a lesson with a one-click reset, not a dead screen.
+5. **Make evolution legible.** Show what changed and why, because slow, invisible selection is the main way this event could fail beginners.
