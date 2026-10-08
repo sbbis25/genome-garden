@@ -179,22 +179,22 @@ input[type="range"]::-moz-range-thumb { width: 12px; height: 12px; border-radius
 .actions .btn.danger:hover { background: var(--danger-soft); color: var(--danger); }
 
 /* ── code + presets tabs ───────────────────────────────────────────────────── */
-.sec { margin: 14px 0 6px; font-size: 12px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); font-weight: 650; }
+.sec { margin: 18px 0 8px; font-size: 13px; font-weight: 650; color: var(--ink); }
 .hookrow { display: flex; flex-wrap: wrap; gap: 6px; }
-.hook { font: 12px var(--mono); padding: 3px 8px; border-radius: 6px; border: 1px solid var(--line-2); color: var(--muted); }
-.hook.on { color: var(--accent); border-color: var(--accent); }
-.hook.bad { color: var(--danger); border-color: var(--danger); }
-pre.code { margin: 0; background: #0a1016; border: 1px solid var(--line); border-radius: 8px; padding: 10px 12px; font: 12px/1.5 var(--mono); overflow-x: auto; white-space: pre; color: #cfe3f0; }
+.hook { font: 500 12px var(--mono); padding: 3px 9px; border-radius: 999px; background: var(--wash); color: var(--ink-3); }
+.hook.on { background: var(--accent-soft); color: var(--accent); }
+.hook.bad { background: var(--danger-soft); color: var(--danger); }
+pre.code { margin: 0; background: var(--wash); border-radius: 10px; padding: 12px 14px; font: 12.5px/1.55 var(--mono); overflow-x: auto; white-space: pre; color: var(--ink); }
 .codebox { position: relative; display: flex; flex-direction: column; align-items: flex-start; }
 .codebox pre.code { align-self: stretch; }
-.codebox .copy { margin-top: 6px; }
-.err { background: #2a1217; border: 1px solid #5a222b; border-radius: 8px; padding: 8px 10px; margin-bottom: 8px; font-size: 13px; }
-.err b { color: #ffd5da; }
-.err code { font-family: var(--mono); display: block; margin-top: 4px; color: #ffb8c0; }
-.tip { font-size: 13px; color: var(--muted); }
-.preset { padding: 12px; margin: 10px 0; background: var(--panel-2); border: 1px solid var(--line); border-radius: 10px; }
-.preset h4 { margin: 0 0 2px; font-size: 14px; }
-.preset p { margin: 0 0 10px; color: var(--muted); font-size: 13px; }
+.codebox .copy { margin-top: 8px; }
+.err { background: var(--danger-soft); border-radius: 10px; padding: 10px 12px; margin-bottom: 8px; font-size: 13px; }
+.err b { color: var(--danger); }
+.err code { font-family: var(--mono); display: block; margin-top: 4px; color: var(--ink-2); }
+.tip { font-size: 13px; color: var(--ink-3); }
+.preset { padding: 14px 0; margin: 0; border-bottom: 1px solid var(--line); }
+.preset h4 { margin: 0 0 2px; font-size: 14px; font-weight: 640; }
+.preset p { margin: 0 0 10px; color: var(--ink-3); font-size: 13px; }
 .preset .row { display: flex; gap: 8px; }
 
 /* ── centre: the world ─────────────────────────────────────────────────────── */
