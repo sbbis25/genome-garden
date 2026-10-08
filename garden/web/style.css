@@ -266,6 +266,10 @@ pre.code { margin: 0; background: var(--wash); border-radius: 10px; padding: 12p
 @media (max-width: 1180px) {
   .app, .app[data-view="simple"], .app[data-view="full"] { grid-template-columns: 264px minmax(0, 1fr); }
   .right { display: none; }
+  .chip-stat { display: none; }
+}
+@media (max-width: 1020px) {
+  #preset-select { display: none; }
 }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
