@@ -414,7 +414,7 @@
         (k.failed ? 'raised an error, using the default' : (k.defined ? 'your code is running' : 'not defined: default behaviour')) +
         '">' + n + (k.failed ? ' (error)' : '') + '</span>';
     });
-    h += '</div><p class="tip" style="margin-top:8px">Teal means your code is running. Grey means the built-in behaviour. Red means it hit an error.</p>';
+    h += '</div><p class="tip" style="margin-top:8px">Tinted means your code is running. Grey means the built-in behaviour. Red means it hit an error.</p>';
 
     var errs = S.frame ? (S.frame.errors || []).slice() : [];
     if (S.frame && S.frame.load_error) errs.unshift(S.frame.load_error);
