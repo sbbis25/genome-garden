@@ -1,5 +1,5 @@
 /* genome garden: a quiet light interface. ink on cool paper, natural-dye colour only inside the colony, one deep accent for selection. */
-@font-face { font-family: "Mona Sans"; src: url("/fonts/mona-sans.woff2") format("woff2"); font-weight: 200 900; font-stretch: 75% 125%; font-display: swap; }
+@font-face { font-family: "Chivo"; src: url("/fonts/chivo.woff2") format("woff2"); font-weight: 100 900; font-display: swap; }
 @font-face { font-family: "Chivo Mono"; src: url("/fonts/chivo-mono.woff2") format("woff2"); font-weight: 100 900; font-display: swap; }
 
 :root {
@@ -25,7 +25,7 @@
   --t1: 140ms;
   --t2: 240ms;
   --t3: 420ms;
-  --font: "Mona Sans", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font: "Chivo", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   --mono: "Chivo Mono", ui-monospace, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
   color-scheme: light;
 }
@@ -61,7 +61,7 @@ button:focus-visible, input:focus-visible, select:focus-visible { outline: 2px s
   gap: 10px;
   padding: 0 20px;
 }
-.brand { display: flex; align-items: center; gap: 10px; font-size: 17px; font-weight: 720; font-stretch: 118%; letter-spacing: -0.01em; margin-right: 10px; }
+.brand { display: flex; align-items: center; gap: 10px; font-size: 17px; font-weight: 760; letter-spacing: -0.01em; margin-right: 10px; }
 .brand svg { width: 24px; height: 24px; }
 .spacer { flex: 1; }
 .btn, .brand, .seg-group button, .chip-stat span, .tabs button { white-space: nowrap; }
@@ -134,7 +134,7 @@ select.btn { appearance: none; padding-right: 30px; background-image: linear-gra
 
 .group { border-bottom: 1px solid var(--line); }
 .group:last-child { border-bottom: 0; }
-.group-head { width: 100%; text-align: left; background: none; border: 0; padding: 14px 0; display: flex; align-items: center; gap: 10px; font-weight: 640; font-stretch: 106%; color: var(--ink); }
+.group-head { width: 100%; text-align: left; background: none; border: 0; padding: 14px 0; display: flex; align-items: center; gap: 10px; font-weight: 640; color: var(--ink); }
 .group-head .chev { width: 7px; height: 7px; border-right: 1.5px solid var(--ink-3); border-bottom: 1.5px solid var(--ink-3); transform: rotate(-45deg); transition: transform var(--t2) var(--ease); }
 .group.open .group-head .chev { transform: rotate(45deg); }
 .group-body { display: grid; grid-template-rows: 0fr; transition: grid-template-rows var(--t3) var(--ease); }
