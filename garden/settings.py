@@ -79,3 +79,16 @@ BUILTIN_ACTIONS = [
     dict(id="famine", label="Famine", help="Clears all the food right now."),
     dict(id="iceage", label="Ice age", help="Food nearly stops growing for a while."),
 ]
+
+PRESETS = [
+    dict(id="predator_boom", label="Predator boom", blurb="Ten hunters with sharp eyes. Hide or run.",
+         values={"predators": 10, "eyesight": 24, "food_rate": 1.2, "pop_cap": 300}),
+    dict(id="ice_age", label="Ice age", blurb="Pale ground, scarce food. Colours shift fast.",
+         values={"ground_color": 0.92, "food_rate": 0.55, "predators": 4, "pop_cap": 200}),
+    dict(id="island", label="Island", blurb="A small, mutation-happy population with few predators.",
+         values={"pop_cap": 110, "mutation_rate": 0.035, "predators": 1, "food_rate": 1.3}),
+    dict(id="famine", label="Famine", blurb="Little food. Thrifty creatures win.",
+         values={"food_rate": 0.45, "predators": 2, "reward_efficiency": 0.6}),
+    dict(id="speed_breeders", label="Speed breeders", blurb="No predators. You choose: fast creatures breed.",
+         values={"predators": 0, "reward_speed": 1.0, "mutation_rate": 0.02}),
+]
