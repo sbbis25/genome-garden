@@ -241,7 +241,10 @@
     var t = el('div', 'toast'); t.textContent = text;
     box.appendChild(t);
     while (box.children.length > 4) box.removeChild(box.firstChild);
-    setTimeout(function () { if (t.parentNode) t.parentNode.removeChild(t); }, 5000);
+    setTimeout(function () {
+      t.classList.add('leaving');
+      setTimeout(function () { if (t.parentNode) t.parentNode.removeChild(t); }, 260);
+    }, 4800);
   }
   var hintTimer = 0;
   function showHint(text, ms) {

@@ -213,6 +213,7 @@ pre.code { margin: 0; background: var(--wash); border-radius: 10px; padding: 12p
 .toasts { position: absolute; left: 14px; bottom: 14px; display: flex; flex-direction: column; gap: 6px; pointer-events: none; }
 .toast { background: var(--raised); border-radius: 10px; padding: 8px 14px; font-size: 13px; box-shadow: var(--shadow-1); animation: toast-in var(--t2) var(--ease); }
 @keyframes toast-in { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+.toast.leaving { opacity: 0; transform: translateY(-4px); transition: opacity var(--t2) var(--ease), transform var(--t2) var(--ease); }
 .legend { position: absolute; right: 14px; bottom: 14px; display: flex; gap: 14px; font-size: 12px; color: var(--ink-2); background: var(--raised); padding: 5px 12px; border-radius: 999px; box-shadow: var(--shadow-1); pointer-events: none; }
 .legend i { display: inline-block; width: 9px; height: 9px; border-radius: 50%; margin-right: 5px; vertical-align: -1px; }
 .caption { flex: none; display: flex; align-items: baseline; gap: 10px; padding: 2px 6px; }
