@@ -38,3 +38,24 @@ with the line number, and the world keeps running.
 def fitness(c, world):
     return 1 + c.speed * 2     # fast creatures have more babies
 ```
+
+### 3. Your own rules
+All of this lives in `workshop.py`, which is the only file you edit. You never touch any HTML.
+
+| Hook | What it does |
+|---|---|
+| `fitness(c, world)` | Score for each creature. Above 1 means more babies, sooner. |
+| `choose_mate(me, candidates)` | Pick who a creature mates with, or `None`. |
+| `mutate(dna, rate)` | Make a baby's DNA. Keep the length, use only A, C, G, T. |
+| `terrain(x, y, t)` | Paint the ground: `Patch(hue=..., food=..., danger=...)`. |
+| `steer(c, world)` | Return an `(x, y)` point to head for, or `None`. |
+| `on_tick(world)` | Runs 30 times a second with the whole world in your hands. |
+
+Also in `workshop.py`:
+- `SETTINGS = {...}` sets start values for the sliders.
+- `GENES["night_owl"] = Gene(12, (0, 1))` adds a new trait. It does nothing until one of your hooks reads
+  it, and you need to press **Restart world** afterwards.
+- `CONTROLS`, `CHARTS` and `BUTTONS` add your own sliders, live charts and buttons to the screen.
+
+Helpers: `nearest`, `hamming`, `similarity`, `most_similar`, `most_different`, `point_mutate`,
+`crossover`, `gc_content`, `lerp`, `clamp`, `noise`.
