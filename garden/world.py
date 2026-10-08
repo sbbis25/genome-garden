@@ -657,3 +657,27 @@ class World:
     @property
     def predators(self):
         return self.preds
+
+    def action(self, name):
+        if name == "meteor":
+            x, y = random.uniform(25, W - 25), random.uniform(20, H - 20)
+            n = self.kill_in_circle(x, y, 24, "disaster")
+            for f in self.food_near(x, y, 24):
+                self.remove_food(f)
+            self.say("Meteor strike! %d creatures lost." % n)
+            self.meteor = (x, y, 24, self.tick)
+        elif name == "plague":
+            n = 0
+            for c in self.creatures:
+                if c.alive and random.random() < 0.4:
+                    self.kill(c, "disaster")
+                    n += 1
+            self.say("Plague. %d creatures lost." % n)
+        elif name == "famine":
+            for lst in list(self.fgrid.values()):
+                for f in list(lst):
+                    self.remove_food(f)
+            self.say("Famine. All food is gone.")
+        elif name == "iceage":
+            self.food_mod_until = self.tick + 20 * TICKS_PER_SEC * 2
+            self.say("Ice age. Food barely grows for a while.")
