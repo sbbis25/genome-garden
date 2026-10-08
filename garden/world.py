@@ -535,3 +535,46 @@ class World:
                                        random.uniform(0, H) if side < 0.5 else random.choice((2.0, H - 2.0))))
         while len(self.preds) > want:
             self.preds.pop()
+
+    def _update_predators(self, t):
+        eye = float(self.settings.eyesight)
+        eye2 = eye * eye
+        rnd = random.random
+        atan2, cos, sin = math.atan2, math.cos, math.sin
+        for i, p in enumerate(self.preds):
+            tgt = p.target
+            if p.rest > 0:
+                p.rest -= 1
+                tgt = None
+                p.target = None
+            if tgt is not None and tgt.alive:
+                dx, dy = tgt.x - p.x, tgt.y - p.y
+                d2 = dx * dx + dy * dy
+                p.chase += 1
+                if d2 > (eye * 1.6) ** 2 or p.chase > 200:
+                    p.target, p.rest = None, 30
+                elif d2 < 6.25:
+                    escape = tgt.speed * (1.15 if tgt.flee > 0 else 1.0)
+                    if rnd() < min(0.95, max(0.12, 0.75 + (PRED_SPEED - escape) * 0.8)):
+                        self.kill(tgt, "eaten")
+                        p.target, p.rest = None, PRED_REST
+                    else:
+                        p.h = atan2(dy, dx)
+                else:
+                    p.h = atan2(dy, dx)
+                    p.x += cos(p.h) * PRED_SPEED
+                    p.y += sin(p.h) * PRED_SPEED
+            else:
+                p.target = None
+                p.chase = 0
+                p.h += (rnd() - 0.5) * 0.4
+                p.x += cos(p.h) * 0.9
+                p.y += sin(p.h) * 0.9
+                if p.rest <= 0 and (t + i) % 2 == 0:
+                    p.target = self._spot(p, eye, eye2)
+            if p.x < 1 or p.x > W - 1:
+                p.h = math.pi - p.h
+                p.x = min(W - 1, max(1, p.x))
+            if p.y < 1 or p.y > H - 1:
+                p.h = -p.h
+                p.y = min(H - 1, max(1, p.y))
