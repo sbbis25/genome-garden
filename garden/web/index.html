@@ -63,6 +63,27 @@
     </div>
   </aside>
 
+  <!-- centre: the world -->
+  <section class="col center">
+    <div class="worldwrap" id="worldwrap">
+      <canvas id="world"></canvas>
+      <div class="tools" id="tools" role="group" aria-label="Mouse tool">
+        <button data-tool="food" aria-pressed="true" title="Click the world to drop food">Drop food</button>
+        <button data-tool="predator" aria-pressed="false" title="Click to add a predator">Add predator</button>
+        <button data-tool="smite" aria-pressed="false" title="Click to wipe out creatures in a small circle">Smite</button>
+      </div>
+      <div class="hint" id="hint">Click anywhere in the world to drop some food.</div>
+      <div class="toasts" id="toasts"></div>
+      <div class="legend" aria-hidden="true">
+        <span><i style="background:#e9f2a0"></i>food</span>
+        <span><i style="background:#ff5c6c"></i>predator</span>
+        <span>colour = body hue</span>
+      </div>
+    </div>
+    <div class="caption" aria-live="polite"><span class="why">What's selecting</span><span id="caption-text"></span></div>
+    <div class="science" id="science"></div>
+  </section>
+
 </main>
 </body>
 </html>
