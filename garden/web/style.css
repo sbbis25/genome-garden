@@ -95,8 +95,8 @@ select.btn { appearance: none; padding-right: 30px; background-image: linear-gra
 .banner-in { min-height: 0; overflow: hidden; }
 .banner-row { display: flex; align-items: center; gap: 12px; padding: 9px 20px; opacity: 0; transition: opacity var(--t2) var(--ease); }
 .banner.show .banner-row { opacity: 1; transition-delay: 80ms; }
-.banner.error { background: var(--danger-soft); color: #5e1422; }
-.banner.warn { background: var(--amber-soft); color: #4d3300; }
+.banner.error .banner-row { background: var(--danger-soft); color: #5e1422; }
+.banner.warn .banner-row { background: var(--amber-soft); color: #4d3300; }
 .banner code { font-family: var(--mono); background: rgba(27, 26, 36, 0.07); padding: 1px 6px; border-radius: 4px; }
 .banner .btn { margin-left: auto; background: rgba(27, 26, 36, 0.08); }
 .banner .btn.primary { background: var(--ink); }
