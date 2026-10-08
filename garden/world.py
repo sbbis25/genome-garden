@@ -95,3 +95,39 @@ class World:
         self.hist_stride = TICKS_PER_SEC
         self.reload(first=True)
         self.reset()
+
+    # ── workshop.py loading ──────────────────────────────────────────────────
+    def reload(self, first=False):
+        new = self.loader.load()
+        if new.load_error:
+            self.load_error = new.load_error
+            self.schema_version += 1
+            return
+        self.load_error = None
+        self.hooks = new
+        defs = list(BUILTIN) + [_control_dict(c) for c in new.controls]
+        self.settings.define(defs)
+        for k, v in new.settings.items():
+            if k not in self.settings.touched:
+                self.settings.set(k, v, user=False)
+        sig = [(n, g.length, g.range) for n, g in new.genes.items()]
+        if self.gene_sig is not None and sig != self.gene_sig:
+            self.needs_restart = True
+        self.pending_genes = new.genes
+        self.terrain_dirty = True
+        self.hist_custom = [[] for _ in new.charts]
+        self.schema_version += 1
+        if not first:
+            self.say("workshop.py reloaded")
+
+    def check_reload(self):
+        if self.loader.changed():
+            self.reload()
+
+    def fail(self, where, exc):
+        self.hooks.fail(where, exc, self.loader.path)
+        self.schema_version += 1
+
+    def say(self, text):
+        self.msg_id += 1
+        self.msgs.append([self.msg_id, text])
