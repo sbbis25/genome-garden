@@ -125,6 +125,8 @@ select.btn { appearance: none; padding-right: 30px; background-image: linear-gra
 .tabs .dot.on { display: block; }
 .panel { overflow-y: auto; flex: 1; padding: 6px 6px 16px 0; }
 .panel[hidden] { display: none; }
+.panel:not([hidden]) { animation: rise var(--t3) var(--ease); }
+@keyframes rise { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
 .panel-foot { border-top: 1px solid var(--line); padding: 12px 0 2px; flex: none; }
 
 .group { border-bottom: 1px solid var(--line); }
