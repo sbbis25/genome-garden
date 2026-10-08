@@ -310,3 +310,24 @@ class World:
                 score = math.exp(1.5 * total)
         c.score = score
         c.thresh = 130.0 if score < 0.0001 else min(130.0, max(45.0, 85.0 / math.sqrt(score)))
+
+    def mutate_dna(self, dna):
+        rate = self.settings.mutation_rate
+        fn = self.hooks.get("mutate")
+        if fn is not None:
+            try:
+                out = fn(dna, rate)
+                if not G.is_valid_dna(out, self.dna_len):
+                    raise ValueError("mutate() must return a DNA string of exactly %d letters using only "
+                                     "A, C, G and T" % self.dna_len)
+                return out
+            except Exception as e:
+                self.fail("mutate", e)
+        if rate <= 0:
+            return dna
+        out = list(dna)
+        rnd = random.random
+        for i, ch in enumerate(out):
+            if rnd() < rate:
+                out[i] = random.choice("ACGT".replace(ch, ""))
+        return "".join(out)
