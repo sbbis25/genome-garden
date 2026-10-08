@@ -243,4 +243,88 @@
     }
   }
 
+  // ── building the left panels from the python schema ───────────────────────────
+  function buildAll() {
+    buildTune(); buildPresets(); renderCode(); buildScience(); buildCustomCharts();
+  }
+
+  function fmtVal(c, v) {
+    if (c.ramp) return '<span class="swatch" style="background:' + ramp(v) + '"></span>';
+    switch (c.fmt) {
+      case 'int': return String(Math.round(v));
+      case 'pct': return Math.round(v * 100) + '%';
+      case 'pct1': return (v * 100).toFixed(1) + '%';
+      case 'signed': return (v > 0 ? '+' : '') + v.toFixed(2);
+      default: return Math.abs(c.step) >= 1 ? String(Math.round(v)) : v.toFixed(2);
+    }
+  }
+
+  function codeButton(c) {
+    if (!c.code) return null;
+    var b = el('button', 'code-btn', '&lt;/&gt;');
+    b.title = 'Show the Python for this';
+    b.setAttribute('aria-label', 'Show Python for ' + c.label);
+    b.onclick = function () { S.snippet = { title: c.label, code: c.code }; switchTab('code'); };
+    return b;
+  }
+
+  function buildControl(c) {
+    var wrap = el('div', 'ctl' + (c.overridden ? ' overridden' : '') + (S.pulseId === c.id ? ' pulse' : ''));
+    var id = 'ctl-' + c.id;
+    var head = el('div', 'ctl-head');
+    var lab = el('label'); lab.textContent = c.label; lab.htmlFor = id;
+    head.appendChild(lab);
+    if (c.kind === 'slider') {
+      var val = el('span', 'val'); val.innerHTML = fmtVal(c, c.value); head.appendChild(val);
+    }
+    var cb = codeButton(c); if (cb) head.appendChild(cb);
+    wrap.appendChild(head);
+
+    if (c.kind === 'slider') {
+      var inp = el('input'); inp.type = 'range'; inp.id = id;
+      inp.min = c.lo; inp.max = c.hi; inp.step = c.step; inp.value = c.value;
+      if (c.ramp) { inp.className = 'ramp'; inp.style.setProperty('--ramp-bg', RAMP_BG); }
+      var fill = function () {
+        var v = (inp.value - c.lo) / (c.hi - c.lo) * 100, z = c.lo < 0 && c.hi > 0 ? (0 - c.lo) / (c.hi - c.lo) * 100 : 0;
+        inp.style.setProperty('--a', Math.min(z, v) + '%'); inp.style.setProperty('--b', Math.max(z, v) + '%');
+      };
+      fill();
+      inp.addEventListener('pointerdown', function () { S.dragging = true; });
+      inp.addEventListener('input', function () {
+        var v = parseFloat(inp.value);
+        c.value = v; val.innerHTML = fmtVal(c, v); fill();
+        sendSet(c.id, v);
+        if (c.id === 'predators') advanceHint(2);
+        scheduleCode();
+      });
+      wrap.appendChild(inp);
+    } else if (c.kind === 'choice') {
+      var seg = el('div', 'seg'); seg.setAttribute('role', 'group'); seg.setAttribute('aria-label', c.label);
+      c.options.forEach(function (o) {
+        var b = el('button'); b.textContent = (c.labels && c.labels[o]) || o;
+        b.setAttribute('aria-pressed', String(c.value === o));
+        b.onclick = function () {
+          c.value = o;
+          $$('button', seg).forEach(function (x) { x.setAttribute('aria-pressed', 'false'); });
+          b.setAttribute('aria-pressed', 'true');
+          post({ type: 'set', id: c.id, value: o }); scheduleCode();
+        };
+        seg.appendChild(b);
+      });
+      wrap.appendChild(seg);
+    } else if (c.kind === 'toggle') {
+      var sw = el('div', 'switch');
+      var tb = el('button'); tb.setAttribute('role', 'switch'); tb.id = id; tb.setAttribute('aria-label', c.label);
+      tb.setAttribute('aria-checked', String(!!c.value));
+      tb.onclick = function () {
+        c.value = !c.value; tb.setAttribute('aria-checked', String(c.value));
+        post({ type: 'set', id: c.id, value: c.value }); scheduleCode();
+      };
+      sw.appendChild(tb); wrap.appendChild(sw);
+    }
+    if (c.help) wrap.appendChild(el('div', 'ctl-help', esc(c.help)));
+    if (c.overridden) wrap.appendChild(el('span', 'badge', 'workshop.py is controlling this'));
+    return wrap;
+  }
+
 })();
