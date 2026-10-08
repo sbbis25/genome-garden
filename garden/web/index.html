@@ -3,7 +3,9 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#f3f2f7">
 <title>Genome Garden</title>
+<link rel="preload" href="/fonts/chivo.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="/style.css">
 </head>
 <body>
@@ -11,9 +13,9 @@
 <header class="top">
   <div class="brand">
     <svg viewBox="0 0 32 32" aria-hidden="true" fill="none" stroke-width="2.4" stroke-linecap="round">
-      <path d="M8 3c0 8 16 8 16 16s-16 8-16 10" stroke="#46e0c0"/>
-      <path d="M24 3c0 8-16 8-16 16s16 8 16 10" stroke="#ffb454"/>
-      <path d="M11 9h10M10 23h12M9.5 16h13" stroke="#9fb2c1" stroke-width="1.8"/>
+      <path d="M8 3c0 8 16 8 16 16s-16 8-16 10" stroke="#4b4396"/>
+      <path d="M24 3c0 8-16 8-16 16s16 8 16 10" stroke="#1b1a24"/>
+      <path d="M11 9h10M10 23h12M9.5 16h13" stroke="#9a99ab" stroke-width="1.8"/>
     </svg>
     Genome Garden
   </div>
@@ -21,7 +23,7 @@
   <button id="btn-restart" class="btn" title="Start a fresh population with your current settings">Restart world</button>
   <div class="spacer"></div>
   <div class="chip-stat"><b id="stat-n">0</b><span>creatures</span></div>
-  <div class="chip-stat"><b id="stat-gen">0</b><span>generations</span></div>
+  <div class="chip-stat chip-gen"><b id="stat-gen">0</b><span>generations</span></div>
   <div class="seg-group" id="speed-seg" role="group" aria-label="Time speed">
     <button data-mult="0" aria-pressed="false" title="Pause">Pause</button>
     <button data-mult="0.5" aria-pressed="false" title="Half speed: easier to hover and click creatures">0.5x</button>
@@ -34,17 +36,17 @@
   <button id="btn-view" class="btn primary">Show the science</button>
 </header>
 
-<div id="banner-error" class="banner error" role="alert">
+<div id="banner-error" class="banner error" role="alert"><div class="banner-in"><div class="banner-row">
   <span id="banner-error-text"></span>
   <button class="btn" id="banner-error-open">See details</button>
-</div>
-<div id="banner-restart" class="banner warn">
+</div></div></div>
+<div id="banner-restart" class="banner warn"><div class="banner-in"><div class="banner-row">
   <span>You changed the gene table in workshop.py. Restart the world so every creature gets the new DNA.</span>
   <button class="btn primary" id="banner-restart-go">Restart world</button>
-</div>
-<div id="banner-offline" class="banner error">
+</div></div></div>
+<div id="banner-offline" class="banner error"><div class="banner-in"><div class="banner-row">
   <span>Lost the connection to Genome Garden. Is <code>python run.py</code> still running?</span>
-</div>
+</div></div></div>
 
 <main class="app" id="app" data-view="simple">
 
@@ -52,9 +54,9 @@
   <aside class="col left">
     <div class="card">
       <div class="tabs" role="tablist">
-        <button role="tab" id="tab-tune" data-tab="tune" aria-selected="true">Tune</button>
-        <button role="tab" id="tab-code" data-tab="code" aria-selected="false">Code<span class="dot" id="code-dot"></span></button>
-        <button role="tab" id="tab-presets" data-tab="presets" aria-selected="false">Scenarios</button>
+        <button role="tab" id="tab-tune" data-tab="tune" aria-controls="panel-tune" aria-selected="true">Tune</button>
+        <button role="tab" id="tab-code" data-tab="code" aria-controls="panel-code" aria-selected="false">Code<span class="dot" id="code-dot"></span></button>
+        <button role="tab" id="tab-presets" data-tab="presets" aria-controls="panel-presets" aria-selected="false">Scenarios</button>
       </div>
       <div class="panel" id="panel-tune" role="tabpanel"></div>
       <div class="panel" id="panel-code" role="tabpanel" hidden></div>
@@ -75,13 +77,13 @@
       <div class="hint" id="hint">Click anywhere in the world to drop some food.</div>
       <div class="toasts" id="toasts"></div>
       <div class="legend" aria-hidden="true">
-        <span><i style="background:#e9f2a0"></i>food</span>
-        <span><i style="background:#ff5c6c"></i>predator</span>
+        <span><i style="background:#6a6975"></i>food</span>
+        <span><i style="background:#c0394f"></i>predator</span>
         <span>colour = body hue</span>
       </div>
     </div>
     <div class="caption" aria-live="polite"><span class="why">What's selecting</span><span id="caption-text"></span></div>
-    <div class="science" id="science"></div>
+    <div class="science-wrap"><div class="science" id="science"></div></div>
   </section>
 
   <!-- right: creature card + charts -->
@@ -94,11 +96,21 @@
     </div>
     <div class="card chartcard"><h4>Average traits over time</h4><canvas id="ch-traits"></canvas><div class="lgd" id="lgd-traits"></div></div>
     <div class="card chartcard"><h4>Creatures and food</h4><canvas id="ch-pop"></canvas>
-      <div class="lgd"><span><i style="background:#46e0c0"></i>creatures</span><span><i style="background:#ffb454"></i>food</span></div></div>
+      <div class="lgd"><span><i style="background:#4b4396"></i>creatures</span><span><i style="background:#b8914a"></i>food</span></div></div>
     <div id="custom-charts"></div>
   </aside>
 
 </main>
+
+<div class="narrow-note" role="note">
+  <svg viewBox="0 0 32 32" aria-hidden="true" fill="none" stroke-width="2.4" stroke-linecap="round">
+    <path d="M8 3c0 8 16 8 16 16s-16 8-16 10" stroke="#4b4396"/>
+    <path d="M24 3c0 8-16 8-16 16s16 8 16 10" stroke="#1b1a24"/>
+    <path d="M11 9h10M10 23h12M9.5 16h13" stroke="#9a99ab" stroke-width="1.8"/>
+  </svg>
+  <h1>Genome Garden needs a wider window</h1>
+  <p>Open it on a laptop, or widen this window to at least 900px.</p>
+</div>
 
 <script src="/app.js"></script>
 </body>
