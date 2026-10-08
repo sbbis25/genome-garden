@@ -344,3 +344,38 @@ class World:
                         if len(out) >= limit:
                             return out
         return out
+
+    def reproduce(self, c, newborn):
+        mode = self.settings.mating
+        fn = self.hooks.get("choose_mate")
+        mate = None
+        if fn is not None or mode != "clone":
+            cands = [o for o in self.nearby_creatures(c, 12.0) if o.energy > 30]
+            if cands:
+                if fn is not None:
+                    try:
+                        mate = fn(c, cands)
+                        if mate is not None and mate not in cands:
+                            raise ValueError("choose_mate() must return one of the candidates or None")
+                    except Exception as e:
+                        self.fail("choose_mate", e)
+                        mate = None
+                elif mode == "random":
+                    mate = random.choice(cands)
+                else:
+                    key = lambda o: sum(1 for a, b in zip(c.dna, o.dna) if a != b)
+                    mate = min(cands, key=key) if mode == "similar" else max(cands, key=key)
+        if mate is not None:
+            dna = "".join(random.choice((c.dna, mate.dna))[a:b] for _, a, b, _, _ in self.layout)
+            mate.energy -= 8.0
+        else:
+            dna = c.dna
+        dna = self.mutate_dna(dna)
+        c.energy -= BIRTH_COST
+        c.cool = 120
+        c.kids += 1
+        self.births += 1
+        child = self.make_creature(dna, min(W - 1, max(1, c.x + random.uniform(-1.5, 1.5))),
+                                   min(H - 1, max(1, c.y + random.uniform(-1.5, 1.5))),
+                                   c.id, c.gen + 1, CHILD_ENERGY)
+        newborn.append(child)
