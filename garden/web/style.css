@@ -267,10 +267,13 @@ pre.code { margin: 0; background: var(--wash); border-radius: 10px; padding: 12p
 @media (max-width: 1180px) {
   .app, .app[data-view="simple"], .app[data-view="full"] { grid-template-columns: 264px minmax(0, 1fr); }
   .right { display: none; }
-  .chip-stat { display: none; }
+  .chip-gen { display: none; }
 }
-@media (max-width: 1020px) {
+@media (max-width: 1100px) {
   #preset-select { display: none; }
+}
+@media (max-width: 960px) {
+  .chip-stat { display: none; }
 }
 .narrow-note { display: none; flex: 1; flex-direction: column; align-items: center; justify-content: center; gap: 10px; padding: 32px; text-align: center; }
 .narrow-note svg { width: 36px; height: 36px; }
