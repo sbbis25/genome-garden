@@ -7,3 +7,6 @@ __pycache__/
 .claude/
 .superpowers/
 .impeccable/
+
+# misc
+.DS_Store
