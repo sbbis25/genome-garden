@@ -69,3 +69,7 @@ def random_dna(genes):
                 seg.append("A" if random.random() < 0.5 else "T")
         parts.append("".join(seg))
     return "".join(parts)
+
+
+def is_valid_dna(dna, length):
+    return isinstance(dna, str) and len(dna) == length and not (set(dna) - set(BASES))
