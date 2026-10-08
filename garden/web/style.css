@@ -61,7 +61,7 @@ button:focus-visible, input:focus-visible, select:focus-visible { outline: 2px s
   gap: 10px;
   padding: 0 20px;
 }
-.brand { display: flex; align-items: center; gap: 10px; font-size: 17px; font-weight: 760; letter-spacing: -0.01em; margin-right: 10px; }
+.brand { display: flex; align-items: center; gap: 10px; font-size: 18px; font-weight: 780; letter-spacing: -0.01em; margin-right: 10px; }
 .brand svg { width: 24px; height: 24px; }
 .spacer { flex: 1; }
 .btn, .brand, .seg-group button, .chip-stat span, .tabs button { white-space: nowrap; }
@@ -134,7 +134,7 @@ select.btn { appearance: none; padding-right: 30px; background-image: linear-gra
 
 .group { border-bottom: 1px solid var(--line); }
 .group:last-child { border-bottom: 0; }
-.group-head { width: 100%; text-align: left; background: none; border: 0; padding: 14px 0; display: flex; align-items: center; gap: 10px; font-weight: 640; color: var(--ink); }
+.group-head { width: 100%; text-align: left; background: none; border: 0; padding: 14px 0; display: flex; align-items: center; gap: 10px; font-size: 15.5px; font-weight: 700; color: var(--ink); }
 .group-head .chev { width: 7px; height: 7px; border-right: 1.5px solid var(--ink-3); border-bottom: 1.5px solid var(--ink-3); transform: rotate(-45deg); transition: transform var(--t2) var(--ease); }
 .group.open .group-head .chev { transform: rotate(45deg); }
 .group-body { display: grid; grid-template-rows: 0fr; transition: grid-template-rows var(--t3) var(--ease); }
@@ -145,7 +145,7 @@ select.btn { appearance: none; padding-right: 30px; background-image: linear-gra
 
 .ctl { margin-bottom: 18px; }
 .ctl-head { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; }
-.ctl-head label { flex: 1; font-weight: 520; }
+.ctl-head label { flex: 1; font-weight: 480; }
 .ctl-head .val { font: 500 12.5px var(--mono); color: var(--ink-2); min-width: 44px; text-align: right; font-variant-numeric: tabular-nums; }
 .swatch { display: inline-block; width: 22px; height: 14px; border-radius: 5px; vertical-align: middle; box-shadow: inset 0 0 0 1px rgba(27, 26, 36, 0.15); }
 .code-btn { background: none; border: 0; border-radius: 6px; color: var(--ink-3); font: 500 12px var(--mono); padding: 2px 7px; min-height: 24px; transition: background var(--t1) var(--ease), color var(--t1) var(--ease); }
@@ -181,7 +181,7 @@ input[type="range"]::-moz-range-thumb { width: 12px; height: 12px; border-radius
 .actions .btn.danger:hover { background: var(--danger-soft); color: var(--danger); }
 
 /* ── code + presets tabs ───────────────────────────────────────────────────── */
-.sec { margin: 18px 0 8px; font-size: 13px; font-weight: 650; color: var(--ink); }
+.sec { margin: 18px 0 8px; font-size: 14px; font-weight: 700; color: var(--ink); }
 .hookrow { display: flex; flex-wrap: wrap; gap: 6px; }
 .hook { font: 500 12px var(--mono); padding: 3px 9px; border-radius: 999px; background: var(--wash); color: var(--ink-3); }
 .hook.on { background: var(--accent-soft); color: var(--accent); }
@@ -195,7 +195,7 @@ pre.code { margin: 0; background: var(--wash); border-radius: 10px; padding: 12p
 .err code { font-family: var(--mono); display: block; margin-top: 4px; color: var(--ink-2); }
 .tip { font-size: 13px; color: var(--ink-3); }
 .preset { padding: 14px 0; margin: 0; border-bottom: 1px solid var(--line); }
-.preset h4 { margin: 0 0 2px; font-size: 14px; font-weight: 640; }
+.preset h4 { margin: 0 0 2px; font-size: 15px; font-weight: 700; }
 .preset p { margin: 0 0 10px; color: var(--ink-3); font-size: 13px; }
 .preset .row { display: flex; gap: 8px; }
 
@@ -217,7 +217,7 @@ pre.code { margin: 0; background: var(--wash); border-radius: 10px; padding: 12p
 .legend { position: absolute; right: 14px; bottom: 14px; display: flex; gap: 14px; font-size: 12px; color: var(--ink-2); background: var(--raised); padding: 5px 12px; border-radius: 999px; box-shadow: var(--shadow-1); pointer-events: none; }
 .legend i { display: inline-block; width: 9px; height: 9px; border-radius: 50%; margin-right: 5px; vertical-align: -1px; }
 .caption { flex: none; display: flex; align-items: baseline; gap: 10px; padding: 2px 6px; }
-.caption .why { font-weight: 650; color: var(--ink); flex: none; }
+.caption .why { font-weight: 700; color: var(--ink); flex: none; }
 .caption #caption-text { color: var(--ink-2); }
 
 .science-wrap { flex: none; display: grid; grid-template-rows: 1fr; transition: grid-template-rows var(--t3) var(--ease), opacity var(--t2) var(--ease); }
@@ -231,7 +231,7 @@ pre.code { margin: 0; background: var(--wash); border-radius: 10px; padding: 12p
 
 /* ── right: creature + charts ──────────────────────────────────────────────── */
 .creature { padding: 0; }
-.creature h3 { margin: 0 0 10px; font-size: 14px; font-weight: 640; display: flex; align-items: center; gap: 8px; }
+.creature h3 { margin: 0 0 10px; font-size: 15.5px; font-weight: 700; display: flex; align-items: center; gap: 8px; }
 .creature .pin { font-size: 12px; background: var(--accent-soft); color: var(--accent); border-radius: 999px; padding: 1px 9px; font-weight: 640; }
 .creature .empty { color: var(--ink-3); font-size: 13px; }
 .creature.swap { animation: rise var(--t2) var(--ease); }
@@ -250,7 +250,7 @@ pre.code { margin: 0; background: var(--wash); border-radius: 10px; padding: 12p
 .tile b { display: block; font: 500 16px var(--mono); font-variant-numeric: tabular-nums; }
 .tile span { font-size: 12px; color: var(--ink-3); }
 .chartcard { padding: 0; }
-.chartcard h4 { margin: 0 0 8px; font-size: 13px; font-weight: 640; }
+.chartcard h4 { margin: 0 0 8px; font-size: 14px; font-weight: 700; }
 .chartcard canvas { width: 100%; height: 110px; display: block; }
 .lgd { display: flex; flex-wrap: wrap; gap: 4px 12px; margin-top: 8px; font-size: 12px; color: var(--ink-3); }
 .lgd i { display: inline-block; width: 10px; height: 3px; border-radius: 2px; margin-right: 5px; vertical-align: 3px; }
