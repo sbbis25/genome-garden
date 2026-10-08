@@ -77,3 +77,10 @@ from garden.api import *
 #             if best is None or match < best[0]:
 #                 best = (match, x, y)
 #     return (best[1], best[2]) if best else None
+
+
+# on_tick() runs 30 times a second with the whole world in your hands.
+#
+# def on_tick(world):
+#     if world.tick % 900 == 0:                    # every 30 seconds...
+#         world.kill_in_circle(80, 50, 15)         # ...a meteor hits the middle
