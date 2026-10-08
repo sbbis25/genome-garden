@@ -628,6 +628,7 @@
     cv.style.left = ((ww - cw) / 2) + 'px'; cv.style.top = ((wh - ch) / 2) + 'px';
     cv.width = Math.round(cw * DPR); cv.height = Math.round(ch * DPR);
     S.scale = scale;
+    draw(performance.now());
   }
 
   function draw(now) {
