@@ -66,3 +66,20 @@ class Button:
 
     def __init__(self, label, fn):
         self.label, self.fn = label, fn
+
+
+# ── helpers ──────────────────────────────────────────────────────────────────
+
+def distance(a, b):
+    """distance between two things that have .x and .y (creatures, predators)."""
+    return math.hypot(a.x - b.x, a.y - b.y)
+
+
+def nearest(me, others):
+    """the thing in `others` closest to `me`, or none if the list is empty."""
+    best, best_d = None, 1e18
+    for o in others:
+        d = (o.x - me.x) ** 2 + (o.y - me.y) ** 2
+        if d < best_d:
+            best, best_d = o, d
+    return best
