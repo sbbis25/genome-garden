@@ -30,3 +30,13 @@ class Hooks:
 
     def active(self, name):
         return name in self.fns and name not in self.disabled
+
+    def fail(self, where, exc, path):
+        line, src = None, ""
+        for fs in traceback.extract_tb(exc.__traceback__):
+            if fs.filename == path:
+                line, src = fs.lineno, (fs.line or "")
+        msg = "%s: %s" % (type(exc).__name__, exc)
+        self.errors[where] = {"where": where, "msg": msg, "line": line, "src": src.strip()}
+        if where in self.fns:
+            self.disabled.add(where)
