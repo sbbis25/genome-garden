@@ -752,4 +752,20 @@
   }
   $('#btn-view').onclick = function () { S.view = S.view === 'full' ? 'simple' : 'full'; applyView(); };
 
+  // ── go ─────────────────────────────────────────────────────────────────────────
+  if (typeof ResizeObserver !== 'undefined') {
+    new ResizeObserver(function () { fitCanvas(); S.chartsDirty = true; }).observe($('#worldwrap'));
+  }
+  window.addEventListener('resize', function () { fitCanvas(); S.chartsDirty = true; });
+  applyView();
+  fitCanvas();
+  if (S.hintStage === 0) showHint('Click anywhere in the world to drop some food.', 0);
+  else if (S.hintStage === 1) { S.pulseId = 'predators'; showHint('Open "How harsh is the world?" and drag Predators up. Watch what happens.', 0); }
+  else $('#hint').classList.add('gone');
+  setTimeout(function () {
+    if (S.view === 'simple' && S.hintStage >= 2) showHint('Curious how it works? Click "Show the science" to see DNA, traits and charts.', 9000);
+  }, 75000);
+  fetchSchema(); fetchTerrain(); fetchHistory();
+  poll();
+  requestAnimationFrame(loop);
 })();
