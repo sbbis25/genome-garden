@@ -213,9 +213,9 @@ pre.code { margin: 0; background: var(--wash); border-radius: 10px; padding: 12p
 @keyframes toast-in { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
 .legend { position: absolute; right: 14px; bottom: 14px; display: flex; gap: 14px; font-size: 12px; color: var(--ink-2); background: var(--raised); padding: 5px 12px; border-radius: 999px; box-shadow: var(--shadow-1); pointer-events: none; }
 .legend i { display: inline-block; width: 9px; height: 9px; border-radius: 50%; margin-right: 5px; vertical-align: -1px; }
-.caption { flex: none; display: flex; align-items: center; gap: 10px; min-height: 44px; padding: 10px 16px; background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius); }
-.caption .why { font-size: 12px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--accent); font-weight: 700; flex: none; }
-.caption #caption-text { color: var(--text); }
+.caption { flex: none; display: flex; align-items: baseline; gap: 10px; padding: 2px 6px; }
+.caption .why { font-weight: 650; color: var(--ink); flex: none; }
+.caption #caption-text { color: var(--ink-2); }
 
 .science { flex: none; display: grid; grid-template-columns: repeat(auto-fit, minmax(104px, 1fr)); gap: 10px; }
 .hcard { padding: 8px 10px 6px; }
