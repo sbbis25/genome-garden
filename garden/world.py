@@ -783,3 +783,34 @@ class World:
                 counts.append(1)
         big = sum(1 for k in counts if k >= max(3, len(sample) * 0.06))
         self.stats2.update(div=tot / 60.0, clusters=max(1, big), maxgen=max(c.gen for c in cs))
+
+    def record_history(self):
+        h = self.hist
+        cs = self.creatures
+        h["pop"].append(len(cs))
+        h["food"].append(self.food_n)
+        h["div"].append(round(self.stats2["div"], 3))
+        for name, a, b, lo, hi in self.layout:
+            m = self.stats[name]["mean"] if name in self.stats else lo
+            h["traits"].setdefault(name, []).append(round((m - lo) / ((hi - lo) or 1.0), 3))
+        for i, ch in enumerate(self.hooks.charts):
+            if i >= len(self.hist_custom):
+                self.hist_custom.append([])
+            v = None
+            if ("CHART: " + ch.title) not in self.hooks.errors:
+                try:
+                    v = ch.fn(self)
+                    v = [float(x) for x in v] if isinstance(v, (list, tuple)) else [float(v)]
+                except Exception as e:
+                    self.hooks.fail("CHART: " + ch.title, e, self.loader.path)
+                    self.schema_version += 1
+                    v = None
+            self.hist_custom[i].append(v if v is not None else [0.0])
+        if len(h["pop"]) > 400:
+            for key in ("pop", "food", "div"):
+                h[key] = h[key][::2]
+            for key in h["traits"]:
+                h["traits"][key] = h["traits"][key][::2]
+            self.hist_custom = [s[::2] for s in self.hist_custom]
+            self.hist_stride *= 2
+        self.hist_version += 1
