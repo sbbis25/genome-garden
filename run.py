@@ -51,3 +51,19 @@ def check():
     print("")
     print("All good. Run:  python run.py" if ok else "Fix the problems above, then run this check again.")
     return 0 if ok else 1
+
+
+def main():
+    ap = argparse.ArgumentParser(description="genome garden")
+    ap.add_argument("--check", action="store_true")
+    ap.add_argument("--port", type=int, default=8765)
+    ap.add_argument("--no-browser", action="store_true")
+    a = ap.parse_args()
+    if a.check:
+        sys.exit(check())
+    from garden.server import serve
+    serve(WORKSHOP, port=a.port, open_browser=not a.no_browser)
+
+
+if __name__ == "__main__":
+    main()
