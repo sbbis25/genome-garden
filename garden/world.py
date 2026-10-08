@@ -894,3 +894,18 @@ class World:
             "food_n": self.food_n,
         }
         return json.dumps(d, separators=(",", ":")).encode("utf-8")
+
+    def terrain_json(self):
+        return json.dumps({"gw": GW, "gh": GH, "hue": [round(v, 3) for v in self.t_hue],
+                           "v": self.terrain_version}).encode("utf-8")
+
+    def history_json(self):
+        custom = []
+        for i, ch in enumerate(self.hooks.charts):
+            series = self.hist_custom[i] if i < len(self.hist_custom) else []
+            width = max((len(p) for p in series), default=1)
+            custom.append({"title": ch.title,
+                           "series": [[(p[k] if k < len(p) else 0.0) for p in series] for k in range(width)]})
+        return json.dumps({"v": self.hist_version, "pop": self.hist["pop"], "food": self.hist["food"],
+                           "div": self.hist["div"], "traits": self.hist["traits"],
+                           "custom": custom}).encode("utf-8")
