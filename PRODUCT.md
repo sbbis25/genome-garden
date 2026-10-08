@@ -24,7 +24,7 @@ Creatures carry a real DNA string (over ACGT) whose segments decode into traits,
 
 ## Operating Context
 
-A live workshop, probably projected or run on participants' own laptops. People start from a repo and one command. Evolution is slow, so time controls (pause, 0.5x, 1x, 3x, 10x, 30x) matter. Participant surface is `workshop.py`; the engine and web front end in `garden/` are read-only for them.
+A live workshop, probably projected or run on participants' own laptops. Supported screens are laptops and projectors at least 900px wide; the right column hides below 1180px, and below 900px a short notice asks for a wider window. People start from a repo and one command. Evolution is slow, so time controls (pause, 0.5x, 1x, 3x, 10x, 30x) matter. Participant surface is `workshop.py`; the engine and web front end in `garden/` are read-only for them.
 
 ## Capabilities and Constraints
 
