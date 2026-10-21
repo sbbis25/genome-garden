@@ -8,7 +8,7 @@ web
 
 ## Stack
 
-Decided with the user during design (Section 1): pure-Python 3.9+ engine, a standard-library HTTP server that streams frames with Server-Sent Events, and a static HTML/JS/CSS front end with no build step. Zero third-party dependencies, because some participants may not have Python installed. Launched with `python run.py`, which opens the browser. Fallbacks for people without Python: a setup guide (python.org or `uv`), a devcontainer for GitHub Codespaces, and a `python run.py --check` command.
+Decided with the user during design (Section 1): pure-Python 3.9+ engine, a standard-library HTTP server that streams frames with Server-Sent Events, and a static HTML/JS/CSS front end with no build step. Zero third-party dependencies, because some participants may not have Python installed. Launched with `python run.py`, which opens the browser. Fallbacks for people without Python: a Google Colab notebook (`colab.ipynb`, added later), a setup guide (python.org or `uv`), a devcontainer for GitHub Codespaces, and a `python run.py --check` command.
 
 ## Users
 
