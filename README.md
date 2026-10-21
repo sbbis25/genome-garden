@@ -16,8 +16,11 @@ python run.py
 Your browser opens on a running world. (On a Mac or Linux the command may be `python3 run.py`. On Windows, if `python` is not found, try `py run.py`.)
 Do this the night before to be sure you are ready: `python run.py --check`
 
-**No Python on your laptop?** Install it from https://www.python.org/downloads/ (tick "Add Python to PATH"
-on Windows), or ask an organizer for a shared machine.
+**No Python on your laptop?** [Open Genome Garden in Colab](https://colab.research.google.com/github/sbbis25/genome-garden/blob/main/colab.ipynb).
+It runs on Google's computer and needs only a Google account. You edit `workshop.py` in Colab's editor,
+and your code is deleted when the session ends, so download it before you leave. It is a little choppier
+than running it yourself. To run it on your own laptop, install Python from https://www.python.org/downloads/
+(tick "Add Python to PATH" on Windows).
 
 ## Three ways to play
 
@@ -90,6 +93,7 @@ mutation changes a trait a little. Pin a creature to see its letters, colour-ban
 
 ```
 run.py          start here
+colab.ipynb     the same thing in google colab, for laptops without python
 workshop.py     the one file you edit
 garden/         the engine and the web page (you do not need to touch it)
 ```
