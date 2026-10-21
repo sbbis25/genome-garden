@@ -96,6 +96,8 @@ mutation changes a trait a little. Pin a creature to see its letters, colour-ban
 
 ## If something goes wrong
 
+- **In Colab, nothing shows under step 2:** choose **Runtime → Disconnect and delete runtime**, then
+  **Runtime → Run all**. If the world stops moving, Colab closed the idle session; run all again.
 - **Nothing opens:** go to the address printed in the terminal, usually http://127.0.0.1:8765/
 - **Port busy:** another copy is running. Close it, or it will pick the next free port for you.
 - **Red banner at the top:** your `workshop.py` has a mistake. The line number is in the Code tab.
