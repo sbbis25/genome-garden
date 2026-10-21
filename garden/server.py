@@ -205,3 +205,20 @@ def serve(workshop_path, port=8765, open_browser=True):
     finally:
         httpd.server_close()
 
+
+_background = None
+
+
+def start(workshop_path, port=8765):
+    """run the garden on background threads and return its port, for notebooks like colab.
+
+    calling it again returns the port of the copy that is already running.
+    """
+    global _background
+    if _background is None:
+        sim = Sim(World(workshop_path))
+        sim.start()
+        httpd, port = _bind(sim, port)
+        threading.Thread(target=httpd.serve_forever, daemon=True).start()
+        _background = port
+    return _background
