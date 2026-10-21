@@ -5,22 +5,36 @@ Every creature carries a real DNA string, and you decide what the world is like.
 
 You can play with **no code at all**, copy and paste a few lines, or write your own rules.
 
-## Start in one command
+[![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/sbbis25/genome-garden/blob/main/colab.ipynb)
 
-You need Python 3.9 or newer. There is nothing to install.
+## Start
 
-```
-python run.py
-```
+Pick one. Both run the same world.
 
-Your browser opens on a running world. (On a Mac or Linux the command may be `python3 run.py`. On Windows, if `python` is not found, try `py run.py`.)
+### Easiest: in your browser, with nothing to install
+
+1. Open **[Genome Garden in Colab](https://colab.research.google.com/github/sbbis25/genome-garden/blob/main/colab.ipynb)** and sign in with a Google account.
+2. In the menu, choose **Runtime → Run all**. If Colab warns that the notebook was not written by Google, click **Run anyway**.
+3. Wait a few seconds. The world appears in the notebook under step 2.
+4. To write code, scroll to step 3: `workshop.py` opens in an editor on the right. Save with **Ctrl+S** (**Cmd+S** on a Mac).
+5. Before you leave, run step 4 to download your `workshop.py`. Colab deletes it when the session ends.
+
+### Smoothest: on your own laptop
+
+You need Python 3.9 or newer (get it from https://www.python.org/downloads/, and on Windows tick
+"Add Python to PATH"). There is nothing else to install.
+
+1. Download this project: on GitHub, click the green **Code** button, then **Download ZIP**, and unzip it.
+2. Open a terminal in the unzipped folder and run:
+
+   ```
+   python run.py
+   ```
+
+   On a Mac or Linux it may be `python3 run.py`. On Windows, if `python` is not found, try `py run.py`.
+3. Your browser opens on a running world. Edit `workshop.py` in any text editor and save it.
+
 Do this the night before to be sure you are ready: `python run.py --check`
-
-**No Python on your laptop?** [Open Genome Garden in Colab](https://colab.research.google.com/github/sbbis25/genome-garden/blob/main/colab.ipynb).
-It runs on Google's computer and needs only a Google account. You edit `workshop.py` in Colab's editor,
-and your code is deleted when the session ends, so download it before you leave. It is a little choppier
-than running it yourself. To run it on your own laptop, install Python from https://www.python.org/downloads/
-(tick "Add Python to PATH" on Windows).
 
 ## Three ways to play
 
