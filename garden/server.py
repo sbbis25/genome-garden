@@ -173,23 +173,22 @@ def make_handler(sim):
     return Handler
 
 
-def _bind(sim, port, host="127.0.0.1"):
-    """the first free port from `port` up, or exit with a friendly message."""
-    for p in range(port, port + 25):
-        try:
-            ThreadingHTTPServer.daemon_threads = True
-            return ThreadingHTTPServer((host, p), make_handler(sim)), p
-        except OSError:
-            continue
-    print("Could not find a free port near %d. Close other copies and try again." % port)
-    sys.exit(1)
-
-
 def serve(workshop_path, port=8765, open_browser=True):
     world = World(workshop_path)
     sim = Sim(world)
     sim.start()
-    httpd, port = _bind(sim, port)
+    httpd = None
+    for p in range(port, port + 25):
+        try:
+            ThreadingHTTPServer.daemon_threads = True
+            httpd = ThreadingHTTPServer(("127.0.0.1", p), make_handler(sim))
+            port = p
+            break
+        except OSError:
+            continue
+    if httpd is None:
+        print("Could not find a free port near %d. Close other copies and try again." % port)
+        sys.exit(1)
     url = "http://127.0.0.1:%d/" % port
     print("", flush=True)
     print("  Genome Garden is running at  %s" % url, flush=True)
@@ -204,22 +203,3 @@ def serve(workshop_path, port=8765, open_browser=True):
         print("\nStopped.")
     finally:
         httpd.server_close()
-
-
-_background = None
-
-
-def start(workshop_path, port=8765, host="127.0.0.1"):
-    """run the garden on background threads and return its port, for notebooks like colab.
-
-    calling it again returns the port of the copy that is already running. colab passes
-    host="0.0.0.0" so its proxy can reach the server; leave the default on a laptop.
-    """
-    global _background
-    if _background is None:
-        sim = Sim(World(workshop_path))
-        sim.start()
-        httpd, port = _bind(sim, port, host)
-        threading.Thread(target=httpd.serve_forever, daemon=True).start()
-        _background = port
-    return _background
